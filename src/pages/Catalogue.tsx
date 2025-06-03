@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -135,7 +134,7 @@ const Catalogue = () => {
                       {formation.prix}
                     </span>
                     <Button>
-                      Demander un devis
+                      RDV de positionnement
                     </Button>
                   </div>
                 </CardContent>
