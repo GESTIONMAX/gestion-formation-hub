@@ -33,6 +33,14 @@ const Navigation = () => {
           À propos
         </Button>
       </Link>
+      <Link to="/contact">
+        <Button 
+          variant={isActive("/contact") ? "default" : "ghost"}
+          className="text-base"
+        >
+          Contact
+        </Button>
+      </Link>
       <Link to="/dashboard">
         <Button variant="outline" className="text-base">
           Espace formation
