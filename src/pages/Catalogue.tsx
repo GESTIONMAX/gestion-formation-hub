@@ -13,7 +13,7 @@ const Catalogue = () => {
       duree: "21 heures",
       prix: "1 890€",
       niveau: "Débutant",
-      participants: "8 max",
+      participants: "Formation en présentiel individuel",
       objectifs: [
         "Installer et configurer WordPress",
         "Créer et gérer du contenu",
@@ -30,7 +30,7 @@ const Catalogue = () => {
       duree: "35 heures",
       prix: "2 890€",
       niveau: "Avancé",
-      participants: "6 max",
+      participants: "Formation en présentiel individuel",
       objectifs: [
         "Développer des thèmes personnalisés",
         "Créer des extensions",
@@ -47,7 +47,7 @@ const Catalogue = () => {
       duree: "28 heures",
       prix: "2 490€",
       niveau: "Intermédiaire",
-      participants: "6 max",
+      participants: "Formation en présentiel individuel",
       objectifs: [
         "Configurer WooCommerce",
         "Gérer un catalogue produits",

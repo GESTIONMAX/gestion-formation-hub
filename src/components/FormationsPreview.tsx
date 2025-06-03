@@ -13,7 +13,7 @@ const FormationsPreview = () => {
       duree: "21 heures",
       prix: "1 890€",
       niveau: "Débutant",
-      participants: "8 max",
+      participants: "Formation en présentiel individuel",
     },
     {
       id: "2", 
@@ -22,7 +22,7 @@ const FormationsPreview = () => {
       duree: "35 heures",
       prix: "2 890€",
       niveau: "Avancé",
-      participants: "6 max",
+      participants: "Formation en présentiel individuel",
     }
   ];
 
