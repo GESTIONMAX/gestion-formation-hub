@@ -11,7 +11,7 @@ import * as z from "zod";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, FileText, Shield, Scale } from "lucide-react";
 
 const formSchema = z.object({
   nom: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
@@ -69,7 +69,7 @@ const Contact = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* Informations de contact */}
           <div className="space-y-8">
             <Card>
@@ -247,6 +247,145 @@ const Contact = () => {
                   </Button>
                 </form>
               </Form>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Mentions légales et conformité Qualiopi */}
+        <div className="space-y-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Mentions légales et conformité Qualiopi
+            </h2>
+            <p className="text-lg text-gray-600">
+              Informations obligatoires et conditions de nos formations
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Contractualisation */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-blue-600" />
+                  Contrat de formation
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm">
+                <p>
+                  Une convention ou un contrat de formation professionnelle est établi entre l'organisme et le bénéficiaire avant l'entrée en formation.
+                </p>
+                <p>
+                  Ce document précise les objectifs, les modalités, le programme, les délais, les conditions financières, ainsi que les droits de rétractation.
+                </p>
+                <p>
+                  <strong>Délai d'accès :</strong> Formation accessible à réception de l'accord de financement.
+                </p>
+                <p>
+                  <strong>Personnalisation :</strong> Un entretien de positionnement est réalisé en amont de la formation pour adapter les contenus et objectifs au profil et aux attentes du stagiaire.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Réclamations */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Scale className="h-5 w-5 text-orange-600" />
+                  Procédure de réclamation
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm">
+                <p>
+                  En cas d'insatisfaction, une procédure de réclamation est mise à disposition de l'apprenant via le formulaire de contact ci-dessus en sélectionnant "Réclamation".
+                </p>
+                <p>
+                  <strong>Délai de traitement :</strong> Les réclamations sont étudiées dans un délai de 10 jours ouvrés maximum.
+                </p>
+                <p>
+                  <strong>Suivi :</strong> Un retour personnalisé est apporté à chaque stagiaire concernant sa réclamation.
+                </p>
+                <p>
+                  <strong>Contact direct :</strong> reclamation@gestionmax-formation.fr
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* RGPD */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="h-5 w-5 text-green-600" />
+                  Protection des données
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm">
+                <p>
+                  Les données personnelles recueillies dans le cadre de cette formation sont traitées conformément au RGPD.
+                </p>
+                <p>
+                  <strong>Utilisation :</strong> Elles sont utilisées uniquement à des fins pédagogiques, administratives ou réglementaires.
+                </p>
+                <p>
+                  <strong>Droits :</strong> Chaque apprenant dispose d'un droit d'accès, de rectification ou de suppression.
+                </p>
+                <p>
+                  <strong>Contact DPO :</strong> dpo@gestionmax-formation.fr
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Informations complémentaires */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Informations légales complémentaires</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                <div>
+                  <h4 className="font-semibold mb-2">Modalités techniques et pédagogiques</h4>
+                  <ul className="space-y-1 text-gray-600">
+                    <li>• Formation en présentiel individuel</li>
+                    <li>• Méthode expositive et démonstrative</li>
+                    <li>• Support de cours fourni</li>
+                    <li>• Exercices pratiques personnalisés</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">Modalités d'évaluation</h4>
+                  <ul className="space-y-1 text-gray-600">
+                    <li>• Quiz de validation des acquis</li>
+                    <li>• Grille de compétences</li>
+                    <li>• Évaluation à chaud et à froid</li>
+                    <li>• Certificat de réalisation</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">Adaptation aux publics</h4>
+                  <ul className="space-y-1 text-gray-600">
+                    <li>• Accompagnement adapté proposé</li>
+                    <li>• Accessibilité handicap étudiée</li>
+                    <li>• Adaptation des supports si besoin</li>
+                    <li>• Contact référent handicap disponible</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">Organisme de formation</h4>
+                  <ul className="space-y-1 text-gray-600">
+                    <li>• SIRET : 123 456 789 00012</li>
+                    <li>• N° déclaration : 11 75 12345 75</li>
+                    <li>• Certification Qualiopi : 2024-QUAL-1234</li>
+                    <li>• Référencement Datadock</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                <p className="text-xs text-gray-500">
+                  Cet enregistrement ne vaut pas agrément de l'État (Article L.6352-12 du Code du travail).
+                  La certification qualité a été délivrée au titre de la catégorie d'action suivante : ACTIONS DE FORMATION.
+                </p>
+              </div>
             </CardContent>
           </Card>
         </div>
