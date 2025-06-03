@@ -1,90 +1,100 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Edit, Eye, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Plus, Edit, Trash2, Eye, Clock, Users, BookOpen, Info } from "lucide-react";
+import { useFormations } from "@/hooks/useFormations";
 import { useToast } from "@/hooks/use-toast";
 import FormationForm from "./FormationForm";
 import FormationDetail from "./FormationDetail";
-import { useFormations } from "@/hooks/useFormations";
+import MentionsLegales from "./MentionsLegales";
 
 const FormationsList = () => {
-  const [showForm, setShowForm] = useState(false);
+  const { formations, loading, createFormation, updateFormation, deleteFormation } = useFormations();
+  const { toast } = useToast();
+  const [view, setView] = useState<"list" | "form" | "detail">("list");
   const [selectedFormation, setSelectedFormation] = useState(null);
   const [editingFormation, setEditingFormation] = useState(null);
-  const { toast } = useToast();
-  const { formations, loading, createFormation, updateFormation, deleteFormation } = useFormations();
 
-  const handleCreate = async (formationData: any) => {
-    try {
-      await createFormation(formationData);
-      setShowForm(false);
-      toast({
-        title: "Formation créée",
-        description: "La formation a été créée avec succès.",
-      });
-    } catch (error) {
-      toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de la création.",
-        variant: "destructive",
-      });
-    }
+  const handleCreate = () => {
+    setEditingFormation(null);
+    setView("form");
   };
 
-  const handleEdit = async (formationData: any) => {
-    try {
-      await updateFormation(editingFormation.id, formationData);
-      setEditingFormation(null);
-      toast({
-        title: "Formation modifiée",
-        description: "La formation a été modifiée avec succès.",
-      });
-    } catch (error) {
-      toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de la modification.",
-        variant: "destructive",
-      });
-    }
+  const handleEdit = (formation: any) => {
+    setEditingFormation(formation);
+    setView("form");
   };
 
   const handleDelete = async (id: string) => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer cette formation ?")) {
-      try {
-        await deleteFormation(id);
-        toast({
-          title: "Formation supprimée",
-          description: "La formation a été supprimée avec succès.",
-        });
-      } catch (error) {
-        toast({
-          title: "Erreur",
-          description: "Une erreur est survenue lors de la suppression.",
-          variant: "destructive",
-        });
-      }
+    try {
+      await deleteFormation(id);
+      toast({
+        title: "Formation supprimée",
+        description: "La formation a été supprimée avec succès.",
+      });
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Impossible de supprimer la formation.",
+        variant: "destructive",
+      });
     }
   };
 
-  if (selectedFormation) {
+  const handleSubmit = async (formData: any) => {
+    try {
+      if (editingFormation) {
+        await updateFormation(editingFormation.id, formData);
+        toast({
+          title: "Formation modifiée",
+          description: "La formation a été modifiée avec succès.",
+        });
+      } else {
+        await createFormation(formData);
+        toast({
+          title: "Formation créée",
+          description: "La nouvelle formation a été créée avec succès.",
+        });
+      }
+      setView("list");
+      setEditingFormation(null);
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Impossible de sauvegarder la formation.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleViewDetail = (formation: any) => {
+    setSelectedFormation(formation);
+    setView("detail");
+  };
+
+  const handleBack = () => {
+    setView("list");
+    setSelectedFormation(null);
+    setEditingFormation(null);
+  };
+
+  if (view === "form") {
     return (
-      <FormationDetail
-        formation={selectedFormation}
-        onBack={() => setSelectedFormation(null)}
+      <FormationForm
+        formation={editingFormation}
+        onSubmit={handleSubmit}
+        onCancel={handleBack}
       />
     );
   }
 
-  if (showForm || editingFormation) {
+  if (view === "detail") {
     return (
-      <FormationForm
-        formation={editingFormation}
-        onSubmit={editingFormation ? handleEdit : handleCreate}
-        onCancel={() => {
-          setShowForm(false);
-          setEditingFormation(null);
-        }}
+      <FormationDetail
+        formation={selectedFormation}
+        onBack={handleBack}
       />
     );
   }
@@ -92,70 +102,94 @@ const FormationsList = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Formations WordPress</h2>
-        <Button onClick={() => setShowForm(true)} className="flex items-center gap-2">
-          <Plus className="h-4 w-4" />
+        <div>
+          <h2 className="text-2xl font-bold">Gestion des formations</h2>
+          <p className="text-gray-600">Gérez vos programmes de formation WordPress</p>
+        </div>
+        <Button onClick={handleCreate}>
+          <Plus className="h-4 w-4 mr-2" />
           Nouvelle formation
         </Button>
       </div>
 
-      {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3].map((i) => (
-            <Card key={i} className="animate-pulse">
-              <CardHeader>
-                <div className="h-6 bg-gray-200 rounded w-3/4"></div>
-                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="h-4 bg-gray-200 rounded"></div>
-                  <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-                </div>
+      <Tabs defaultValue="formations" className="space-y-6">
+        <TabsList>
+          <TabsTrigger value="formations" className="flex items-center gap-2">
+            <BookOpen className="h-4 w-4" />
+            Formations
+          </TabsTrigger>
+          <TabsTrigger value="mentions" className="flex items-center gap-2">
+            <Info className="h-4 w-4" />
+            Mentions légales
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="formations">
+          {loading ? (
+            <Card>
+              <CardContent className="p-6">
+                <p className="text-center text-gray-500">Chargement des formations...</p>
               </CardContent>
             </Card>
-          ))}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {formations.map((formation) => (
-            <Card key={formation.id} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <CardTitle className="text-lg">{formation.titre}</CardTitle>
-                <p className="text-sm text-gray-600">{formation.duree}</p>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-700 mb-4 line-clamp-3">
-                  {formation.description}
-                </p>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setSelectedFormation(formation)}
-                  >
-                    <Eye className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setEditingFormation(formation)}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => handleDelete(formation.id)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {formations.map((formation) => (
+                <Card key={formation.id} className="hover:shadow-md transition-shadow">
+                  <CardHeader>
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <CardTitle className="text-lg">{formation.titre}</CardTitle>
+                        <div className="flex items-center gap-4 mt-2">
+                          <Badge variant="secondary" className="flex items-center gap-1">
+                            <Clock className="h-3 w-3" />
+                            {formation.duree}
+                          </Badge>
+                          <Badge variant="outline" className="flex items-center gap-1">
+                            <Users className="h-3 w-3" />
+                            Qualiopi
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                      {formation.description}
+                    </p>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleViewDetail(formation)}
+                      >
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleEdit(formation)}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleDelete(formation.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </TabsContent>
+
+        <TabsContent value="mentions">
+          <MentionsLegales />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
