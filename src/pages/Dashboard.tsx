@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Users, BookOpen, Calendar, FileCheck, Accessibility, Search } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 import FormationsList from "@/components/formations/FormationsList";
 import ApprenantsList from "@/components/apprenants/ApprenantsList";
 import RendezVousList from "@/components/rendez-vous/RendezVousList";
@@ -13,6 +14,7 @@ import CompetenceManager from "@/components/competences/CompetenceManager";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("formations");
+  const { user, signOut } = useAuth();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -21,9 +23,18 @@ const Dashboard = () => {
           <div className="flex justify-between items-center py-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">GestionMax Formation</h1>
-              <p className="text-gray-600">Gestion des formations WordPress - Certifié Qualiopi</p>
+              <p className="text-gray-600">
+                Gestion des formations WordPress - Certifié Qualiopi
+              </p>
+              {user && (
+                <p className="text-sm text-gray-500 mt-1">
+                  Connecté en tant que: {user.email}
+                </p>
+              )}
             </div>
-            <Button variant="outline">Se déconnecter</Button>
+            <Button variant="outline" onClick={signOut}>
+              Se déconnecter
+            </Button>
           </div>
         </div>
       </header>
