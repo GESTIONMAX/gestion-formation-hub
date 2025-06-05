@@ -7,7 +7,7 @@ import { AlertTriangle, Clock, CheckCircle, XCircle, TrendingUp, Users, Calendar
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { exportActionsCorrectivesToCSV } from "@/utils/csvExport";
 
-const ActionsCorrectives Dashboard = () => {
+const ActionsCorrectivesDashboard = () => {
   const { actionsCorrectives, loading } = useActionsCorrectives();
 
   if (loading) {
@@ -244,4 +244,4 @@ const ActionsCorrectives Dashboard = () => {
   );
 };
 
-export default ActionsCorrectives Dashboard;
+export default ActionsCorrectivesDashboard;

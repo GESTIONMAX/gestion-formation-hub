@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Progress } from "@/components/ui/progress";
 import { useActionsCorrectives } from "@/hooks/useActionsCorrectives";
 import { Plus, Search, Eye, Edit, Trash2, AlertTriangle, Clock, CheckCircle, XCircle } from "lucide-react";
-import ActionsCorrectives Dashboard from "./ActionsCorrectives Dashboard";
+import ActionsCorrectivesDashboard from "./ActionsCorrectivesDashboard";
 import ActionCorrectiveForm from "./ActionCorrectiveForm";
 
 const ActionsCorrectivesList = () => {
@@ -111,7 +111,7 @@ const ActionsCorrectivesList = () => {
         </div>
 
         <TabsContent value="dashboard">
-          <ActionsCorrectives Dashboard />
+          <ActionsCorrectivesDashboard />
         </TabsContent>
 
         <TabsContent value="liste" className="space-y-6">
