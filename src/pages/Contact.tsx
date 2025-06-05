@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useToast } from "@/hooks/use-toast";
+import { useReclamations } from "@/hooks/useReclamations";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Mail, Phone, MapPin, FileText, Shield, Scale } from "lucide-react";
@@ -20,10 +20,12 @@ const formSchema = z.object({
   sujet: z.string().min(5, "Le sujet doit contenir au moins 5 caractères"),
   type: z.enum(["question", "reclamation", "suggestion"]),
   message: z.string().min(20, "Le message doit contenir au moins 20 caractères"),
+  priorite: z.enum(["basse", "normale", "haute", "urgente"]).optional(),
 });
 
 const Contact = () => {
   const { toast } = useToast();
+  const { createReclamation } = useReclamations();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -35,25 +37,49 @@ const Contact = () => {
       sujet: "",
       type: "question",
       message: "",
+      priorite: "normale",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     
-    // Simulation d'envoi
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    console.log("Formulaire soumis:", values);
-    
-    toast({
-      title: "Message envoyé",
-      description: "Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.",
-    });
-    
-    form.reset();
-    setIsSubmitting(false);
+    try {
+      if (values.type === "reclamation") {
+        // Traitement spécial pour les réclamations
+        const success = await createReclamation({
+          nom: values.nom,
+          email: values.email,
+          telephone: values.telephone,
+          sujet: values.sujet,
+          message: values.message,
+          priorite: values.priorite as any,
+        });
+        
+        if (success) {
+          form.reset();
+        }
+      } else {
+        // Simulation d'envoi pour les autres types
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        console.log("Formulaire soumis:", values);
+        
+        toast({
+          title: "Message envoyé",
+          description: "Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.",
+        });
+        
+        form.reset();
+      }
+    } catch (error) {
+      console.error("Erreur lors de la soumission:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  const typeValue = form.watch("type");
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -70,7 +96,6 @@ const Contact = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          {/* Informations de contact */}
           <div className="space-y-8">
             <Card>
               <CardHeader>
@@ -132,7 +157,6 @@ const Contact = () => {
             </Card>
           </div>
 
-          {/* Formulaire de contact */}
           <Card>
             <CardHeader>
               <CardTitle>Envoyez-nous un message</CardTitle>
@@ -206,6 +230,30 @@ const Contact = () => {
                     )}
                   />
 
+                  {typeValue === "reclamation" && (
+                    <FormField
+                      control={form.control}
+                      name="priorite"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Priorité *</FormLabel>
+                          <FormControl>
+                            <select 
+                              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                              {...field}
+                            >
+                              <option value="basse">Basse</option>
+                              <option value="normale">Normale</option>
+                              <option value="haute">Haute</option>
+                              <option value="urgente">Urgente</option>
+                            </select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
+
                   <FormField
                     control={form.control}
                     name="sujet"
@@ -251,7 +299,6 @@ const Contact = () => {
           </Card>
         </div>
 
-        {/* Mentions légales et conformité Qualiopi */}
         <div className="space-y-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -263,7 +310,6 @@ const Contact = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Contractualisation */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -287,7 +333,6 @@ const Contact = () => {
               </CardContent>
             </Card>
 
-            {/* Réclamations */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -311,7 +356,6 @@ const Contact = () => {
               </CardContent>
             </Card>
 
-            {/* RGPD */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -336,7 +380,6 @@ const Contact = () => {
             </Card>
           </div>
 
-          {/* Informations complémentaires */}
           <Card>
             <CardHeader>
               <CardTitle>Informations légales complémentaires</CardTitle>
