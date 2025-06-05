@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -187,12 +186,16 @@ const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => 
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="situationHandicap">Situation handicap (selon l'...)</Label>
-                  <Input
-                    id="situationHandicap"
-                    value={formData.situationHandicap}
-                    onChange={(e) => handleChange("situationHandicap", e.target.value)}
-                  />
+                  <Label htmlFor="situationHandicap">Situation handicap</Label>
+                  <Select value={formData.situationHandicap} onValueChange={(value) => handleChange("situationHandicap", value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sélectionner" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="oui">Oui</SelectItem>
+                      <SelectItem value="non">Non</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </div>
