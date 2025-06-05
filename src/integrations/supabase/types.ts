@@ -228,7 +228,7 @@ export type Database = {
           formation_titre: string
           id: string
           notes_formateur: string | null
-          numero_dossier: string
+          numero_dossier: string | null
           programme_personnalise_id: string | null
           statut: string
           updated_at: string
@@ -243,7 +243,7 @@ export type Database = {
           formation_titre: string
           id?: string
           notes_formateur?: string | null
-          numero_dossier: string
+          numero_dossier?: string | null
           programme_personnalise_id?: string | null
           statut?: string
           updated_at?: string
@@ -258,7 +258,7 @@ export type Database = {
           formation_titre?: string
           id?: string
           notes_formateur?: string | null
-          numero_dossier?: string
+          numero_dossier?: string | null
           programme_personnalise_id?: string | null
           statut?: string
           updated_at?: string
@@ -534,10 +534,6 @@ export type Database = {
               p_niveau_maitrise?: string
               p_programme_formation?: string
             }
-        Returns: string
-      }
-      generate_numero_dossier: {
-        Args: Record<PropertyKey, never>
         Returns: string
       }
     }

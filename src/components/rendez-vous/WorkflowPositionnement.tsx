@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,6 +21,7 @@ const WorkflowPositionnement = ({ positionnementRequest, onCancel, onComplete }:
   const [programmeId, setProgrammeId] = useState<string | null>(null);
   const [dossierId, setDossierId] = useState<string | null>(null);
   const [dossierData, setDossierData] = useState({
+    numero_dossier: "",
     date_debut: "",
     date_fin: "",
     notes_formateur: ""
@@ -39,6 +41,15 @@ const WorkflowPositionnement = ({ positionnementRequest, onCancel, onComplete }:
   const createDossierFormation = async () => {
     if (!programmeId) return;
 
+    if (!dossierData.numero_dossier.trim()) {
+      toast({
+        title: "Numéro de dossier requis",
+        description: "Veuillez saisir un numéro de dossier (ex: numéro de devis).",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsProcessing(true);
     try {
       const insertData: any = {
@@ -47,6 +58,7 @@ const WorkflowPositionnement = ({ positionnementRequest, onCancel, onComplete }:
         apprenant_prenom: positionnementRequest.prenom_beneficiaire,
         apprenant_email: positionnementRequest.email,
         formation_titre: positionnementRequest.formation_selectionnee,
+        numero_dossier: dossierData.numero_dossier,
         statut: 'cree'
       };
 
@@ -180,6 +192,17 @@ const WorkflowPositionnement = ({ positionnementRequest, onCancel, onComplete }:
                   <CheckCircle className="h-4 w-4" />
                   <span className="font-medium">Programme personnalisé créé avec succès</span>
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="numero_dossier">Numéro de dossier * (ex: numéro de devis)</Label>
+                <Input
+                  id="numero_dossier"
+                  value={dossierData.numero_dossier}
+                  onChange={(e) => setDossierData(prev => ({ ...prev, numero_dossier: e.target.value }))}
+                  placeholder="Saisissez le numéro de dossier/devis"
+                  required
+                />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
