@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,8 +37,6 @@ const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => 
     experienceWordPress: "",
     // Objectifs
     objectifsPrincipaux: "",
-    // Compétences recherchées
-    competencesRecherchees: "",
     // Niveau de maîtrise
     niveauMaitrise: "non",
     // Programme de formation
@@ -292,20 +291,6 @@ const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => 
                   value={formData.objectifsPrincipaux}
                   onChange={(e) => handleChange("objectifsPrincipaux", e.target.value)}
                   placeholder="Quels sont vos objectifs avec cette formation ?"
-                  rows={3}
-                />
-              </div>
-            </div>
-
-            {/* Compétences recherchées */}
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="competencesRecherchees">Compétences recherchées</Label>
-                <Textarea
-                  id="competencesRecherchees"
-                  value={formData.competencesRecherchees}
-                  onChange={(e) => handleChange("competencesRecherchees", e.target.value)}
-                  placeholder="Quelles compétences souhaitez-vous développer ou acquérir ?"
                   rows={3}
                 />
               </div>
