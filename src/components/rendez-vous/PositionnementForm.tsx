@@ -66,7 +66,7 @@ const PositionnementForm = ({ onSubmit, onCancel, formationTitre = "WordPress : 
       console.log("Données envoyées:", formData);
       
       // Utilisation de la fonction RPC pour contourner les politiques RLS
-      const { error } = await supabase.rpc('create_positionnement_request', {
+      const { data, error } = await supabase.rpc('create_positionnement_request', {
         p_nom_beneficiaire: formData.nomBeneficiaire,
         p_prenom_beneficiaire: formData.prenomBeneficiaire,
         p_email: formData.email,
@@ -89,6 +89,8 @@ const PositionnementForm = ({ onSubmit, onCancel, formationTitre = "WordPress : 
         console.error('Erreur Supabase:', error);
         throw error;
       }
+
+      console.log('Demande créée avec succès, ID:', data);
 
       toast({
         title: "Demande envoyée",
