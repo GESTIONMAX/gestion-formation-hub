@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Apprenant {
   id: string;
@@ -13,52 +14,65 @@ export const useApprenants = () => {
   const [apprenants, setApprenants] = useState<Apprenant[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const mockApprenants: Apprenant[] = [
-    {
-      id: "1",
-      nom: "Marie Dubois",
-      email: "marie.dubois@email.com",
-      telephone: "06 12 34 56 78",
-      createdAt: new Date().toISOString(),
-    },
-    {
-      id: "2",
-      nom: "Jean Martin",
-      email: "jean.martin@email.com",
-      telephone: "06 98 76 54 32",
-      createdAt: new Date().toISOString(),
+  const fetchApprenants = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('apprenants')
+        .select('*')
+        .order('createdAt', { ascending: false });
+
+      if (error) throw error;
+      setApprenants((data || []) as Apprenant[]);
+    } catch (error) {
+      console.error('Erreur lors du chargement des apprenants:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
   useEffect(() => {
-    const fetchApprenants = async () => {
-      setLoading(true);
-      setTimeout(() => {
-        setApprenants(mockApprenants);
-        setLoading(false);
-      }, 1000);
-    };
-
     fetchApprenants();
   }, []);
 
-  const createApprenant = async (apprenantData: Omit<Apprenant, "id" | "createdAt">) => {
-    const newApprenant: Apprenant = {
-      ...apprenantData,
-      id: Date.now().toString(),
-      createdAt: new Date().toISOString(),
-    };
-    
-    setApprenants(prev => [newApprenant, ...prev]);
-    return newApprenant;
+  const createApprenant = async (
+    apprenantData: Omit<Apprenant, 'id' | 'createdAt'>
+  ) => {
+    try {
+      const { data, error } = await supabase
+        .from('apprenants')
+        .insert([apprenantData])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      const newApprenant = data as Apprenant;
+      setApprenants(prev => [newApprenant, ...prev]);
+      return newApprenant;
+    } catch (error) {
+      console.error('Erreur lors de la création de l\'apprenant:', error);
+      throw error;
+    }
   };
 
   const updateApprenant = async (id: string, apprenantData: Partial<Apprenant>) => {
-    setApprenants(prev => 
-      prev.map(apprenant => 
-        apprenant.id === id ? { ...apprenant, ...apprenantData } : apprenant
-      )
-    );
+    try {
+      const { data, error } = await supabase
+        .from('apprenants')
+        .update(apprenantData)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      const updated = data as Apprenant;
+      setApprenants(prev => prev.map(a => (a.id === id ? updated : a)));
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour de l\'apprenant:', error);
+      throw error;
+    }
   };
 
   return {

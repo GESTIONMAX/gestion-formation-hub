@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface PlanAccessibilite {
   id: string;
@@ -32,92 +33,80 @@ export const useAccessibilite = () => {
   const [demandesAccessibilite, setDemandesAccessibilite] = useState<DemandeAccessibilite[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const mockPlans: PlanAccessibilite[] = [
-    {
-      id: "1",
-      titre: "Plan d'accessibilité - Déficience visuelle",
-      description: "Adaptations pour les apprenants avec déficience visuelle",
-      typeHandicap: "Déficience visuelle",
-      adaptationsPedagogiques: "Support de cours en braille, descriptions audio des supports visuels",
-      adaptationsMaterielles: "Logiciel de lecture d'écran, clavier en braille",
-      adaptationsEvaluation: "Temps majoré de 30%, épreuve orale possible",
-      responsable: "Sophie Martin",
-      statut: "Validé",
-      dateCreation: new Date().toISOString(),
-      dateMiseAJour: new Date().toISOString(),
-    },
-    {
-      id: "2",
-      titre: "Plan d'accessibilité - Troubles DYS",
-      description: "Adaptations pour les troubles de l'apprentissage",
-      typeHandicap: "Troubles DYS",
-      adaptationsPedagogiques: "Police adaptée, supports simplifiés, explications répétées",
-      adaptationsMaterielles: "Logiciel d'aide à la lecture, correcteur orthographique",
-      adaptationsEvaluation: "Temps majoré de 50%, reformulation autorisée",
-      responsable: "Marie Dubois",
-      statut: "En cours",
-      dateCreation: new Date().toISOString(),
-      dateMiseAJour: new Date().toISOString(),
-    }
-  ];
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const { data: plans, error: plansError } = await supabase
+        .from('plans_accessibilite')
+        .select('*')
+        .order('dateCreation', { ascending: false });
 
-  const mockDemandes: DemandeAccessibilite[] = [
-    {
-      id: "1",
-      apprenantNom: "Jean Dupont",
-      apprenantEmail: "jean.dupont@email.com",
-      typeHandicap: "Mobilité réduite",
-      besoinsSpecifiques: "Accès en fauteuil roulant, pause supplémentaire",
-      documentsMedicaux: true,
-      statut: "En cours d'analyse",
-      dateCreation: new Date().toISOString(),
-      commentaires: "Demande urgente pour formation début janvier"
-    },
-    {
-      id: "2",
-      apprenantNom: "Alice Martin",
-      apprenantEmail: "alice.martin@email.com",
-      typeHandicap: "Déficience auditive",
-      besoinsSpecifiques: "Interprète LSF, support écrit des consignes",
-      documentsMedicaux: true,
-      statut: "Validée",
-      dateCreation: new Date().toISOString(),
+      if (plansError) throw plansError;
+
+      const { data: demandes, error: demandesError } = await supabase
+        .from('demandes_accessibilite')
+        .select('*')
+        .order('dateCreation', { ascending: false });
+
+      if (demandesError) throw demandesError;
+
+      setPlansAccessibilite((plans || []) as PlanAccessibilite[]);
+      setDemandesAccessibilite((demandes || []) as DemandeAccessibilite[]);
+    } catch (error) {
+      console.error("Erreur lors du chargement des données d'accessibilité:", error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setTimeout(() => {
-        setPlansAccessibilite(mockPlans);
-        setDemandesAccessibilite(mockDemandes);
-        setLoading(false);
-      }, 1000);
-    };
-
     fetchData();
   }, []);
 
-  const creerPlanAccessibilite = async (planData: Omit<PlanAccessibilite, "id" | "dateCreation" | "dateMiseAJour">) => {
-    const nouveauPlan: PlanAccessibilite = {
-      ...planData,
-      id: Date.now().toString(),
-      dateCreation: new Date().toISOString(),
-      dateMiseAJour: new Date().toISOString(),
-    };
-    
-    setPlansAccessibilite(prev => [nouveauPlan, ...prev]);
-    return nouveauPlan;
+  const creerPlanAccessibilite = async (
+    planData: Omit<PlanAccessibilite, 'id' | 'dateCreation' | 'dateMiseAJour'>
+  ) => {
+    try {
+      const { data, error } = await supabase
+        .from('plans_accessibilite')
+        .insert([planData])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      const nouveauPlan = data as PlanAccessibilite;
+      setPlansAccessibilite(prev => [nouveauPlan, ...prev]);
+      return nouveauPlan;
+    } catch (error) {
+      console.error('Erreur lors de la création du plan:', error);
+      throw error;
+    }
   };
 
-  const traiterDemande = async (id: string, statut: DemandeAccessibilite["statut"], commentaires?: string) => {
-    setDemandesAccessibilite(prev => 
-      prev.map(demande => 
-        demande.id === id 
-          ? { ...demande, statut, commentaires }
-          : demande
-      )
-    );
+  const traiterDemande = async (
+    id: string,
+    statut: DemandeAccessibilite['statut'],
+    commentaires?: string
+  ) => {
+    try {
+      const { data, error } = await supabase
+        .from('demandes_accessibilite')
+        .update({ statut, commentaires })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      const updated = data as DemandeAccessibilite;
+      setDemandesAccessibilite(prev =>
+        prev.map(d => (d.id === id ? updated : d))
+      );
+    } catch (error) {
+      console.error("Erreur lors du traitement de la demande:", error);
+      throw error;
+    }
   };
 
   return {
