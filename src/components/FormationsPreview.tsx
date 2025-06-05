@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -112,6 +111,7 @@ const FormationsPreview = () => {
             <DialogTitle>Rendez-vous de positionnement - {selectedFormation}</DialogTitle>
           </DialogHeader>
           <PositionnementForm
+            formationTitre={selectedFormation}
             onSubmit={handlePositionnementSubmit}
             onCancel={() => {
               setShowPositionnementForm(false);

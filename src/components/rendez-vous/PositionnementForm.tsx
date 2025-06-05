@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,12 +11,13 @@ import ExperienceObjectifsSection from "./ExperienceObjectifsSection";
 interface PositionnementFormProps {
   onSubmit: (data: any) => void;
   onCancel: () => void;
+  formationTitre?: string;
 }
 
-const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => {
+const PositionnementForm = ({ onSubmit, onCancel, formationTitre = "WordPress : concevoir et réaliser un site vitrine • webmarketing initial" }: PositionnementFormProps) => {
   const [formData, setFormData] = useState({
     // Formation sélectionnée
-    formationSelectionnee: "WordPress : concevoir et réaliser un site vitrine • webmarketing initial",
+    formationSelectionnee: formationTitre,
     // Informations du bénéficiaire
     nomBeneficiaire: "",
     prenomBeneficiaire: "",
@@ -114,14 +114,14 @@ const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => 
   return (
     <div className="max-w-4xl mx-auto p-6">
       <Card>
-        <PositionnementFormHeader />
+        <PositionnementFormHeader formationTitre={formationTitre} />
         <CardContent className="mt-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="bg-gray-50 p-4 rounded">
               <p className="text-sm text-gray-700 mb-4">
-                Ce formulaire nous aide permettra dans un premier temps d'identifier vos acquis, 
-                expériences, vos besoins de formation et sans doute certains traits. Il en 
-                ressortira un premier entretien téléphonique de positionnement pédagogique.
+                Ce formulaire nous aidera dans un premier temps à identifier vos acquis, 
+                expériences et besoins de formation. Il en ressortira un premier entretien 
+                téléphonique de positionnement pédagogique.
               </p>
             </div>
 

@@ -210,6 +210,7 @@ const Catalogue = () => {
             <DialogTitle>Rendez-vous de positionnement - {selectedFormation}</DialogTitle>
           </DialogHeader>
           <PositionnementForm
+            formationTitre={selectedFormation}
             onSubmit={handlePositionnementSubmit}
             onCancel={() => {
               setShowPositionnementForm(false);
