@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form } from "@/components/ui/form";
 import { ArrowLeft, Save } from "lucide-react";
 import { Competence, CompetenceFormData } from "@/types/competence";
 import GeneralInfoSection from "./GeneralInfoSection";
@@ -105,43 +106,45 @@ const CompetenceForm = ({ competence, onSubmit, onCancel }: CompetenceFormProps)
         ))}
       </div>
 
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>{steps[currentStep].title}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CurrentStepComponent form={form} />
-          </CardContent>
-        </Card>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>{steps[currentStep].title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CurrentStepComponent form={form} />
+            </CardContent>
+          </Card>
 
-        <div className="flex justify-between">
-          <div className="flex gap-2">
-            {currentStep > 0 && (
-              <Button type="button" variant="outline" onClick={prevStep}>
-                Précédent
+          <div className="flex justify-between">
+            <div className="flex gap-2">
+              {currentStep > 0 && (
+                <Button type="button" variant="outline" onClick={prevStep}>
+                  Précédent
+                </Button>
+              )}
+              {currentStep < steps.length - 1 && (
+                <Button type="button" onClick={nextStep}>
+                  Suivant
+                </Button>
+              )}
+            </div>
+            
+            <div className="flex gap-2">
+              <Button type="button" variant="outline" onClick={onCancel}>
+                Annuler
               </Button>
-            )}
-            {currentStep < steps.length - 1 && (
-              <Button type="button" onClick={nextStep}>
-                Suivant
-              </Button>
-            )}
+              {currentStep === steps.length - 1 && (
+                <Button type="submit">
+                  <Save className="h-4 w-4 mr-2" />
+                  {competence ? 'Mettre à jour' : 'Créer'}
+                </Button>
+              )}
+            </div>
           </div>
-          
-          <div className="flex gap-2">
-            <Button type="button" variant="outline" onClick={onCancel}>
-              Annuler
-            </Button>
-            {currentStep === steps.length - 1 && (
-              <Button type="submit">
-                <Save className="h-4 w-4 mr-2" />
-                {competence ? 'Mettre à jour' : 'Créer'}
-              </Button>
-            )}
-          </div>
-        </div>
-      </form>
+        </form>
+      </Form>
     </div>
   );
 };
