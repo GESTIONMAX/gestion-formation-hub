@@ -50,6 +50,27 @@ npm run dev
 - Click on "New codespace" to launch a new Codespace environment.
 - Edit files directly within the Codespace and commit and push your changes once you're done.
 
+## Environment variables
+
+The application uses Supabase for data storage. Two variables must be available when running the Vite dev server or building the project:
+
+```bash
+VITE_SUPABASE_URL=<your-supabase-url>
+VITE_SUPABASE_KEY=<your-supabase-key>
+```
+
+Create a `.env` file at the project root or export them in your shell.
+
+### Local development fallback
+
+If you don't have a Supabase project you can run a local instance with the [Supabase CLI](https://supabase.com/docs/guides/cli):
+
+```bash
+npx supabase start
+```
+
+The command outputs a local URL (usually `http://localhost:54321`) and anon key. Use these values for the variables above when developing locally.
+
 ## What technologies are used for this project?
 
 This project is built with:
