@@ -9,7 +9,69 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      competences: {
+        Row: {
+          action_prevue: string
+          categorie: Database["public"]["Enums"]["categorie_competence"]
+          contenu_preuve: string
+          created_at: string
+          date_creation: string
+          date_modification: string
+          description: string
+          domaine_developpement: string
+          formateur_id: string | null
+          id: string
+          lien_formation: string | null
+          niveau_actuel: number
+          nom: string
+          objectif_niveau: number
+          plateforme_formation: string | null
+          statut: Database["public"]["Enums"]["statut_competence"]
+          type_preuve: Database["public"]["Enums"]["type_preuve"]
+          updated_at: string
+        }
+        Insert: {
+          action_prevue: string
+          categorie: Database["public"]["Enums"]["categorie_competence"]
+          contenu_preuve: string
+          created_at?: string
+          date_creation?: string
+          date_modification?: string
+          description: string
+          domaine_developpement: string
+          formateur_id?: string | null
+          id?: string
+          lien_formation?: string | null
+          niveau_actuel: number
+          nom: string
+          objectif_niveau: number
+          plateforme_formation?: string | null
+          statut: Database["public"]["Enums"]["statut_competence"]
+          type_preuve: Database["public"]["Enums"]["type_preuve"]
+          updated_at?: string
+        }
+        Update: {
+          action_prevue?: string
+          categorie?: Database["public"]["Enums"]["categorie_competence"]
+          contenu_preuve?: string
+          created_at?: string
+          date_creation?: string
+          date_modification?: string
+          description?: string
+          domaine_developpement?: string
+          formateur_id?: string | null
+          id?: string
+          lien_formation?: string | null
+          niveau_actuel?: number
+          nom?: string
+          objectif_niveau?: number
+          plateforme_formation?: string | null
+          statut?: Database["public"]["Enums"]["statut_competence"]
+          type_preuve?: Database["public"]["Enums"]["type_preuve"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +80,13 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      categorie_competence:
+        | "technique"
+        | "pedagogique"
+        | "relationnelle"
+        | "organisationnelle"
+      statut_competence: "planifie" | "en-cours" | "realise" | "reporte"
+      type_preuve: "fichier" | "url"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +201,15 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      categorie_competence: [
+        "technique",
+        "pedagogique",
+        "relationnelle",
+        "organisationnelle",
+      ],
+      statut_competence: ["planifie", "en-cours", "realise", "reporte"],
+      type_preuve: ["fichier", "url"],
+    },
   },
 } as const

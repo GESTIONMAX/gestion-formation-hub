@@ -1,52 +1,46 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Search, Filter, Eye, Edit, Trash2 } from "lucide-react";
+import { Plus, Search, Filter, Eye, Edit, Trash2, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Competence, CategorieCompetence, StatutCompetence } from "@/types/competence";
+import { useCompetences } from "@/hooks/useCompetences";
 import CompetenceForm from "./CompetenceForm";
 import CompetenceDetail from "./CompetenceDetail";
 
 const CompetenceManager = () => {
-  const [competences, setCompetences] = useState<Competence[]>([]);
+  const { competences, loading, createCompetence, updateCompetence, deleteCompetence } = useCompetences();
   const [currentView, setCurrentView] = useState<'list' | 'form' | 'detail'>('list');
   const [selectedCompetence, setSelectedCompetence] = useState<Competence | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCategorie, setFilterCategorie] = useState<CategorieCompetence | "all">("all");
   const [filterStatut, setFilterStatut] = useState<StatutCompetence | "all">("all");
 
-  const handleCreateCompetence = (competenceData: Omit<Competence, "id" | "dateCreation" | "dateModification">) => {
-    const newCompetence: Competence = {
-      ...competenceData,
-      id: Date.now().toString(),
-      dateCreation: new Date(),
-      dateModification: new Date()
-    };
-    setCompetences(prev => [...prev, newCompetence]);
-    setCurrentView('list');
-  };
-
-  const handleUpdateCompetence = (competenceData: Omit<Competence, "id" | "dateCreation" | "dateModification">) => {
-    if (selectedCompetence) {
-      const updatedCompetence: Competence = {
-        ...competenceData,
-        id: selectedCompetence.id,
-        dateCreation: selectedCompetence.dateCreation,
-        dateModification: new Date()
-      };
-      setCompetences(prev => 
-        prev.map(comp => comp.id === selectedCompetence.id ? updatedCompetence : comp)
-      );
+  const handleCreateCompetence = async (competenceData: Omit<Competence, "id" | "dateCreation" | "dateModification">) => {
+    const success = await createCompetence(competenceData);
+    if (success) {
       setCurrentView('list');
-      setSelectedCompetence(null);
     }
   };
 
-  const handleDeleteCompetence = (id: string) => {
-    setCompetences(prev => prev.filter(comp => comp.id !== id));
+  const handleUpdateCompetence = async (competenceData: Omit<Competence, "id" | "dateCreation" | "dateModification">) => {
+    if (selectedCompetence) {
+      const success = await updateCompetence(selectedCompetence.id, competenceData);
+      if (success) {
+        setCurrentView('list');
+        setSelectedCompetence(null);
+      }
+    }
+  };
+
+  const handleDeleteCompetence = async (id: string) => {
+    const success = await deleteCompetence(id);
+    if (success && currentView === 'detail') {
+      setCurrentView('list');
+      setSelectedCompetence(null);
+    }
   };
 
   const getCategorieColor = (categorie: CategorieCompetence) => {
@@ -96,11 +90,7 @@ const CompetenceManager = () => {
       <CompetenceDetail
         competence={selectedCompetence}
         onEdit={() => setCurrentView('form')}
-        onDelete={() => {
-          handleDeleteCompetence(selectedCompetence.id);
-          setCurrentView('list');
-          setSelectedCompetence(null);
-        }}
+        onDelete={() => handleDeleteCompetence(selectedCompetence.id)}
         onBack={() => {
           setCurrentView('list');
           setSelectedCompetence(null);
@@ -173,69 +163,85 @@ const CompetenceManager = () => {
         </CardContent>
       </Card>
 
-      <div className="grid gap-4">
-        {filteredCompetences.length === 0 ? (
-          <Card>
-            <CardContent className="text-center py-8">
-              <p className="text-gray-500">Aucune compétence trouvée</p>
-            </CardContent>
-          </Card>
-        ) : (
-          filteredCompetences.map((competence) => (
-            <Card key={competence.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-4">
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="font-semibold text-lg">{competence.nom}</h3>
-                      <Badge className={getCategorieColor(competence.categorie)}>
-                        {competence.categorie.charAt(0).toUpperCase() + competence.categorie.slice(1)}
-                      </Badge>
-                      <Badge className={getStatutColor(competence.statut)}>
-                        {competence.statut.charAt(0).toUpperCase() + competence.statut.slice(1)}
-                      </Badge>
-                    </div>
-                    <p className="text-gray-600 mb-2">{competence.description}</p>
-                    <div className="flex items-center gap-4 text-sm text-gray-500">
-                      <span>Domaine: {competence.domaineDeveloppement}</span>
-                      <span>Niveau: {competence.niveauActuel}/{competence.objectifNiveau}</span>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        setSelectedCompetence(competence);
-                        setCurrentView('detail');
-                      }}
-                    >
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        setSelectedCompetence(competence);
-                        setCurrentView('form');
-                      }}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleDeleteCompetence(competence.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
+      {loading ? (
+        <Card>
+          <CardContent className="text-center py-8">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+            <p className="text-gray-500">Chargement des compétences...</p>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid gap-4">
+          {filteredCompetences.length === 0 ? (
+            <Card>
+              <CardContent className="text-center py-8">
+                <p className="text-gray-500">Aucune compétence trouvée</p>
+                <Button 
+                  className="mt-4" 
+                  onClick={() => setCurrentView('form')}
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Créer votre première compétence
+                </Button>
               </CardContent>
             </Card>
-          ))
-        )}
-      </div>
+          ) : (
+            filteredCompetences.map((competence) => (
+              <Card key={competence.id} className="hover:shadow-md transition-shadow">
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="font-semibold text-lg">{competence.nom}</h3>
+                        <Badge className={getCategorieColor(competence.categorie)}>
+                          {competence.categorie.charAt(0).toUpperCase() + competence.categorie.slice(1)}
+                        </Badge>
+                        <Badge className={getStatutColor(competence.statut)}>
+                          {competence.statut.charAt(0).toUpperCase() + competence.statut.slice(1)}
+                        </Badge>
+                      </div>
+                      <p className="text-gray-600 mb-2">{competence.description}</p>
+                      <div className="flex items-center gap-4 text-sm text-gray-500">
+                        <span>Domaine: {competence.domaineDeveloppement}</span>
+                        <span>Niveau: {competence.niveauActuel}/{competence.objectifNiveau}</span>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setSelectedCompetence(competence);
+                          setCurrentView('detail');
+                        }}
+                      >
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setSelectedCompetence(competence);
+                          setCurrentView('form');
+                        }}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleDeleteCompetence(competence.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 };
