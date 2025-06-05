@@ -26,6 +26,11 @@ const FormationsPreview = () => {
     }
   ];
 
+  const handlePositionnement = (formationTitre: string) => {
+    console.log(`Demande de positionnement pour: ${formationTitre}`);
+    alert(`Demande de rendez-vous de positionnement pour "${formationTitre}". Cette fonctionnalité sera bientôt disponible.`);
+  };
+
   return (
     <section className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -64,10 +69,13 @@ const FormationsPreview = () => {
                   <span className="text-2xl font-bold text-blue-600">
                     {formation.prix}
                   </span>
-                  <Button>
+                  <Button onClick={() => handlePositionnement(formation.titre)}>
                     RDV de positionnement
                   </Button>
                 </div>
+                <p className="text-xs text-gray-500 text-center mt-2">
+                  Rendez-vous obligatoire avant inscription
+                </p>
               </CardContent>
             </Card>
           ))}

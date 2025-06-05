@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Users, Award, CheckCircle } from "lucide-react";
 import Navigation from "@/components/Navigation";
+import ProcessusPedagogique from "@/components/ProcessusPedagogique";
 
 const Catalogue = () => {
   const formations = [
@@ -59,6 +60,12 @@ const Catalogue = () => {
     }
   ];
 
+  const handlePositionnement = (formationTitre: string) => {
+    // Ici vous pourrez rediriger vers le système de prise de rendez-vous
+    console.log(`Demande de positionnement pour: ${formationTitre}`);
+    alert(`Demande de rendez-vous de positionnement pour "${formationTitre}". Cette fonctionnalité sera bientôt disponible.`);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -87,9 +94,21 @@ const Catalogue = () => {
         </div>
       </section>
 
+      {/* Processus Pédagogique */}
+      <ProcessusPedagogique />
+
       {/* Formations Section */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-bold text-gray-900 mb-4">
+              Nos formations disponibles
+            </h3>
+            <p className="text-lg text-gray-600">
+              Chaque formation nécessite un rendez-vous de positionnement préalable
+            </p>
+          </div>
+          
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
             {formations.map((formation) => (
               <Card key={formation.id} className="hover:shadow-xl transition-shadow duration-300 flex flex-col">
@@ -129,13 +148,24 @@ const Catalogue = () => {
                     <p><span className="font-medium">Modalités :</span> {formation.modalites}</p>
                   </div>
 
-                  <div className="mt-auto flex justify-between items-center">
-                    <span className="text-2xl font-bold text-blue-600">
-                      {formation.prix}
-                    </span>
-                    <Button>
+                  <div className="mt-auto">
+                    <div className="flex justify-between items-center mb-4">
+                      <span className="text-2xl font-bold text-blue-600">
+                        {formation.prix}
+                      </span>
+                      <Badge variant="secondary" className="text-xs">
+                        Éligible CPF
+                      </Badge>
+                    </div>
+                    <Button 
+                      className="w-full"
+                      onClick={() => handlePositionnement(formation.titre)}
+                    >
                       RDV de positionnement
                     </Button>
+                    <p className="text-xs text-gray-500 text-center mt-2">
+                      Étape obligatoire avant inscription
+                    </p>
                   </div>
                 </CardContent>
               </Card>
