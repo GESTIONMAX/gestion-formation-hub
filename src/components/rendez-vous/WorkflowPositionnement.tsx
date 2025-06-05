@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -42,19 +41,29 @@ const WorkflowPositionnement = ({ positionnementRequest, onCancel, onComplete }:
 
     setIsProcessing(true);
     try {
+      const insertData: any = {
+        programme_personnalise_id: programmeId,
+        apprenant_nom: positionnementRequest.nom_beneficiaire,
+        apprenant_prenom: positionnementRequest.prenom_beneficiaire,
+        apprenant_email: positionnementRequest.email,
+        formation_titre: positionnementRequest.formation_selectionnee,
+        statut: 'cree'
+      };
+
+      // Ajouter les dates seulement si elles sont renseignées
+      if (dossierData.date_debut) {
+        insertData.date_debut = dossierData.date_debut;
+      }
+      if (dossierData.date_fin) {
+        insertData.date_fin = dossierData.date_fin;
+      }
+      if (dossierData.notes_formateur) {
+        insertData.notes_formateur = dossierData.notes_formateur;
+      }
+
       const { data, error } = await supabase
         .from('dossiers_formation')
-        .insert({
-          programme_personnalise_id: programmeId,
-          apprenant_nom: positionnementRequest.nom_beneficiaire,
-          apprenant_prenom: positionnementRequest.prenom_beneficiaire,
-          apprenant_email: positionnementRequest.email,
-          formation_titre: positionnementRequest.formation_selectionnee,
-          date_debut: dossierData.date_debut || null,
-          date_fin: dossierData.date_fin || null,
-          notes_formateur: dossierData.notes_formateur || null,
-          statut: 'cree'
-        })
+        .insert(insertData)
         .select()
         .single();
 
