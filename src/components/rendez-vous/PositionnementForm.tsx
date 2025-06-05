@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface PositionnementFormProps {
   onSubmit: (data: any) => void;
@@ -17,7 +17,7 @@ interface PositionnementFormProps {
 const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => {
   const [formData, setFormData] = useState({
     // Formation sélectionnée
-    formationSelectionnee: "",
+    formationSelectionnee: "WordPress : concevoir et réaliser un site vitrine • webmarketing initial",
     // Informations du bénéficiaire
     nomBeneficiaire: "",
     prenomBeneficiaire: "",
@@ -45,9 +45,10 @@ const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => 
     attestationBesoin: false,
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validation basique
@@ -60,15 +61,52 @@ const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => 
       return;
     }
 
-    // Ici on pourrait envoyer les données vers une API
-    console.log("Données du formulaire de positionnement:", formData);
-    
-    toast({
-      title: "Demande envoyée",
-      description: "Votre demande de rendez-vous de positionnement a été envoyée avec succès.",
-    });
-    
-    onSubmit(formData);
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase
+        .from('positionnement_requests')
+        .insert([{
+          formation_selectionnee: formData.formationSelectionnee,
+          nom_beneficiaire: formData.nomBeneficiaire,
+          prenom_beneficiaire: formData.prenomBeneficiaire,
+          date_naissance: formData.dateNaissance || null,
+          sexe: formData.sexe,
+          situation_handicap: formData.situationHandicap,
+          email: formData.email,
+          telephone: formData.telephone,
+          adresse: formData.adresse,
+          code_postal: formData.codePostal,
+          ville: formData.ville,
+          statut: formData.statut,
+          experience_wordpress: formData.experienceWordPress,
+          objectifs_principaux: formData.objectifsPrincipaux,
+          niveau_maitrise: formData.niveauMaitrise,
+          programme_formation: formData.programmeFormation,
+          attestation_besoin: formData.attestationBesoin,
+          status: 'en_attente'
+        }]);
+
+      if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "Demande envoyée",
+        description: "Votre demande de rendez-vous de positionnement a été envoyée avec succès. Nous vous recontacterons rapidement.",
+      });
+      
+      onSubmit(formData);
+    } catch (error) {
+      console.error('Erreur lors de l\'envoi:', error);
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de l'envoi de votre demande. Veuillez réessayer.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (field: string, value: string | boolean) => {
@@ -147,7 +185,7 @@ const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => 
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="situationHandicap">Situation handicap (selon l'...</Label>
+                  <Label htmlFor="situationHandicap">Situation handicap (selon l'...)</Label>
                   <Input
                     id="situationHandicap"
                     value={formData.situationHandicap}
@@ -313,10 +351,14 @@ const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => 
 
             {/* Boutons */}
             <div className="flex gap-4 pt-6">
-              <Button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-700">
-                Envoyer ma demande
+              <Button 
+                type="submit" 
+                className="flex-1 bg-blue-600 hover:bg-blue-700"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Envoi en cours..." : "Envoyer ma demande"}
               </Button>
-              <Button type="button" variant="outline" onClick={onCancel}>
+              <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
                 Annuler
               </Button>
             </div>
