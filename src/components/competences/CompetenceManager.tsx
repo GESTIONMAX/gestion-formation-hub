@@ -15,8 +15,8 @@ const CompetenceManager = () => {
   const [currentView, setCurrentView] = useState<'list' | 'form' | 'detail'>('list');
   const [selectedCompetence, setSelectedCompetence] = useState<Competence | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterCategorie, setFilterCategorie] = useState<CategorieCompetence | "">("");
-  const [filterStatut, setFilterStatut] = useState<StatutCompetence | "">("");
+  const [filterCategorie, setFilterCategorie] = useState<CategorieCompetence | "all">("all");
+  const [filterStatut, setFilterStatut] = useState<StatutCompetence | "all">("all");
 
   const handleCreateCompetence = (competenceData: Omit<Competence, "id" | "dateCreation" | "dateModification">) => {
     const newCompetence: Competence = {
@@ -72,8 +72,8 @@ const CompetenceManager = () => {
   const filteredCompetences = competences.filter(competence => {
     const matchesSearch = competence.nom.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          competence.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategorie = !filterCategorie || competence.categorie === filterCategorie;
-    const matchesStatut = !filterStatut || competence.statut === filterStatut;
+    const matchesCategorie = filterCategorie === "all" || competence.categorie === filterCategorie;
+    const matchesStatut = filterStatut === "all" || competence.statut === filterStatut;
     
     return matchesSearch && matchesCategorie && matchesStatut;
   });
@@ -141,12 +141,12 @@ const CompetenceManager = () => {
             </div>
             <div>
               <label className="text-sm font-medium mb-2 block">Catégorie</label>
-              <Select value={filterCategorie} onValueChange={(value) => setFilterCategorie(value as CategorieCompetence | "")}>
+              <Select value={filterCategorie} onValueChange={(value) => setFilterCategorie(value as CategorieCompetence | "all")}>
                 <SelectTrigger>
                   <SelectValue placeholder="Toutes les catégories" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Toutes les catégories</SelectItem>
+                  <SelectItem value="all">Toutes les catégories</SelectItem>
                   <SelectItem value="technique">Technique</SelectItem>
                   <SelectItem value="pedagogique">Pédagogique</SelectItem>
                   <SelectItem value="relationnelle">Relationnelle</SelectItem>
@@ -156,12 +156,12 @@ const CompetenceManager = () => {
             </div>
             <div>
               <label className="text-sm font-medium mb-2 block">Statut</label>
-              <Select value={filterStatut} onValueChange={(value) => setFilterStatut(value as StatutCompetence | "")}>
+              <Select value={filterStatut} onValueChange={(value) => setFilterStatut(value as StatutCompetence | "all")}>
                 <SelectTrigger>
                   <SelectValue placeholder="Tous les statuts" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Tous les statuts</SelectItem>
+                  <SelectItem value="all">Tous les statuts</SelectItem>
                   <SelectItem value="planifie">Planifié</SelectItem>
                   <SelectItem value="en-cours">En cours</SelectItem>
                   <SelectItem value="realise">Réalisé</SelectItem>
