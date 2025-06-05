@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -5,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -43,8 +43,6 @@ const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => 
     niveauMaitrise: "non",
     // Programme de formation
     programmeFormation: "",
-    // Documents
-    attestationBesoin: false,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -87,7 +85,6 @@ const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => 
           competences_recherchees: formData.competencesRecherchees,
           niveau_maitrise: formData.niveauMaitrise,
           programme_formation: formData.programmeFormation,
-          attestation_besoin: formData.attestationBesoin,
           status: 'en_attente'
         }]);
 
@@ -354,21 +351,6 @@ const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => 
               <p className="text-sm text-blue-800">
                 Le programme de la formation sera personnalisé suite à l'entretien de positionnement.
               </p>
-            </div>
-
-            {/* Documents */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900">Documents importants</h3>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="attestationBesoin"
-                  checked={formData.attestationBesoin}
-                  onCheckedChange={(checked) => handleChange("attestationBesoin", checked as boolean)}
-                />
-                <Label htmlFor="attestationBesoin" className="text-sm">
-                  Attestation de besoins spécifiques
-                </Label>
-              </div>
             </div>
 
             {/* Boutons */}
