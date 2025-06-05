@@ -36,19 +36,12 @@ export const useReclamations = () => {
   const fetchReclamations = async () => {
     try {
       setLoading(true);
-      // Temporarily use 'any' to bypass TypeScript errors until table is created
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('reclamations')
         .select('*')
         .order('created_at', { ascending: false });
 
       if (error) {
-        // Check if table doesn't exist
-        if (error.code === '42P01') {
-          console.log('Table reclamations not created yet');
-          setReclamations([]);
-          return;
-        }
         throw error;
       }
       setReclamations(data || []);
@@ -56,7 +49,7 @@ export const useReclamations = () => {
       console.error('Erreur lors du chargement des réclamations:', error);
       toast({
         title: "Erreur",
-        description: "La table réclamations n'existe pas encore. Veuillez d'abord exécuter le script SQL.",
+        description: "Impossible de charger les réclamations",
         variant: "destructive",
       });
     } finally {
@@ -66,8 +59,7 @@ export const useReclamations = () => {
 
   const createReclamation = async (data: CreateReclamationData) => {
     try {
-      // Temporarily use 'any' to bypass TypeScript errors until table is created
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('reclamations')
         .insert([{
           ...data,
@@ -75,14 +67,6 @@ export const useReclamations = () => {
         }]);
 
       if (error) {
-        if (error.code === '42P01') {
-          toast({
-            title: "Erreur",
-            description: "La table réclamations n'existe pas encore. Veuillez d'abord exécuter le script SQL.",
-            variant: "destructive",
-          });
-          return false;
-        }
         throw error;
       }
 
@@ -106,21 +90,12 @@ export const useReclamations = () => {
 
   const updateReclamation = async (id: string, updates: Partial<Reclamation>) => {
     try {
-      // Temporarily use 'any' to bypass TypeScript errors until table is created
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('reclamations')
         .update(updates)
         .eq('id', id);
 
       if (error) {
-        if (error.code === '42P01') {
-          toast({
-            title: "Erreur",
-            description: "La table réclamations n'existe pas encore. Veuillez d'abord exécuter le script SQL.",
-            variant: "destructive",
-          });
-          return false;
-        }
         throw error;
       }
 

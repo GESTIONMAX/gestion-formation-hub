@@ -72,6 +72,54 @@ export type Database = {
         }
         Relationships: []
       }
+      reclamations: {
+        Row: {
+          assignee_id: string | null
+          created_at: string
+          date_resolution: string | null
+          email: string
+          id: string
+          message: string
+          nom: string
+          notes_internes: string | null
+          priorite: Database["public"]["Enums"]["priorite_reclamation"]
+          statut: Database["public"]["Enums"]["statut_reclamation"]
+          sujet: string
+          telephone: string | null
+          updated_at: string
+        }
+        Insert: {
+          assignee_id?: string | null
+          created_at?: string
+          date_resolution?: string | null
+          email: string
+          id?: string
+          message: string
+          nom: string
+          notes_internes?: string | null
+          priorite?: Database["public"]["Enums"]["priorite_reclamation"]
+          statut?: Database["public"]["Enums"]["statut_reclamation"]
+          sujet: string
+          telephone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          assignee_id?: string | null
+          created_at?: string
+          date_resolution?: string | null
+          email?: string
+          id?: string
+          message?: string
+          nom?: string
+          notes_internes?: string | null
+          priorite?: Database["public"]["Enums"]["priorite_reclamation"]
+          statut?: Database["public"]["Enums"]["statut_reclamation"]
+          sujet?: string
+          telephone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -85,7 +133,9 @@ export type Database = {
         | "pedagogique"
         | "relationnelle"
         | "organisationnelle"
+      priorite_reclamation: "basse" | "normale" | "haute" | "urgente"
       statut_competence: "planifie" | "en-cours" | "realise" | "reporte"
+      statut_reclamation: "nouvelle" | "en_cours" | "resolue" | "fermee"
       type_preuve: "fichier" | "url"
     }
     CompositeTypes: {
@@ -208,7 +258,9 @@ export const Constants = {
         "relationnelle",
         "organisationnelle",
       ],
+      priorite_reclamation: ["basse", "normale", "haute", "urgente"],
       statut_competence: ["planifie", "en-cours", "realise", "reporte"],
+      statut_reclamation: ["nouvelle", "en_cours", "resolue", "fermee"],
       type_preuve: ["fichier", "url"],
     },
   },
