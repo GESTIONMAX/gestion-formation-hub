@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Download, Users, Clock, Calendar, GitBranch, FileText } from "lucide-react";
+import { ArrowLeft, FileText, Users, Clock, Calendar, GitBranch, Euro, CreditCard, Accessibility, AlertTriangle } from "lucide-react";
 import { generateFormationPDF } from "@/utils/pdfGenerator";
 
 interface FormationDetailProps {
@@ -24,6 +24,59 @@ const FormationDetail = ({ formation, onBack }: FormationDetailProps) => {
   const handleGeneratePDF = () => {
     generateFormationPDF(formation);
   };
+
+  const mentionsLegales = [
+    {
+      title: "Prérequis",
+      content: formation.prerequis,
+      icon: Users,
+    },
+    {
+      title: "Public concerné",
+      content: formation.publicConcerne,
+      icon: Users,
+    },
+    {
+      title: "Durée et horaires de la formation",
+      content: formation.dureeHoraires,
+      icon: Clock,
+    },
+    {
+      title: "Modalités, délais moyens d'accès",
+      content: formation.modalitesAcces,
+      icon: Calendar,
+    },
+    {
+      title: "Tarif de la formation",
+      content: formation.tarif,
+      icon: Euro,
+    },
+    {
+      title: "Modalités de règlement",
+      content: formation.modalitesReglement,
+      icon: CreditCard,
+    },
+    {
+      title: "Accessibilité handicapée",
+      content: formation.accessibiliteHandicapee,
+      icon: Accessibility,
+    },
+    {
+      title: "Modalités d'évaluation",
+      content: formation.modalitesEvaluation,
+      icon: FileText,
+    },
+    {
+      title: "Sanction de la formation",
+      content: formation.sanctionFormation,
+      icon: FileText,
+    },
+    {
+      title: "Cessation anticipée ou abandon",
+      content: formation.cessationAbandon,
+      icon: AlertTriangle,
+    },
+  ];
 
   return (
     <div className="space-y-6">
@@ -95,6 +148,31 @@ const FormationDetail = ({ formation, onBack }: FormationDetailProps) => {
               </div>
             </CardContent>
           </Card>
+
+          {/* Section Mentions légales */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5 text-blue-600" />
+                Mentions légales - Conformité Qualiopi
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {mentionsLegales.map((mention, index) => (
+                  <div key={index} className="border rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <mention.icon className="h-4 w-4 text-blue-600" />
+                      <h4 className="font-semibold text-sm">{mention.title}</h4>
+                    </div>
+                    <p className="text-sm text-gray-700 leading-relaxed">
+                      {mention.content}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="space-y-6">
@@ -144,7 +222,7 @@ const FormationDetail = ({ formation, onBack }: FormationDetailProps) => {
               </CardHeader>
               <CardContent>
                 <Button variant="outline" className="flex items-center gap-2">
-                  <Download className="h-4 w-4" />
+                  <FileText className="h-4 w-4" />
                   Télécharger le programme PDF
                 </Button>
               </CardContent>

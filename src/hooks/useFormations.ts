@@ -16,6 +16,17 @@ interface Formation {
   dateCreation: string;
   dateModification: string;
   createdAt: string;
+  // Informations légales
+  prerequis: string;
+  publicConcerne: string;
+  dureeHoraires: string;
+  modalitesAcces: string;
+  tarif: string;
+  modalitesReglement: string;
+  accessibiliteHandicapee: string;
+  modalitesEvaluation: string;
+  sanctionFormation: string;
+  cessationAbandon: string;
 }
 
 export const useFormations = () => {
@@ -38,6 +49,17 @@ export const useFormations = () => {
       dateCreation: "2024-01-15T09:00:00.000Z",
       dateModification: "2024-03-10T14:30:00.000Z",
       createdAt: "2024-01-15T09:00:00.000Z",
+      // Informations légales
+      prerequis: "Maîtriser son environnement et les fonctions de base pour utiliser un ordinateur.",
+      publicConcerne: "Artisans, commerçants ou professions libérales.",
+      dureeHoraires: "14 heures ou 2 jours (9h à 13h et de 14h à 17h)",
+      modalitesAcces: "À réception de votre accord de prise en charge pour les professionnels.",
+      tarif: "980€ Nets de taxes Art-293 du CGI",
+      modalitesReglement: "Chèque ou virement à réception de facture",
+      accessibiliteHandicapee: "Démarche complète : entretien téléphonique, évaluation des besoins, mise en œuvre d'adaptations",
+      modalitesEvaluation: "Quiz via EVALBOX, grille d'analyse des compétences, travaux pratiques",
+      sanctionFormation: "Un certificat de réalisation de formation + feuille d'émargement",
+      cessationAbandon: "Clause claire : non-facturation si abandon avant le début, facturation au prorata en cours de formation",
     },
     {
       id: "2",
@@ -52,6 +74,17 @@ export const useFormations = () => {
       dateCreation: "2024-02-01T10:00:00.000Z",
       dateModification: "2024-02-01T10:00:00.000Z",
       createdAt: "2024-02-01T10:00:00.000Z",
+      // Informations légales
+      prerequis: "Maîtriser son environnement et les fonctions de base pour utiliser un ordinateur. Connaissances HTML/CSS/PHP requises.",
+      publicConcerne: "Artisans, commerçants ou professions libérales avec expérience web.",
+      dureeHoraires: "35 heures ou 5 jours (9h à 13h et de 14h à 17h)",
+      modalitesAcces: "À réception de votre accord de prise en charge pour les professionnels.",
+      tarif: "1 680€ Nets de taxes Art-293 du CGI",
+      modalitesReglement: "Chèque ou virement à réception de facture",
+      accessibiliteHandicapee: "Démarche complète : entretien téléphonique, évaluation des besoins, mise en œuvre d'adaptations",
+      modalitesEvaluation: "Quiz via EVALBOX, grille d'analyse des compétences, travaux pratiques",
+      sanctionFormation: "Un certificat de réalisation de formation + feuille d'émargement",
+      cessationAbandon: "Clause claire : non-facturation si abandon avant le début, facturation au prorata en cours de formation",
     }
   ];
 

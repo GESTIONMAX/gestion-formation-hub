@@ -12,6 +12,17 @@ interface Formation {
   version: number;
   dateCreation: string;
   dateModification: string;
+  // Informations légales
+  prerequis: string;
+  publicConcerne: string;
+  dureeHoraires: string;
+  modalitesAcces: string;
+  tarif: string;
+  modalitesReglement: string;
+  accessibiliteHandicapee: string;
+  modalitesEvaluation: string;
+  sanctionFormation: string;
+  cessationAbandon: string;
 }
 
 export const generateFormationPDF = (formation: Formation) => {
@@ -27,6 +38,14 @@ export const generateFormationPDF = (formation: Formation) => {
     const lines = doc.splitTextToSize(text, maxWidth);
     doc.text(lines, x, y);
     return y + (lines.length * fontSize * 0.35);
+  };
+
+  // Helper function to check if we need a new page
+  const checkNewPage = () => {
+    if (yPosition > pageHeight - 60) {
+      doc.addPage();
+      yPosition = margin;
+    }
   };
 
   // Header
@@ -61,11 +80,7 @@ export const generateFormationPDF = (formation: Formation) => {
   yPosition = addWrappedText(formation.description, margin, yPosition, pageWidth - 2 * margin, 11);
   yPosition += 10;
 
-  // Check if we need a new page
-  if (yPosition > pageHeight - 60) {
-    doc.addPage();
-    yPosition = margin;
-  }
+  checkNewPage();
 
   // Public cible
   doc.setFontSize(14);
@@ -77,11 +92,7 @@ export const generateFormationPDF = (formation: Formation) => {
   yPosition = addWrappedText(formation.public, margin, yPosition, pageWidth - 2 * margin, 11);
   yPosition += 10;
 
-  // Check if we need a new page
-  if (yPosition > pageHeight - 60) {
-    doc.addPage();
-    yPosition = margin;
-  }
+  checkNewPage();
 
   // Objectifs
   doc.setFontSize(14);
@@ -93,11 +104,7 @@ export const generateFormationPDF = (formation: Formation) => {
   yPosition = addWrappedText(formation.objectifs, margin, yPosition, pageWidth - 2 * margin, 11);
   yPosition += 10;
 
-  // Check if we need a new page
-  if (yPosition > pageHeight - 60) {
-    doc.addPage();
-    yPosition = margin;
-  }
+  checkNewPage();
 
   // Programme
   doc.setFontSize(14);
@@ -107,6 +114,124 @@ export const generateFormationPDF = (formation: Formation) => {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(11);
   yPosition = addWrappedText(formation.programme, margin, yPosition, pageWidth - 2 * margin, 11);
+  yPosition += 15;
+
+  checkNewPage();
+
+  // SECTION INFORMATIONS LÉGALES
+  doc.setFontSize(16);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Informations légales et conformité Qualiopi', margin, yPosition);
+  yPosition += 15;
+
+  // Prérequis
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Prérequis', margin, yPosition);
+  yPosition += 6;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  yPosition = addWrappedText(formation.prerequis, margin, yPosition, pageWidth - 2 * margin, 10);
+  yPosition += 8;
+
+  checkNewPage();
+
+  // Public concerné
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Public concerné', margin, yPosition);
+  yPosition += 6;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  yPosition = addWrappedText(formation.publicConcerne, margin, yPosition, pageWidth - 2 * margin, 10);
+  yPosition += 8;
+
+  // Durée et horaires
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Durée et horaires de la formation', margin, yPosition);
+  yPosition += 6;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  yPosition = addWrappedText(formation.dureeHoraires, margin, yPosition, pageWidth - 2 * margin, 10);
+  yPosition += 8;
+
+  checkNewPage();
+
+  // Modalités d'accès
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Modalités, délais moyens d\'accès', margin, yPosition);
+  yPosition += 6;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  yPosition = addWrappedText(formation.modalitesAcces, margin, yPosition, pageWidth - 2 * margin, 10);
+  yPosition += 8;
+
+  // Tarif
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Tarif de la formation', margin, yPosition);
+  yPosition += 6;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  yPosition = addWrappedText(formation.tarif, margin, yPosition, pageWidth - 2 * margin, 10);
+  yPosition += 8;
+
+  checkNewPage();
+
+  // Modalités de règlement
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Modalités de règlement', margin, yPosition);
+  yPosition += 6;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  yPosition = addWrappedText(formation.modalitesReglement, margin, yPosition, pageWidth - 2 * margin, 10);
+  yPosition += 8;
+
+  // Accessibilité handicapée
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Accessibilité handicapée', margin, yPosition);
+  yPosition += 6;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  yPosition = addWrappedText(formation.accessibiliteHandicapee, margin, yPosition, pageWidth - 2 * margin, 10);
+  yPosition += 8;
+
+  checkNewPage();
+
+  // Modalités d'évaluation
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Modalités d\'évaluation', margin, yPosition);
+  yPosition += 6;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  yPosition = addWrappedText(formation.modalitesEvaluation, margin, yPosition, pageWidth - 2 * margin, 10);
+  yPosition += 8;
+
+  // Sanction de la formation
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Sanction de la formation', margin, yPosition);
+  yPosition += 6;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  yPosition = addWrappedText(formation.sanctionFormation, margin, yPosition, pageWidth - 2 * margin, 10);
+  yPosition += 8;
+
+  checkNewPage();
+
+  // Cessation anticipée ou abandon
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Cessation anticipée ou abandon', margin, yPosition);
+  yPosition += 6;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  yPosition = addWrappedText(formation.cessationAbandon, margin, yPosition, pageWidth - 2 * margin, 10);
 
   // Footer
   const totalPages = doc.getNumberOfPages();
