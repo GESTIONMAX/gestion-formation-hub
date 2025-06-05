@@ -73,7 +73,8 @@ export const useActionsCorrectives = () => {
       if (error) {
         throw error;
       }
-      setActionsCorrectives(data || []);
+      // Asserter le type correct pour éviter les erreurs TypeScript
+      setActionsCorrectives((data || []) as ActionCorrective[]);
     } catch (error) {
       console.error('Erreur lors du chargement des actions correctives:', error);
       toast({
