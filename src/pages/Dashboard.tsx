@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Users, BookOpen, Calendar, FileCheck, Accessibility, Search, MessageSquareWarning } from "lucide-react";
+import { Users, BookOpen, Calendar, FileCheck, Accessibility, Search, MessageSquareWarning, ClipboardCheck } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import FormationsList from "@/components/formations/FormationsList";
 import ApprenantsList from "@/components/apprenants/ApprenantsList";
@@ -13,6 +13,7 @@ import AccessibiliteManager from "@/components/accessibilite/AccessibiliteManage
 import VeilleManager from "@/components/veille/VeilleManager";
 import CompetenceManager from "@/components/competences/CompetenceManager";
 import ReclamationsList from "@/components/reclamations/ReclamationsList";
+import ActionsCorrectivesList from "@/components/actions-correctives/ActionsCorrectivesList";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("formations");
@@ -43,7 +44,7 @@ const Dashboard = () => {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-8">
+          <TabsList className="grid w-full grid-cols-9">
             <TabsTrigger value="formations" className="flex items-center gap-2">
               <BookOpen className="h-4 w-4" />
               Formations
@@ -63,6 +64,10 @@ const Dashboard = () => {
             <TabsTrigger value="reclamations" className="flex items-center gap-2">
               <MessageSquareWarning className="h-4 w-4" />
               Réclamations
+            </TabsTrigger>
+            <TabsTrigger value="actions-correctives" className="flex items-center gap-2">
+              <ClipboardCheck className="h-4 w-4" />
+              Actions Correctives
             </TabsTrigger>
             <TabsTrigger value="veille" className="flex items-center gap-2">
               <Search className="h-4 w-4" />
@@ -96,6 +101,10 @@ const Dashboard = () => {
 
           <TabsContent value="reclamations">
             <ReclamationsList />
+          </TabsContent>
+
+          <TabsContent value="actions-correctives">
+            <ActionsCorrectivesList />
           </TabsContent>
 
           <TabsContent value="veille">

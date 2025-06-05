@@ -9,6 +9,63 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      actions_correctives: {
+        Row: {
+          avancement: number
+          created_at: string
+          date_echeance: string | null
+          description: string
+          id: string
+          indicateur_efficacite: string | null
+          origine_date: string | null
+          origine_ref: string | null
+          origine_resume: string | null
+          origine_type: string
+          priorite: string
+          responsable_email: string | null
+          responsable_nom: string | null
+          statut: string
+          titre: string
+          updated_at: string
+        }
+        Insert: {
+          avancement?: number
+          created_at?: string
+          date_echeance?: string | null
+          description: string
+          id?: string
+          indicateur_efficacite?: string | null
+          origine_date?: string | null
+          origine_ref?: string | null
+          origine_resume?: string | null
+          origine_type: string
+          priorite?: string
+          responsable_email?: string | null
+          responsable_nom?: string | null
+          statut?: string
+          titre: string
+          updated_at?: string
+        }
+        Update: {
+          avancement?: number
+          created_at?: string
+          date_echeance?: string | null
+          description?: string
+          id?: string
+          indicateur_efficacite?: string | null
+          origine_date?: string | null
+          origine_ref?: string | null
+          origine_resume?: string | null
+          origine_type?: string
+          priorite?: string
+          responsable_email?: string | null
+          responsable_nom?: string | null
+          statut?: string
+          titre?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       competences: {
         Row: {
           action_prevue: string
@@ -71,6 +128,85 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      documents_actions_correctives: {
+        Row: {
+          action_corrective_id: string
+          auteur: string
+          created_at: string
+          date_document: string
+          id: string
+          nom: string
+          type: string
+          url: string | null
+        }
+        Insert: {
+          action_corrective_id: string
+          auteur: string
+          created_at?: string
+          date_document?: string
+          id?: string
+          nom: string
+          type: string
+          url?: string | null
+        }
+        Update: {
+          action_corrective_id?: string
+          auteur?: string
+          created_at?: string
+          date_document?: string
+          id?: string
+          nom?: string
+          type?: string
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documents_actions_correctives_action_corrective_id_fkey"
+            columns: ["action_corrective_id"]
+            isOneToOne: false
+            referencedRelation: "actions_correctives"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      historique_actions_correctives: {
+        Row: {
+          action: string
+          action_corrective_id: string
+          commentaire: string | null
+          created_at: string
+          date_action: string
+          id: string
+          utilisateur: string
+        }
+        Insert: {
+          action: string
+          action_corrective_id: string
+          commentaire?: string | null
+          created_at?: string
+          date_action?: string
+          id?: string
+          utilisateur: string
+        }
+        Update: {
+          action?: string
+          action_corrective_id?: string
+          commentaire?: string | null
+          created_at?: string
+          date_action?: string
+          id?: string
+          utilisateur?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "historique_actions_correctives_action_corrective_id_fkey"
+            columns: ["action_corrective_id"]
+            isOneToOne: false
+            referencedRelation: "actions_correctives"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       reclamations: {
         Row: {

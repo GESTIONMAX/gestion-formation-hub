@@ -1,6 +1,6 @@
-
 import { Competence } from "@/types/competence";
 import { Reclamation } from "@/hooks/useReclamations";
+import { ActionCorrective } from "@/hooks/useActionsCorrectives";
 
 export const exportCompetencesToCSV = (competences: Competence[]) => {
   const headers = [
@@ -106,6 +106,62 @@ export const exportReclamationsToCSV = (reclamations: Reclamation[]) => {
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
     link.setAttribute('download', `reclamations_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+};
+
+export const exportActionsCorrectivesToCSV = (actionsCorrectives: ActionCorrective[]) => {
+  const headers = [
+    'ID',
+    'Titre',
+    'Description',
+    'Statut',
+    'Priorité',
+    'Origine Type',
+    'Origine Référence',
+    'Origine Date',
+    'Origine Résumé',
+    'Avancement (%)',
+    'Responsable Nom',
+    'Responsable Email',
+    'Date Échéance',
+    'Indicateur Efficacité',
+    'Date Création',
+    'Date Modification'
+  ];
+
+  const csvContent = [
+    headers.join(','),
+    ...actionsCorrectives.map(action => [
+      `"${action.id.substring(0, 8)}"`,
+      `"${action.titre}"`,
+      `"${action.description.replace(/"/g, '""')}"`,
+      `"${action.statut}"`,
+      `"${action.priorite}"`,
+      `"${action.origine_type}"`,
+      `"${action.origine_ref || ''}"`,
+      `"${action.origine_date ? new Date(action.origine_date).toLocaleDateString('fr-FR') : ''}"`,
+      `"${(action.origine_resume || '').replace(/"/g, '""')}"`,
+      action.avancement,
+      `"${action.responsable_nom || ''}"`,
+      `"${action.responsable_email || ''}"`,
+      `"${action.date_echeance ? new Date(action.date_echeance).toLocaleDateString('fr-FR') : ''}"`,
+      `"${(action.indicateur_efficacite || '').replace(/"/g, '""')}"`,
+      `"${new Date(action.created_at).toLocaleDateString('fr-FR')}"`,
+      `"${new Date(action.updated_at).toLocaleDateString('fr-FR')}"`
+    ].join(','))
+  ].join('\n');
+
+  const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  
+  if (link.download !== undefined) {
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `actions_correctives_${new Date().toISOString().split('T')[0]}.csv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
