@@ -208,6 +208,78 @@ export type Database = {
           },
         ]
       }
+      positionnement_requests: {
+        Row: {
+          adresse: string | null
+          attestation_besoin: boolean | null
+          code_postal: string | null
+          created_at: string
+          date_naissance: string | null
+          email: string
+          experience_wordpress: string | null
+          formation_selectionnee: string | null
+          id: string
+          niveau_maitrise: string | null
+          nom_beneficiaire: string
+          objectifs_principaux: string | null
+          prenom_beneficiaire: string
+          programme_formation: string | null
+          sexe: string | null
+          situation_handicap: string | null
+          status: string | null
+          statut: string | null
+          telephone: string
+          updated_at: string
+          ville: string | null
+        }
+        Insert: {
+          adresse?: string | null
+          attestation_besoin?: boolean | null
+          code_postal?: string | null
+          created_at?: string
+          date_naissance?: string | null
+          email: string
+          experience_wordpress?: string | null
+          formation_selectionnee?: string | null
+          id?: string
+          niveau_maitrise?: string | null
+          nom_beneficiaire: string
+          objectifs_principaux?: string | null
+          prenom_beneficiaire: string
+          programme_formation?: string | null
+          sexe?: string | null
+          situation_handicap?: string | null
+          status?: string | null
+          statut?: string | null
+          telephone: string
+          updated_at?: string
+          ville?: string | null
+        }
+        Update: {
+          adresse?: string | null
+          attestation_besoin?: boolean | null
+          code_postal?: string | null
+          created_at?: string
+          date_naissance?: string | null
+          email?: string
+          experience_wordpress?: string | null
+          formation_selectionnee?: string | null
+          id?: string
+          niveau_maitrise?: string | null
+          nom_beneficiaire?: string
+          objectifs_principaux?: string | null
+          prenom_beneficiaire?: string
+          programme_formation?: string | null
+          sexe?: string | null
+          situation_handicap?: string | null
+          status?: string | null
+          statut?: string | null
+          telephone?: string
+          updated_at?: string
+          ville?: string | null
+        }
+        Relationships: []
+      }
       reclamations: {
         Row: {
           assignee_id: string | null

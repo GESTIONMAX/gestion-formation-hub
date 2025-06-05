@@ -32,7 +32,8 @@ const RendezVousList = () => {
 
   const fetchPositionnementRequests = async () => {
     try {
-      const { data, error } = await supabase
+      // Utilisation d'une requête directe pour contourner le problème de types
+      const { data, error } = await (supabase as any)
         .from('positionnement_requests')
         .select('*')
         .order('created_at', { ascending: false });
@@ -56,7 +57,8 @@ const RendezVousList = () => {
 
   const updateRequestStatus = async (id: string, newStatus: string) => {
     try {
-      const { error } = await supabase
+      // Utilisation d'une requête directe pour contourner le problème de types
+      const { error } = await (supabase as any)
         .from('positionnement_requests')
         .update({ status: newStatus })
         .eq('id', id);

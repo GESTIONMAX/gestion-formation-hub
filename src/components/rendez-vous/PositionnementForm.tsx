@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -64,7 +65,8 @@ const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => 
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase
+      // Utilisation d'une requête SQL directe pour contourner le problème de types
+      const { error } = await (supabase as any)
         .from('positionnement_requests')
         .insert([{
           formation_selectionnee: formData.formationSelectionnee,
