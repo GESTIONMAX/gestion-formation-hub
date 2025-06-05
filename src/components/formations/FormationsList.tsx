@@ -3,12 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, Edit, Trash2, Eye, Clock, Users, BookOpen, Info, GitBranch, Calendar } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, Clock, Users, BookOpen, Info, GitBranch, Calendar, Download } from "lucide-react";
 import { useFormations } from "@/hooks/useFormations";
 import { useToast } from "@/hooks/use-toast";
 import FormationForm from "./FormationForm";
 import FormationDetail from "./FormationDetail";
 import MentionsLegales from "./MentionsLegales";
+import { generateFormationPDF } from "@/utils/pdfGenerator";
 
 const FormationsList = () => {
   const { formations, loading, createFormation, updateFormation, deleteFormation } = useFormations();
@@ -75,6 +76,10 @@ const FormationsList = () => {
         variant: "destructive",
       });
     }
+  };
+
+  const handleGeneratePDF = (formation: any) => {
+    generateFormationPDF(formation);
   };
 
   const handleViewDetail = (formation: any) => {
@@ -201,6 +206,15 @@ const FormationsList = () => {
                         onClick={() => handleDelete(formation.id)}
                       >
                         <Trash2 className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleGeneratePDF(formation)}
+                        className="flex items-center gap-1"
+                      >
+                        <Download className="h-4 w-4" />
+                        PDF
                       </Button>
                     </div>
                   </CardContent>

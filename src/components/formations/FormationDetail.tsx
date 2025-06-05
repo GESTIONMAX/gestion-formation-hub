@@ -2,7 +2,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Download, Users, Clock, Calendar, GitBranch } from "lucide-react";
+import { ArrowLeft, Download, Users, Clock, Calendar, GitBranch, FileText } from "lucide-react";
+import { generateFormationPDF } from "@/utils/pdfGenerator";
 
 interface FormationDetailProps {
   formation: any;
@@ -18,6 +19,10 @@ const FormationDetail = ({ formation, onBack }: FormationDetailProps) => {
       hour: '2-digit',
       minute: '2-digit'
     });
+  };
+
+  const handleGeneratePDF = () => {
+    generateFormationPDF(formation);
   };
 
   return (
@@ -43,6 +48,10 @@ const FormationDetail = ({ formation, onBack }: FormationDetailProps) => {
             </Badge>
           </div>
         </div>
+        <Button onClick={handleGeneratePDF} className="flex items-center gap-2">
+          <FileText className="h-4 w-4" />
+          Générer PDF
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
