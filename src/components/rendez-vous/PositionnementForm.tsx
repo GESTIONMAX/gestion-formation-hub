@@ -1,5 +1,3 @@
-
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -67,21 +65,20 @@ const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => 
     try {
       // Utilisation de la fonction RPC pour contourner les politiques RLS
       const { error } = await supabase.rpc('create_positionnement_request', {
-        p_formation_selectionnee: formData.formationSelectionnee,
         p_nom_beneficiaire: formData.nomBeneficiaire,
         p_prenom_beneficiaire: formData.prenomBeneficiaire,
+        p_email: formData.email,
+        p_telephone: formData.telephone,
+        p_formation_selectionnee: formData.formationSelectionnee,
         p_date_naissance: formData.dateNaissance || null,
         p_sexe: formData.sexe,
         p_situation_handicap: formData.situationHandicap,
-        p_email: formData.email,
-        p_telephone: formData.telephone,
         p_adresse: formData.adresse,
         p_code_postal: formData.codePostal,
         p_ville: formData.ville,
         p_statut: formData.statut,
         p_experience_wordpress: formData.experienceWordPress,
         p_objectifs_principaux: formData.objectifsPrincipaux,
-        p_competences_recherchees: formData.competencesRecherchees,
         p_niveau_maitrise: formData.niveauMaitrise,
         p_programme_formation: formData.programmeFormation
       });
@@ -372,4 +369,3 @@ const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => 
 };
 
 export default PositionnementForm;
-

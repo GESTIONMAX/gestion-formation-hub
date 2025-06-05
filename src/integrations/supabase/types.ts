@@ -333,7 +333,28 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_positionnement_request: {
+        Args: {
+          p_nom_beneficiaire: string
+          p_prenom_beneficiaire: string
+          p_email: string
+          p_telephone: string
+          p_formation_selectionnee?: string
+          p_date_naissance?: string
+          p_sexe?: string
+          p_situation_handicap?: string
+          p_adresse?: string
+          p_code_postal?: string
+          p_ville?: string
+          p_statut?: string
+          p_experience_wordpress?: string
+          p_objectifs_principaux?: string
+          p_competences_recherchees?: string
+          p_niveau_maitrise?: string
+          p_programme_formation?: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       categorie_competence:
