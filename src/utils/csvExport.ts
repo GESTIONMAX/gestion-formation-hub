@@ -1,5 +1,6 @@
 
 import { Competence } from "@/types/competence";
+import { Reclamation } from "@/hooks/useReclamations";
 
 export const exportCompetencesToCSV = (competences: Competence[]) => {
   const headers = [
@@ -48,6 +49,63 @@ export const exportCompetencesToCSV = (competences: Competence[]) => {
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
     link.setAttribute('download', `competences_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+};
+
+export const exportReclamationsToCSV = (reclamations: Reclamation[]) => {
+  const headers = [
+    'ID',
+    'Date Création',
+    'Nom',
+    'Email',
+    'Téléphone',
+    'Sujet',
+    'Message',
+    'Statut',
+    'Priorité',
+    'Date Résolution',
+    'Notes Internes',
+    'Durée Résolution (jours)',
+    'Dernière Modification'
+  ];
+
+  const csvContent = [
+    headers.join(','),
+    ...reclamations.map(reclamation => {
+      const dateCreation = new Date(reclamation.created_at);
+      const dureeResolution = reclamation.date_resolution 
+        ? Math.round((new Date(reclamation.date_resolution).getTime() - dateCreation.getTime()) / (1000 * 60 * 60 * 24))
+        : '';
+
+      return [
+        `"${reclamation.id.substring(0, 8)}"`,
+        `"${dateCreation.toLocaleDateString('fr-FR')}"`,
+        `"${reclamation.nom}"`,
+        `"${reclamation.email}"`,
+        `"${reclamation.telephone || ''}"`,
+        `"${reclamation.sujet}"`,
+        `"${reclamation.message.replace(/"/g, '""')}"`,
+        `"${reclamation.statut}"`,
+        `"${reclamation.priorite}"`,
+        `"${reclamation.date_resolution ? new Date(reclamation.date_resolution).toLocaleDateString('fr-FR') : ''}"`,
+        `"${(reclamation.notes_internes || '').replace(/"/g, '""')}"`,
+        `"${dureeResolution}"`,
+        `"${new Date(reclamation.updated_at).toLocaleDateString('fr-FR')}"`
+      ].join(',');
+    })
+  ].join('\n');
+
+  const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  
+  if (link.download !== undefined) {
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `reclamations_${new Date().toISOString().split('T')[0]}.csv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
