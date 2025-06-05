@@ -170,6 +170,109 @@ export type Database = {
           },
         ]
       }
+      documents_formation: {
+        Row: {
+          contenu_json: Json | null
+          created_at: string
+          date_generation: string
+          dossier_formation_id: string | null
+          id: string
+          nom_fichier: string
+          statut: string
+          type_document: string
+          updated_at: string
+          url_document: string | null
+        }
+        Insert: {
+          contenu_json?: Json | null
+          created_at?: string
+          date_generation?: string
+          dossier_formation_id?: string | null
+          id?: string
+          nom_fichier: string
+          statut?: string
+          type_document: string
+          updated_at?: string
+          url_document?: string | null
+        }
+        Update: {
+          contenu_json?: Json | null
+          created_at?: string
+          date_generation?: string
+          dossier_formation_id?: string | null
+          id?: string
+          nom_fichier?: string
+          statut?: string
+          type_document?: string
+          updated_at?: string
+          url_document?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documents_formation_dossier_formation_id_fkey"
+            columns: ["dossier_formation_id"]
+            isOneToOne: false
+            referencedRelation: "dossiers_formation"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dossiers_formation: {
+        Row: {
+          apprenant_email: string
+          apprenant_nom: string
+          apprenant_prenom: string
+          created_at: string
+          date_debut: string | null
+          date_fin: string | null
+          formation_titre: string
+          id: string
+          notes_formateur: string | null
+          numero_dossier: string
+          programme_personnalise_id: string | null
+          statut: string
+          updated_at: string
+        }
+        Insert: {
+          apprenant_email: string
+          apprenant_nom: string
+          apprenant_prenom: string
+          created_at?: string
+          date_debut?: string | null
+          date_fin?: string | null
+          formation_titre: string
+          id?: string
+          notes_formateur?: string | null
+          numero_dossier: string
+          programme_personnalise_id?: string | null
+          statut?: string
+          updated_at?: string
+        }
+        Update: {
+          apprenant_email?: string
+          apprenant_nom?: string
+          apprenant_prenom?: string
+          created_at?: string
+          date_debut?: string | null
+          date_fin?: string | null
+          formation_titre?: string
+          id?: string
+          notes_formateur?: string | null
+          numero_dossier?: string
+          programme_personnalise_id?: string | null
+          statut?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dossiers_formation_programme_personnalise_id_fkey"
+            columns: ["programme_personnalise_id"]
+            isOneToOne: false
+            referencedRelation: "programmes_personnalises"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       historique_actions_correctives: {
         Row: {
           action: string
@@ -280,6 +383,65 @@ export type Database = {
         }
         Relationships: []
       }
+      programmes_personnalises: {
+        Row: {
+          competences_visees: string[] | null
+          created_at: string
+          duree_estimee: number | null
+          evaluation_prevue: string | null
+          id: string
+          modalites_pedagogiques: string | null
+          objectifs_specifiques: string | null
+          planning_propose: Json | null
+          positionnement_request_id: string | null
+          prerequis_adaptes: string | null
+          ressources_necessaires: string[] | null
+          statut: string
+          titre: string
+          updated_at: string
+        }
+        Insert: {
+          competences_visees?: string[] | null
+          created_at?: string
+          duree_estimee?: number | null
+          evaluation_prevue?: string | null
+          id?: string
+          modalites_pedagogiques?: string | null
+          objectifs_specifiques?: string | null
+          planning_propose?: Json | null
+          positionnement_request_id?: string | null
+          prerequis_adaptes?: string | null
+          ressources_necessaires?: string[] | null
+          statut?: string
+          titre: string
+          updated_at?: string
+        }
+        Update: {
+          competences_visees?: string[] | null
+          created_at?: string
+          duree_estimee?: number | null
+          evaluation_prevue?: string | null
+          id?: string
+          modalites_pedagogiques?: string | null
+          objectifs_specifiques?: string | null
+          planning_propose?: Json | null
+          positionnement_request_id?: string | null
+          prerequis_adaptes?: string | null
+          ressources_necessaires?: string[] | null
+          statut?: string
+          titre?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programmes_personnalises_positionnement_request_id_fkey"
+            columns: ["positionnement_request_id"]
+            isOneToOne: false
+            referencedRelation: "positionnement_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reclamations: {
         Row: {
           assignee_id: string | null
@@ -334,25 +496,48 @@ export type Database = {
     }
     Functions: {
       create_positionnement_request: {
-        Args: {
-          p_nom_beneficiaire: string
-          p_prenom_beneficiaire: string
-          p_email: string
-          p_telephone: string
-          p_formation_selectionnee?: string
-          p_date_naissance?: string
-          p_sexe?: string
-          p_situation_handicap?: string
-          p_adresse?: string
-          p_code_postal?: string
-          p_ville?: string
-          p_statut?: string
-          p_experience_wordpress?: string
-          p_objectifs_principaux?: string
-          p_competences_recherchees?: string
-          p_niveau_maitrise?: string
-          p_programme_formation?: string
-        }
+        Args:
+          | {
+              p_nom_beneficiaire: string
+              p_prenom_beneficiaire: string
+              p_email: string
+              p_telephone: string
+              p_formation_selectionnee?: string
+              p_date_naissance?: string
+              p_sexe?: string
+              p_situation_handicap?: string
+              p_adresse?: string
+              p_code_postal?: string
+              p_ville?: string
+              p_statut?: string
+              p_experience_wordpress?: string
+              p_objectifs_principaux?: string
+              p_competences_recherchees?: string
+              p_niveau_maitrise?: string
+              p_programme_formation?: string
+            }
+          | {
+              p_nom_beneficiaire: string
+              p_prenom_beneficiaire: string
+              p_email: string
+              p_telephone: string
+              p_formation_selectionnee?: string
+              p_date_naissance?: string
+              p_sexe?: string
+              p_situation_handicap?: string
+              p_adresse?: string
+              p_code_postal?: string
+              p_ville?: string
+              p_statut?: string
+              p_experience_wordpress?: string
+              p_objectifs_principaux?: string
+              p_niveau_maitrise?: string
+              p_programme_formation?: string
+            }
+        Returns: string
+      }
+      generate_numero_dossier: {
+        Args: Record<PropertyKey, never>
         Returns: string
       }
     }

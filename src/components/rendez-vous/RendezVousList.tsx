@@ -1,16 +1,18 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Edit, Eye, Clock, CheckCircle, Calendar } from "lucide-react";
+import { Plus, Edit, Eye, Clock, CheckCircle, Calendar, FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import RendezVousForm from "./RendezVousForm";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import WorkflowPositionnement from "./WorkflowPositionnement";
 
 const RendezVousList = () => {
   const [showForm, setShowForm] = useState(false);
+  const [showWorkflow, setShowWorkflow] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState(null);
   const [rendezVous, setRendezVous] = useState([
     {
       id: "1",
@@ -118,11 +120,39 @@ const RendezVousList = () => {
     }
   };
 
+  const startWorkflow = (request: any) => {
+    setSelectedRequest(request);
+    setShowWorkflow(true);
+  };
+
+  const handleWorkflowComplete = () => {
+    setShowWorkflow(false);
+    setSelectedRequest(null);
+    fetchPositionnementRequests(); // Refresh the list
+    toast({
+      title: "Processus terminé",
+      description: "Le processus de création du dossier de formation est terminé.",
+    });
+  };
+
   if (showForm) {
     return (
       <RendezVousForm
         onSubmit={handleCreate}
         onCancel={() => setShowForm(false)}
+      />
+    );
+  }
+
+  if (showWorkflow && selectedRequest) {
+    return (
+      <WorkflowPositionnement
+        positionnementRequest={selectedRequest}
+        onCancel={() => {
+          setShowWorkflow(false);
+          setSelectedRequest(null);
+        }}
+        onComplete={handleWorkflowComplete}
       />
     );
   }
@@ -194,6 +224,16 @@ const RendezVousList = () => {
                           disabled={request.status === 'rdv_fixe'}
                         >
                           <Calendar className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="default" 
+                          size="sm"
+                          onClick={() => startWorkflow(request)}
+                          disabled={request.status === 'traite'}
+                          className="bg-green-600 hover:bg-green-700"
+                        >
+                          <FileText className="h-4 w-4 mr-1" />
+                          Créer dossier
                         </Button>
                         <Button variant="outline" size="sm">
                           <Eye className="h-4 w-4" />
