@@ -62,6 +62,8 @@ const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => 
     setIsSubmitting(true);
 
     try {
+      console.log("Données envoyées:", formData);
+      
       // Utilisation de la fonction RPC pour contourner les politiques RLS
       const { error } = await supabase.rpc('create_positionnement_request', {
         p_nom_beneficiaire: formData.nomBeneficiaire,
@@ -83,6 +85,7 @@ const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => 
       });
 
       if (error) {
+        console.error('Erreur Supabase:', error);
         throw error;
       }
 
@@ -96,7 +99,7 @@ const PositionnementForm = ({ onSubmit, onCancel }: PositionnementFormProps) => 
       console.error('Erreur lors de l\'envoi:', error);
       toast({
         title: "Erreur",
-        description: "Une erreur est survenue lors de l'envoi de votre demande. Veuillez réessayer.",
+        description: `Une erreur est survenue lors de l'envoi de votre demande : ${error instanceof Error ? error.message : 'Erreur inconnue'}`,
         variant: "destructive",
       });
     } finally {
