@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, Edit, Trash2, Eye, Clock, Users, BookOpen, Info } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, Clock, Users, BookOpen, Info, GitBranch, Calendar } from "lucide-react";
 import { useFormations } from "@/hooks/useFormations";
 import { useToast } from "@/hooks/use-toast";
 import FormationForm from "./FormationForm";
@@ -16,6 +16,14 @@ const FormationsList = () => {
   const [view, setView] = useState<"list" | "form" | "detail">("list");
   const [selectedFormation, setSelectedFormation] = useState(null);
   const [editingFormation, setEditingFormation] = useState(null);
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('fr-FR', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
 
   const handleCreate = () => {
     setEditingFormation(null);
@@ -139,7 +147,7 @@ const FormationsList = () => {
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
                         <CardTitle className="text-lg">{formation.titre}</CardTitle>
-                        <div className="flex items-center gap-4 mt-2">
+                        <div className="flex items-center gap-2 mt-2 flex-wrap">
                           <Badge variant="secondary" className="flex items-center gap-1">
                             <Clock className="h-3 w-3" />
                             {formation.duree}
@@ -147,6 +155,10 @@ const FormationsList = () => {
                           <Badge variant="outline" className="flex items-center gap-1">
                             <Users className="h-3 w-3" />
                             Qualiopi
+                          </Badge>
+                          <Badge variant="default" className="flex items-center gap-1">
+                            <GitBranch className="h-3 w-3" />
+                            v{formation.version}
                           </Badge>
                         </div>
                       </div>
@@ -156,6 +168,18 @@ const FormationsList = () => {
                     <p className="text-gray-600 text-sm mb-4 line-clamp-3">
                       {formation.description}
                     </p>
+                    
+                    <div className="space-y-2 mb-4 text-xs text-gray-500">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        <span>Créé le {formatDate(formation.dateCreation)}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        <span>Modifié le {formatDate(formation.dateModification)}</span>
+                      </div>
+                    </div>
+
                     <div className="flex gap-2">
                       <Button
                         size="sm"

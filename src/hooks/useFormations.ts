@@ -12,6 +12,9 @@ interface Formation {
   duree: string;
   public: string;
   pdfUrl?: string;
+  version: number;
+  dateCreation: string;
+  dateModification: string;
   createdAt: string;
 }
 
@@ -31,7 +34,10 @@ export const useFormations = () => {
       duree: "21 heures",
       public: "Toute personne souhaitant créer un site web avec WordPress. Aucun prérequis technique nécessaire.",
       pdfUrl: "",
-      createdAt: new Date().toISOString(),
+      version: 2,
+      dateCreation: "2024-01-15T09:00:00.000Z",
+      dateModification: "2024-03-10T14:30:00.000Z",
+      createdAt: "2024-01-15T09:00:00.000Z",
     },
     {
       id: "2",
@@ -42,7 +48,10 @@ export const useFormations = () => {
       duree: "35 heures",
       public: "Développeurs web ou utilisateurs confirmés de WordPress. Prérequis: bases HTML/CSS/PHP.",
       pdfUrl: "",
-      createdAt: new Date().toISOString(),
+      version: 1,
+      dateCreation: "2024-02-01T10:00:00.000Z",
+      dateModification: "2024-02-01T10:00:00.000Z",
+      createdAt: "2024-02-01T10:00:00.000Z",
     }
   ];
 
@@ -65,16 +74,26 @@ export const useFormations = () => {
     fetchFormations();
   }, []);
 
-  const createFormation = async (formationData: Omit<Formation, "id" | "createdAt">) => {
+  const createFormation = async (formationData: Omit<Formation, "id" | "createdAt" | "version" | "dateCreation" | "dateModification">) => {
     try {
       // Ici, vous remplacerez par l'appel à l'API Supabase
+      const now = new Date().toISOString();
       const newFormation: Formation = {
         ...formationData,
         id: Date.now().toString(),
-        createdAt: new Date().toISOString(),
+        version: 1,
+        dateCreation: now,
+        dateModification: now,
+        createdAt: now,
       };
       
       setFormations(prev => [newFormation, ...prev]);
+      
+      toast({
+        title: "Formation créée",
+        description: `Formation "${newFormation.titre}" créée avec succès (Version ${newFormation.version})`,
+      });
+      
       return newFormation;
     } catch (error) {
       console.error("Erreur lors de la création:", error);
@@ -86,9 +105,24 @@ export const useFormations = () => {
     try {
       // Ici, vous remplacerez par l'appel à l'API Supabase
       setFormations(prev => 
-        prev.map(formation => 
-          formation.id === id ? { ...formation, ...formationData } : formation
-        )
+        prev.map(formation => {
+          if (formation.id === id) {
+            const updatedFormation = {
+              ...formation,
+              ...formationData,
+              version: formation.version + 1,
+              dateModification: new Date().toISOString()
+            };
+            
+            toast({
+              title: "Formation mise à jour",
+              description: `Formation "${updatedFormation.titre}" mise à jour (Version ${updatedFormation.version})`,
+            });
+            
+            return updatedFormation;
+          }
+          return formation;
+        })
       );
     } catch (error) {
       console.error("Erreur lors de la modification:", error);
@@ -98,8 +132,14 @@ export const useFormations = () => {
 
   const deleteFormation = async (id: string) => {
     try {
+      const formation = formations.find(f => f.id === id);
       // Ici, vous remplacerez par l'appel à l'API Supabase
       setFormations(prev => prev.filter(formation => formation.id !== id));
+      
+      toast({
+        title: "Formation supprimée",
+        description: `Formation "${formation?.titre}" supprimée avec succès`,
+      });
     } catch (error) {
       console.error("Erreur lors de la suppression:", error);
       throw error;
