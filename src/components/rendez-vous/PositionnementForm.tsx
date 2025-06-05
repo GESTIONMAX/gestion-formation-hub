@@ -38,8 +38,6 @@ const PositionnementForm = ({ onSubmit, onCancel, formationTitre = "WordPress : 
     experienceWordPress: "",
     // Objectifs
     objectifsPrincipaux: "",
-    // Compétences recherchées
-    competencesRecherchees: "",
     // Niveau de maîtrise
     niveauMaitrise: "non",
     // Programme de formation
@@ -83,7 +81,6 @@ const PositionnementForm = ({ onSubmit, onCancel, formationTitre = "WordPress : 
         p_statut: formData.statut,
         p_experience_wordpress: formData.experienceWordPress,
         p_objectifs_principaux: formData.objectifsPrincipaux,
-        p_competences_recherchees: formData.competencesRecherchees,
         p_niveau_maitrise: formData.niveauMaitrise,
         p_programme_formation: formData.programmeFormation
       });
