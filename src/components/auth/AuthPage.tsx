@@ -6,46 +6,35 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 const AuthPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [nom, setNom] = useState("");
+  const [prenom, setPrenom] = useState("");
   const { toast } = useToast();
+  const { login, register, loading, error } = useAuth();
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      await login(email, password);
+      toast({
+        title: "Connexion réussie",
+        description: "Bienvenue dans GestionMax Formation !",
       });
-
-      if (error) {
-        throw error;
-      }
-
-      if (data.user) {
-        toast({
-          title: "Connexion réussie",
-          description: "Bienvenue dans GestionMax Formation !",
-        });
-        window.location.href = '/dashboard';
-      }
+      window.location.href = '/dashboard';
     } catch (error: any) {
       toast({
         title: "Erreur de connexion",
         description: error.message || "Une erreur est survenue lors de la connexion",
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -61,38 +50,22 @@ const AuthPage = () => {
       return;
     }
 
-    setLoading(true);
-
     try {
-      const redirectUrl = `${window.location.origin}/dashboard`;
+      // Inscription avec notre nouveau hook useAuth
+      await register(email, password, nom, prenom);
       
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: redirectUrl
-        }
+      toast({
+        title: "Inscription réussie",
+        description: "Votre compte a été créé avec succès !",
       });
-
-      if (error) {
-        throw error;
-      }
-
-      if (data.user) {
-        toast({
-          title: "Inscription réussie",
-          description: "Votre compte a été créé avec succès !",
-        });
-        window.location.href = '/dashboard';
-      }
+      window.location.href = '/dashboard';
+      
     } catch (error: any) {
       toast({
         title: "Erreur d'inscription",
         description: error.message || "Une erreur est survenue lors de l'inscription",
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -166,6 +139,28 @@ const AuthPage = () => {
                     placeholder="votre@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="signup-nom">Nom</Label>
+                  <Input
+                    id="signup-nom"
+                    type="text"
+                    placeholder="Votre nom"
+                    value={nom}
+                    onChange={(e) => setNom(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="signup-prenom">Prénom</Label>
+                  <Input
+                    id="signup-prenom"
+                    type="text"
+                    placeholder="Votre prénom"
+                    value={prenom}
+                    onChange={(e) => setPrenom(e.target.value)}
                     required
                   />
                 </div>

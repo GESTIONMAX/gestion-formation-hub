@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import api from "@/services/api";
 
 // Interface pour les formations
 interface Formation {
@@ -14,9 +14,9 @@ interface Formation {
   public: string;
   pdfUrl?: string;
   version: number;
-  dateCreation: string;
-  dateModification: string;
-  createdAt: string;
+  dateCreation: Date;
+  dateModification: Date;
+  createdAt: Date;
   // Informations légales
   prerequis: string;
   publicConcerne: string;
@@ -39,13 +39,8 @@ export const useFormations = () => {
   const fetchFormations = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('formations')
-        .select('*')
-        .order('dateCreation', { ascending: false });
-
-      if (error) throw error;
-      setFormations((data || []) as Formation[]);
+      const response = await api.get('/formations');
+      setFormations(response.data);
     } catch (error) {
       console.error('Erreur lors du chargement des formations:', error);
     } finally {
@@ -61,15 +56,8 @@ export const useFormations = () => {
     formationData: Omit<Formation, 'id' | 'createdAt' | 'version' | 'dateCreation' | 'dateModification'>
   ) => {
     try {
-      const { data, error } = await supabase
-        .from('formations')
-        .insert([formationData])
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      const newFormation = data as Formation;
+      const response = await api.post('/formations', formationData);
+      const newFormation = response.data;
       setFormations(prev => [newFormation, ...prev]);
       toast({
         title: 'Formation créée',
@@ -84,16 +72,8 @@ export const useFormations = () => {
 
   const updateFormation = async (id: string, formationData: Partial<Formation>) => {
     try {
-      const { data, error } = await supabase
-        .from('formations')
-        .update(formationData)
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      const updated = data as Formation;
+      const response = await api.put(`/formations/${id}`, formationData);
+      const updated = response.data;
       setFormations(prev => prev.map(f => (f.id === id ? updated : f)));
       toast({
         title: 'Formation mise à jour',
@@ -107,10 +87,9 @@ export const useFormations = () => {
 
   const deleteFormation = async (id: string) => {
     try {
-      const { error } = await supabase.from('formations').delete().eq('id', id);
-      if (error) throw error;
-
       const formation = formations.find(f => f.id === id);
+      await api.delete(`/formations/${id}`);
+
       setFormations(prev => prev.filter(f => f.id !== id));
 
       toast({

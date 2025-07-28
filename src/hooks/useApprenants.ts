@@ -1,13 +1,13 @@
 
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import api from "@/services/api";
 
 interface Apprenant {
   id: string;
   nom: string;
   email: string;
   telephone?: string;
-  createdAt: string;
+  createdAt: Date;
 }
 
 export const useApprenants = () => {
@@ -17,13 +17,8 @@ export const useApprenants = () => {
   const fetchApprenants = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('apprenants')
-        .select('*')
-        .order('createdAt', { ascending: false });
-
-      if (error) throw error;
-      setApprenants((data || []) as Apprenant[]);
+      const response = await api.get('/apprenants');
+      setApprenants(response.data);
     } catch (error) {
       console.error('Erreur lors du chargement des apprenants:', error);
     } finally {
@@ -39,15 +34,8 @@ export const useApprenants = () => {
     apprenantData: Omit<Apprenant, 'id' | 'createdAt'>
   ) => {
     try {
-      const { data, error } = await supabase
-        .from('apprenants')
-        .insert([apprenantData])
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      const newApprenant = data as Apprenant;
+      const response = await api.post('/apprenants', apprenantData);
+      const newApprenant = response.data;
       setApprenants(prev => [newApprenant, ...prev]);
       return newApprenant;
     } catch (error) {
@@ -58,16 +46,8 @@ export const useApprenants = () => {
 
   const updateApprenant = async (id: string, apprenantData: Partial<Apprenant>) => {
     try {
-      const { data, error } = await supabase
-        .from('apprenants')
-        .update(apprenantData)
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      const updated = data as Apprenant;
+      const response = await api.put(`/apprenants/${id}`, apprenantData);
+      const updated = response.data;
       setApprenants(prev => prev.map(a => (a.id === id ? updated : a)));
     } catch (error) {
       console.error('Erreur lors de la mise à jour de l\'apprenant:', error);

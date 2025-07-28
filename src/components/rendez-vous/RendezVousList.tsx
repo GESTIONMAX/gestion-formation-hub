@@ -5,9 +5,9 @@ import { Plus, Edit, Eye, Clock, CheckCircle, Calendar, FileText } from "lucide-
 import { useToast } from "@/hooks/use-toast";
 import RendezVousForm from "./RendezVousForm";
 import { Badge } from "@/components/ui/badge";
-import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import WorkflowPositionnement from "./WorkflowPositionnement";
+import api from "@/services/api";
 
 const RendezVousList = () => {
   const [showForm, setShowForm] = useState(false);
@@ -34,17 +34,10 @@ const RendezVousList = () => {
 
   const fetchPositionnementRequests = async () => {
     try {
-      // Utilisation d'une requête directe pour contourner le problème de types
-      const { data, error } = await (supabase as any)
-        .from('positionnement_requests')
-        .select('*')
-        .order('created_at', { ascending: false });
+      // Utilisation de l'API pour récupérer les demandes de positionnement
+      const response = await api.get('/positionnement-requests');
 
-      if (error) {
-        throw error;
-      }
-
-      setPositionnementRequests(data || []);
+      setPositionnementRequests(response.data);
     } catch (error) {
       console.error('Erreur lors du chargement:', error);
       toast({
@@ -59,17 +52,10 @@ const RendezVousList = () => {
 
   const updateRequestStatus = async (id: string, newStatus: string) => {
     try {
-      // Utilisation d'une requête directe pour contourner le problème de types
-      const { error } = await (supabase as any)
-        .from('positionnement_requests')
-        .update({ status: newStatus })
-        .eq('id', id);
+      // Mise à jour du statut via l'API
+      await api.put(`/positionnement-requests/${id}/status`, { status: newStatus });
 
-      if (error) {
-        throw error;
-      }
-
-      // Refresh the list
+      // Rafraîchir la liste
       fetchPositionnementRequests();
 
       toast({

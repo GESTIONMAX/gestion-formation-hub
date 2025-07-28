@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import api from "@/services/api";
 
 interface PlanAccessibilite {
   id: string;
@@ -12,8 +12,8 @@ interface PlanAccessibilite {
   adaptationsEvaluation: string;
   responsable: string;
   statut: "En cours" | "Validé" | "À réviser";
-  dateCreation: string;
-  dateMiseAJour: string;
+  dateCreation: Date;
+  dateMiseAJour: Date;
 }
 
 interface DemandeAccessibilite {
@@ -24,7 +24,7 @@ interface DemandeAccessibilite {
   besoinsSpecifiques: string;
   documentsMedicaux: boolean;
   statut: "En attente" | "En cours d'analyse" | "Validée" | "Refusée";
-  dateCreation: string;
+  dateCreation: Date;
   commentaires?: string;
 }
 
@@ -36,22 +36,14 @@ export const useAccessibilite = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const { data: plans, error: plansError } = await supabase
-        .from('plans_accessibilite')
-        .select('*')
-        .order('dateCreation', { ascending: false });
+      // Récupérer les plans d'accessibilité via l'API
+      const plansResponse = await api.get('/accessibilite/plans');
 
-      if (plansError) throw plansError;
+      // Récupérer les demandes d'accessibilité via l'API
+      const demandesResponse = await api.get('/accessibilite/demandes');
 
-      const { data: demandes, error: demandesError } = await supabase
-        .from('demandes_accessibilite')
-        .select('*')
-        .order('dateCreation', { ascending: false });
-
-      if (demandesError) throw demandesError;
-
-      setPlansAccessibilite((plans || []) as PlanAccessibilite[]);
-      setDemandesAccessibilite((demandes || []) as DemandeAccessibilite[]);
+      setPlansAccessibilite(plansResponse.data);
+      setDemandesAccessibilite(demandesResponse.data);
     } catch (error) {
       console.error("Erreur lors du chargement des données d'accessibilité:", error);
     } finally {
@@ -67,15 +59,19 @@ export const useAccessibilite = () => {
     planData: Omit<PlanAccessibilite, 'id' | 'dateCreation' | 'dateMiseAJour'>
   ) => {
     try {
-      const { data, error } = await supabase
-        .from('plans_accessibilite')
-        .insert([planData])
-        .select()
-        .single();
+      // Créer un plan d'accessibilité via l'API
+      const response = await api.post('/accessibilite/plans', {
+        titre: planData.titre,
+        description: planData.description,
+        typeHandicap: planData.typeHandicap,
+        adaptationsPedagogiques: planData.adaptationsPedagogiques,
+        adaptationsMaterielles: planData.adaptationsMaterielles,
+        adaptationsEvaluation: planData.adaptationsEvaluation,
+        responsable: planData.responsable,
+        statut: planData.statut
+      });
 
-      if (error) throw error;
-
-      const nouveauPlan = data as PlanAccessibilite;
+      const nouveauPlan = response.data;
       setPlansAccessibilite(prev => [nouveauPlan, ...prev]);
       return nouveauPlan;
     } catch (error) {
@@ -90,19 +86,17 @@ export const useAccessibilite = () => {
     commentaires?: string
   ) => {
     try {
-      const { data, error } = await supabase
-        .from('demandes_accessibilite')
-        .update({ statut, commentaires })
-        .eq('id', id)
-        .select()
-        .single();
+      // Mettre à jour une demande d'accessibilité via l'API
+      const response = await api.put(`/accessibilite/demandes/${id}`, {
+        statut,
+        commentaires
+      });
 
-      if (error) throw error;
-
-      const updated = data as DemandeAccessibilite;
+      const updated = response.data;
       setDemandesAccessibilite(prev =>
-        prev.map(d => (d.id === id ? updated : d))
+        prev.map(d => d.id === id ? updated : d)
       );
+      return updated;
     } catch (error) {
       console.error("Erreur lors du traitement de la demande:", error);
       throw error;

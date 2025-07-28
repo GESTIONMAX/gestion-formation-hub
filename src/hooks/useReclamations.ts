@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import api from "@/services/api";
 
 export interface Reclamation {
   id: string;
@@ -14,9 +14,9 @@ export interface Reclamation {
   priorite: 'basse' | 'normale' | 'haute' | 'urgente';
   assignee_id?: string;
   notes_internes?: string;
-  date_resolution?: string;
-  created_at: string;
-  updated_at: string;
+  date_resolution?: Date;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export interface CreateReclamationData {
@@ -36,15 +36,9 @@ export const useReclamations = () => {
   const fetchReclamations = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('reclamations')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        throw error;
-      }
-      setReclamations(data || []);
+      const response = await api.get('/reclamations');
+      
+      setReclamations(response.data);
     } catch (error) {
       console.error('Erreur lors du chargement des réclamations:', error);
       toast({
@@ -59,16 +53,15 @@ export const useReclamations = () => {
 
   const createReclamation = async (data: CreateReclamationData) => {
     try {
-      const { error } = await supabase
-        .from('reclamations')
-        .insert([{
-          ...data,
-          priorite: data.priorite || 'normale'
-        }]);
-
-      if (error) {
-        throw error;
-      }
+      await api.post('/reclamations', {
+        nom: data.nom,
+        email: data.email,
+        telephone: data.telephone,
+        sujet: data.sujet,
+        message: data.message,
+        priorite: data.priorite || 'normale',
+        statut: 'nouvelle' // Valeur par défaut
+      });
 
       toast({
         title: "Réclamation envoyée",
@@ -90,14 +83,8 @@ export const useReclamations = () => {
 
   const updateReclamation = async (id: string, updates: Partial<Reclamation>) => {
     try {
-      const { error } = await supabase
-        .from('reclamations')
-        .update(updates)
-        .eq('id', id);
-
-      if (error) {
-        throw error;
-      }
+      // Utiliser directement l'API pour mettre à jour
+      await api.put(`/reclamations/${id}`, updates);
 
       toast({
         title: "Réclamation mise à jour",

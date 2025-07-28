@@ -1,0 +1,333 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// NextAuth.js Models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  password      String?   // Pour l'authentification par mot de passe
+  nom           String?
+  prenom        String?
+  role          String    @default("user") // Peut être "user", "admin", "formateur", etc.
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @default(now()) @updatedAt @map("updated_at")
+  
+  accounts      Account[]
+  sessions      Session[]
+  reclamationsAssignees Reclamation[] @relation("ReclamationsAssignees")
+  
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Formation {
+  id                     String    @id @default(uuid())
+  titre                  String
+  description            String
+  objectifs              String
+  programme              String
+  duree                  String
+  public                 String
+  pdfUrl                 String?
+  version                Int       @default(1)
+  prerequis              String
+  publicConcerne         String
+  dureeHoraires          String
+  modalitesAcces         String
+  tarif                  String
+  modalitesReglement     String
+  accessibiliteHandicapee String
+  modalitesEvaluation    String
+  sanctionFormation      String
+  cessationAbandon       String
+  dateCreation           DateTime  @default(now()) @map("date_creation")
+  dateModification       DateTime  @default(now()) @updatedAt @map("date_modification")
+  createdAt              DateTime  @default(now()) @map("created_at")
+
+  // Relations
+  dossiers               DossierFormation[]
+  programmesPersonnalises ProgrammePersonnalise[]
+  
+  @@map("formations")
+}
+
+model Apprenant {
+  id        String    @id @default(uuid())
+  nom       String
+  email     String
+  telephone String?
+  createdAt DateTime  @default(now()) @map("created_at")
+  
+  // Relations
+  dossiers  DossierFormation[]
+  
+  @@map("apprenants")
+}
+
+model Competence {
+  id                   String              @id @default(uuid())
+  nom                  String
+  description          String
+  categorie            String              // 'technique' | 'pedagogique' | 'relationnelle' | 'organisationnelle'
+  domaineDeveloppement String              @map("domaine_developpement")
+  niveauActuel         Int                 @map("niveau_actuel")
+  objectifNiveau       Int                 @map("objectif_niveau")
+  statut               String              // 'planifie' | 'en-cours' | 'realise' | 'reporte'
+  actionPrevue         String              @map("action_prevue")
+  plateformeFomation   String?             @map("plateforme_formation")
+  lienFormation        String?             @map("lien_formation")
+  typePreuve           String              @map("type_preuve") // 'fichier' | 'url'
+  contenuPreuve        String              @map("contenu_preuve")
+  dateCreation         DateTime            @default(now()) @map("date_creation")
+  dateModification     DateTime            @default(now()) @updatedAt @map("date_modification")
+  formateurId          String?             @map("formateur_id")
+
+  @@map("competences")
+}
+
+model PositionnementRequest {
+  id                      String    @id @default(uuid())
+  formationSelectionnee   String?   @map("formation_selectionnee")
+  nomBeneficiaire         String    @map("nom_beneficiaire")
+  prenomBeneficiaire      String    @map("prenom_beneficiaire")
+  dateNaissance           DateTime? @map("date_naissance")
+  sexe                    String?
+  situationHandicap       String?   @map("situation_handicap")
+  email                   String
+  telephone               String
+  adresse                 String?
+  codePostal              String?   @map("code_postal")
+  ville                   String?
+  statut                  String?
+  experienceWordpress     String?   @map("experience_wordpress")
+  objectifsPrincipaux     String?   @map("objectifs_principaux")
+  niveauMaitrise          String    @default("non") @map("niveau_maitrise")
+  programmeFormation      String?   @map("programme_formation")
+  attestationBesoin       Boolean   @default(false) @map("attestation_besoin")
+  status                  String    @default("en_attente")
+  createdAt               DateTime  @default(now()) @map("created_at")
+  updatedAt               DateTime  @default(now()) @updatedAt @map("updated_at")
+  
+  // Relations
+  dossierFormation        DossierFormation?
+  
+  @@map("positionnement_requests")
+}
+
+model Reclamation {
+  id             String    @id @default(uuid())
+  nom            String
+  email          String
+  telephone      String?
+  sujet          String
+  message        String
+  statut         String    @default("nouvelle") // 'nouvelle' | 'en_cours' | 'resolue' | 'fermee'
+  priorite       String    @default("normale") // 'basse' | 'normale' | 'haute' | 'urgente'
+  assigneeId     String?   @map("assignee_id")
+  notesInternes  String?   @map("notes_internes")
+  dateResolution DateTime? @map("date_resolution")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @default(now()) @updatedAt @map("updated_at")
+  
+  // Relations
+  assignee       User?     @relation("ReclamationsAssignees", fields: [assigneeId], references: [id])
+  actionsCorrectives ActionCorrective[]
+  
+  @@map("reclamations")
+}
+
+model ActionCorrective {
+  id                   String    @id @default(uuid())
+  titre                String
+  description          String
+  statut               String    @default("planifiee") // 'planifiee' | 'en_cours' | 'terminee' | 'annulee'
+  origineType          String    @map("origine_type") // 'reclamation' | 'incident' | 'audit' | 'veille'
+  origineRef           String?   @map("origine_ref")
+  origineDate          DateTime? @map("origine_date")
+  origineResume        String?   @map("origine_resume")
+  priorite             String    @default("moyenne") // 'faible' | 'moyenne' | 'haute' | 'critique'
+  avancement           Int       @default(0)
+  responsableNom       String?   @map("responsable_nom")
+  responsableEmail     String?   @map("responsable_email")
+  dateEcheance         DateTime? @map("date_echeance")
+  indicateurEfficacite String?   @map("indicateur_efficacite")
+  reclamationId        String?   @map("reclamation_id")
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime  @default(now()) @updatedAt @map("updated_at")
+  
+  // Relations
+  reclamation         Reclamation? @relation(fields: [reclamationId], references: [id])
+  historiqueActions   HistoriqueActionCorrective[]
+  
+  @@map("actions_correctives")
+}
+
+model HistoriqueActionCorrective {
+  id                 String    @id @default(uuid())
+  actionCorrectiveId String    @map("action_corrective_id")
+  dateAction         DateTime  @default(now()) @map("date_action")
+  action             String
+  utilisateur        String
+  commentaire        String?
+  createdAt          DateTime  @default(now()) @map("created_at")
+  
+  // Relations
+  actionCorrective   ActionCorrective @relation(fields: [actionCorrectiveId], references: [id])
+  
+  @@map("historique_actions_correctives")
+}
+
+model PlanAccessibilite {
+  id              String    @id @default(uuid())
+  titre           String
+  description     String
+  dateCreation    DateTime  @default(now()) @map("date_creation")
+  dateModification DateTime  @default(now()) @updatedAt @map("date_modification")
+  actionsRequises String[]  @map("actions_requises")
+  statut          String    @default("actif") // 'actif' | 'archive'
+  
+  @@map("plans_accessibilite")
+}
+
+model DemandeAccessibilite {
+  id              String    @id @default(uuid())
+  nom             String
+  email           String
+  telephone       String?
+  description     String
+  dateCreation    DateTime  @default(now()) @map("date_creation")
+  statut          String    @default("nouvelle") // 'nouvelle' | 'en_traitement' | 'resolue'
+  reponse         String?
+  dateResolution  DateTime? @map("date_resolution")
+  
+  @@map("demandes_accessibilite")
+}
+
+model DossierFormation {
+  id                     String    @id @default(uuid())
+  formationId            String    @map("formation_id")
+  apprenantId            String    @map("apprenant_id")
+  positionnementId       String?   @unique @map("positionnement_id")
+  statutDossier          String    @default("en_attente") @map("statut_dossier") // 'en_attente' | 'valide' | 'en_cours' | 'termine'
+  dateInscription        DateTime  @default(now()) @map("date_inscription")
+  dateDebut              DateTime? @map("date_debut")
+  dateFin                DateTime? @map("date_fin")
+  createdAt              DateTime  @default(now()) @map("created_at")
+  updatedAt              DateTime  @default(now()) @updatedAt @map("updated_at")
+  
+  // Relations
+  formation              Formation @relation(fields: [formationId], references: [id])
+  apprenant              Apprenant @relation(fields: [apprenantId], references: [id])
+  positionnement         PositionnementRequest? @relation(fields: [positionnementId], references: [id])
+  documents              DocumentFormation[]
+  
+  @@map("dossiers_formation")
+}
+
+model DocumentFormation {
+  id              String    @id @default(uuid())
+  dossierFormationId String  @map("dossier_formation_id")
+  nom             String
+  type            String
+  url             String
+  dateCreation    DateTime  @default(now()) @map("date_creation")
+  
+  // Relations
+  dossierFormation DossierFormation @relation(fields: [dossierFormationId], references: [id])
+  
+  @@map("documents_formation")
+}
+
+model ProgrammePersonnalise {
+  id              String    @id @default(uuid())
+  formationId     String    @map("formation_id")
+  titre           String
+  description     String
+  contenu         String
+  duree           String
+  objectifsSpecifiques String  @map("objectifs_specifiques")
+  evaluationSur   String    @map("evaluation_sur")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at")
+  
+  // Relations
+  formation       Formation @relation(fields: [formationId], references: [id])
+  
+  @@map("programmes_personnalises")
+}
+
+model Veille {
+  id            String    @id @default(uuid())
+  titre         String
+  description   String
+  type          String    // 'reglementaire' | 'metier' | 'innovation'
+  statut        String    @default("nouvelle") // 'nouvelle' | 'en-cours' | 'terminee'
+  avancement    Int       @default(0)
+  dateCreation  DateTime  @default(now()) @map("date_creation")
+  dateEcheance  DateTime? @map("date_echeance")
+  
+  @@map("veilles")
+}
+
+model ConformiteQualiopi {
+  id                 String    @id @default(uuid())
+  indicateur         String
+  description        String
+  statutConformite   String    @map("statut_conformite") // 'conforme' | 'non_conforme' | 'partiellement_conforme'
+  dateVerification   DateTime  @map("date_verification")
+  prochaineEcheance  DateTime  @map("prochaine_echeance")
+  elementPreuve      String?   @map("element_preuve")
+  commentaire        String?
+  
+  @@map("conformite_qualiopi")
+}

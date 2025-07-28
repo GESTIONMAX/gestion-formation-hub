@@ -7,8 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft } from "lucide-react";
+import api from "@/services/api";
 
 interface ProgrammePersonnaliseFormProps {
   positionnementRequest: any;
@@ -76,24 +76,22 @@ const ProgrammePersonnaliseForm = ({ positionnementRequest, onCancel, onSuccess 
     setIsSubmitting(true);
 
     try {
-      const { data, error } = await supabase
-        .from('programmes_personnalises')
-        .insert({
-          positionnement_request_id: positionnementRequest.id,
-          titre: formData.titre,
-          objectifs_specifiques: formData.objectifs_specifiques,
-          competences_visees: formData.competences_visees.filter(c => c.trim() !== ''),
-          duree_estimee: formData.duree_estimee,
-          modalites_pedagogiques: formData.modalites_pedagogiques,
-          prerequis_adaptes: formData.prerequis_adaptes,
-          evaluation_prevue: formData.evaluation_prevue,
-          ressources_necessaires: formData.ressources_necessaires.filter(r => r.trim() !== ''),
-          statut: 'valide'
-        })
-        .select()
-        .single();
-
-      if (error) throw error;
+      // Création du programme personnalisé via l'API
+      const programmeData = {
+        positionnementRequestId: positionnementRequest.id,
+        titre: formData.titre,
+        objectifsSpecifiques: formData.objectifs_specifiques,
+        competencesVisees: formData.competences_visees.filter(c => c.trim() !== ''),
+        dureeEstimee: formData.duree_estimee,
+        modalitesPedagogiques: formData.modalites_pedagogiques,
+        prerequisAdaptes: formData.prerequis_adaptes,
+        evaluationPrevue: formData.evaluation_prevue,
+        ressourcesNecessaires: formData.ressources_necessaires.filter(r => r.trim() !== ''),
+        statut: 'valide'
+      };
+      
+      const response = await api.post('/programmes-personnalises', programmeData);
+      const data = response.data;
 
       toast({
         title: "Programme créé",

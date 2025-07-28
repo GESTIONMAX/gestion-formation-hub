@@ -5,10 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { CheckCircle, FileText, Calendar, Download } from "lucide-react";
 import ProgrammePersonnaliseForm from "./ProgrammePersonnaliseForm";
 import { generateAllDocuments } from "@/utils/documentGenerator";
+import api from "@/services/api";
 
 interface WorkflowPositionnementProps {
   positionnementRequest: any;
@@ -73,13 +73,22 @@ const WorkflowPositionnement = ({ positionnementRequest, onCancel, onComplete }:
         insertData.notes_formateur = dossierData.notes_formateur;
       }
 
-      const { data, error } = await supabase
-        .from('dossiers_formation')
-        .insert(insertData)
-        .select()
-        .single();
-
-      if (error) throw error;
+      // Création du dossier de formation via l'API
+      const formationData = {
+        programmePersonnaliseId: programmeId,
+        apprenantNom: positionnementRequest.nom_beneficiaire,
+        apprenantPrenom: positionnementRequest.prenom_beneficiaire,
+        apprenantEmail: positionnementRequest.email,
+        formationTitre: positionnementRequest.formation_selectionnee,
+        numeroDossier: dossierData.numero_dossier,
+        statut: 'cree',
+        dateDebut: dossierData.date_debut ? new Date(dossierData.date_debut).toISOString() : undefined,
+        dateFin: dossierData.date_fin ? new Date(dossierData.date_fin).toISOString() : undefined,
+        notesFormateur: dossierData.notes_formateur || undefined
+      };
+      
+      const response = await api.post('/dossiers-formation', formationData);
+      const data = response.data;
 
       setDossierId(data.id);
       setCurrentStep(3);
@@ -105,54 +114,50 @@ const WorkflowPositionnement = ({ positionnementRequest, onCancel, onComplete }:
 
     setIsProcessing(true);
     try {
-      // Récupérer les données complètes du dossier avec le programme
-      const { data: dossierComplet, error } = await supabase
-        .from('dossiers_formation')
-        .select(`
-          *,
-          programme_personnalise:programmes_personnalises(*)
-        `)
-        .eq('id', dossierId)
-        .single();
+      // Récupérer les données complètes du dossier avec le programme via l'API
+      const response = await api.get(`/dossiers-formation/${dossierId}?include=programmePersonnalise`);
+      const dossierComplet = response.data;
 
-      if (error) throw error;
+      if (!dossierComplet) {
+        throw new Error("Dossier non trouvé");
+      }
 
       // Générer et télécharger tous les documents
       const documents = await generateAllDocuments({
-        id: dossierComplet.id,
-        numero_dossier: dossierComplet.numero_dossier,
-        apprenant_nom: dossierComplet.apprenant_nom,
-        apprenant_prenom: dossierComplet.apprenant_prenom,
-        apprenant_email: dossierComplet.apprenant_email,
-        formation_titre: dossierComplet.formation_titre,
-        date_debut: dossierComplet.date_debut,
-        date_fin: dossierComplet.date_fin,
-        programme: dossierComplet.programme_personnalise
+        dossier: {
+          id: dossierComplet.id,
+          numeroDossier: dossierComplet.numeroDossier,
+          apprenantNom: dossierComplet.apprenantNom,
+          apprenantPrenom: dossierComplet.apprenantPrenom,
+          apprenantEmail: dossierComplet.apprenantEmail,
+          formationTitre: dossierComplet.formationTitre,
+          dateDebut: dossierComplet.dateDebut,
+          dateFin: dossierComplet.dateFin,
+          programmePersonnalise: dossierComplet.programmePersonnalise
+        },
+        downloadFiles: true
       });
 
-      // Enregistrer les métadonnées des documents en base
+      // Enregistrer les métadonnées des documents en base via l'API
       for (const doc of documents) {
-        await supabase
-          .from('documents_formation')
-          .insert({
-            dossier_formation_id: dossierId,
-            type_document: doc.type,
-            nom_fichier: doc.nom_fichier,
-            statut: 'genere'
-          });
+        await api.post('/documents-formation', {
+          dossierFormationId: dossierId,
+          typeDocument: doc.type,
+          nomFichier: doc.nom_fichier || doc.nomFichier, // Gestion des deux formats possibles
+          statut: 'genere'
+        });
       }
 
-      // Marquer la demande de positionnement comme traitée
-      await supabase
-        .from('positionnement_requests')
-        .update({ status: 'traite' })
-        .eq('id', positionnementRequest.id);
+      // Marquer la demande de positionnement comme traitée via l'API
+      await api.put(`/positionnement-requests/${positionnementRequest.id}/status`, {
+        status: 'traite'
+      });
 
       setCurrentStep(4);
       
       toast({
         title: "Workflow terminé !",
-        description: `Tous les documents ont été générés et téléchargés pour le dossier ${dossierComplet.numero_dossier}.`,
+        description: `Tous les documents ont été générés et téléchargés pour le dossier ${dossierComplet.numeroDossier}.`,
       });
     } catch (error) {
       console.error('Erreur lors de la génération des documents:', error);

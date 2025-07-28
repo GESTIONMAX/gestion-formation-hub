@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import api from "@/services/api";
 
 export interface ActionCorrective {
   id: string;
@@ -10,16 +10,16 @@ export interface ActionCorrective {
   statut: 'planifiee' | 'en_cours' | 'terminee' | 'annulee';
   origine_type: 'reclamation' | 'incident' | 'audit' | 'veille';
   origine_ref?: string;
-  origine_date?: string;
+  origine_date?: Date;
   origine_resume?: string;
   priorite: 'faible' | 'moyenne' | 'haute' | 'critique';
   avancement: number;
   responsable_nom?: string;
   responsable_email?: string;
-  date_echeance?: string;
+  date_echeance?: Date;
   indicateur_efficacite?: string;
-  created_at: string;
-  updated_at: string;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export interface DocumentActionCorrective {
@@ -27,20 +27,20 @@ export interface DocumentActionCorrective {
   action_corrective_id: string;
   nom: string;
   type: string;
-  date_document: string;
+  date_document: Date;
   auteur: string;
   url?: string;
-  created_at: string;
+  created_at: Date;
 }
 
 export interface HistoriqueActionCorrective {
   id: string;
   action_corrective_id: string;
-  date_action: string;
+  date_action: Date;
   action: string;
   utilisateur: string;
   commentaire?: string;
-  created_at: string;
+  created_at: Date;
 }
 
 export interface CreateActionCorrectiveData {
@@ -65,16 +65,9 @@ export const useActionsCorrectives = () => {
   const fetchActionsCorrectives = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('actions_correctives')
-        .select('*')
-        .order('created_at', { ascending: false });
+      const response = await api.get('/actions-correctives');
 
-      if (error) {
-        throw error;
-      }
-      // Asserter le type correct pour éviter les erreurs TypeScript
-      setActionsCorrectives((data || []) as ActionCorrective[]);
+      setActionsCorrectives(response.data);
     } catch (error) {
       console.error('Erreur lors du chargement des actions correctives:', error);
       toast({
@@ -89,26 +82,20 @@ export const useActionsCorrectives = () => {
 
   const createActionCorrective = async (data: CreateActionCorrectiveData) => {
     try {
-      const { error } = await supabase
-        .from('actions_correctives')
-        .insert([{
-          ...data,
-          priorite: data.priorite || 'moyenne'
-        }]);
-
-      if (error) {
-        throw error;
-      }
-
-      // Ajouter à l'historique
-      await supabase
-        .from('historique_actions_correctives')
-        .insert([{
-          action_corrective_id: data.titre, // Sera remplacé par l'ID réel
-          action: 'Création',
-          utilisateur: 'Système',
-          commentaire: 'Action corrective créée'
-        }]);
+      // Créer l'action corrective via l'API
+      await api.post('/actions-correctives', {
+        titre: data.titre,
+        description: data.description,
+        origine_type: data.origine_type,
+        origine_ref: data.origine_ref,
+        origine_date: data.origine_date,
+        origine_resume: data.origine_resume,
+        priorite: data.priorite || 'moyenne',
+        responsable_nom: data.responsable_nom,
+        responsable_email: data.responsable_email,
+        date_echeance: data.date_echeance,
+        indicateur_efficacite: data.indicateur_efficacite
+      });
 
       toast({
         title: "Action corrective créée",
@@ -130,24 +117,8 @@ export const useActionsCorrectives = () => {
 
   const updateActionCorrective = async (id: string, updates: Partial<ActionCorrective>) => {
     try {
-      const { error } = await supabase
-        .from('actions_correctives')
-        .update(updates)
-        .eq('id', id);
-
-      if (error) {
-        throw error;
-      }
-
-      // Ajouter à l'historique
-      await supabase
-        .from('historique_actions_correctives')
-        .insert([{
-          action_corrective_id: id,
-          action: 'Modification',
-          utilisateur: 'Système',
-          commentaire: `Mise à jour: ${Object.keys(updates).join(', ')}`
-        }]);
+      // Mettre à jour l'action corrective via l'API
+      await api.put(`/actions-correctives/${id}`, updates);
 
       toast({
         title: "Action corrective mise à jour",
@@ -169,14 +140,7 @@ export const useActionsCorrectives = () => {
 
   const deleteActionCorrective = async (id: string) => {
     try {
-      const { error } = await supabase
-        .from('actions_correctives')
-        .delete()
-        .eq('id', id);
-
-      if (error) {
-        throw error;
-      }
+      await api.delete(`/actions-correctives/${id}`);
 
       toast({
         title: "Action corrective supprimée",

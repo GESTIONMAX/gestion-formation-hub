@@ -1,8 +1,8 @@
 
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Competence } from "@/types/competence";
 import { useToast } from "@/hooks/use-toast";
+import api from "@/services/api";
 
 export const useCompetences = () => {
   const [competences, setCompetences] = useState<Competence[]>([]);
@@ -13,42 +13,9 @@ export const useCompetences = () => {
   const fetchCompetences = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('competences')
-        .select('*')
-        .order('date_creation', { ascending: false });
-
-      if (error) {
-        console.error('Erreur lors du chargement des compétences:', error);
-        toast({
-          title: "Erreur",
-          description: "Impossible de charger les compétences",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Convertir les données de la DB vers le format TypeScript
-      const competencesFormatted: Competence[] = data.map(comp => ({
-        id: comp.id,
-        nom: comp.nom,
-        description: comp.description,
-        categorie: comp.categorie,
-        domaineDeveloppement: comp.domaine_developpement,
-        niveauActuel: comp.niveau_actuel,
-        objectifNiveau: comp.objectif_niveau,
-        statut: comp.statut,
-        actionPrevue: comp.action_prevue,
-        plateformeFomation: comp.plateforme_formation,
-        lienFormation: comp.lien_formation,
-        typePreuve: comp.type_preuve,
-        contenuPreuve: comp.contenu_preuve,
-        dateCreation: new Date(comp.date_creation),
-        dateModification: new Date(comp.date_modification),
-        formateurId: comp.formateur_id
-      }));
-
-      setCompetences(competencesFormatted);
+      const response = await api.get('/competences');
+      
+      setCompetences(response.data);
     } catch (error) {
       console.error('Erreur lors du chargement des compétences:', error);
       toast({
@@ -64,38 +31,15 @@ export const useCompetences = () => {
   // Créer une nouvelle compétence
   const createCompetence = async (competenceData: Omit<Competence, "id" | "dateCreation" | "dateModification">) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        toast({
-          title: "Erreur",
-          description: "Vous devez être connecté pour créer une compétence",
-          variant: "destructive",
+      // Pour le moment, nous utilisons une valeur temporaire pour formateurId
+      const userId = "system"; // Valeur temporaire à remplacer par l'identité de l'utilisateur réel
+
+      try {
+        await api.post('/competences', {
+          ...competenceData,
+          formateurId: userId
         });
-        return false;
-      }
-
-      const { data, error } = await supabase
-        .from('competences')
-        .insert([{
-          nom: competenceData.nom,
-          description: competenceData.description,
-          categorie: competenceData.categorie,
-          domaine_developpement: competenceData.domaineDeveloppement,
-          niveau_actuel: competenceData.niveauActuel,
-          objectif_niveau: competenceData.objectifNiveau,
-          statut: competenceData.statut,
-          action_prevue: competenceData.actionPrevue,
-          plateforme_formation: competenceData.plateformeFomation,
-          lien_formation: competenceData.lienFormation,
-          type_preuve: competenceData.typePreuve,
-          contenu_preuve: competenceData.contenuPreuve,
-          formateur_id: user.id
-        }])
-        .select()
-        .single();
-
-      if (error) {
+      } catch (error) {
         console.error('Erreur lors de la création de la compétence:', error);
         toast({
           title: "Erreur",
@@ -126,36 +70,9 @@ export const useCompetences = () => {
   // Mettre à jour une compétence
   const updateCompetence = async (id: string, competenceData: Omit<Competence, "id" | "dateCreation" | "dateModification">) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        toast({
-          title: "Erreur",
-          description: "Vous devez être connecté pour modifier une compétence",
-          variant: "destructive",
-        });
-        return false;
-      }
-
-      const { error } = await supabase
-        .from('competences')
-        .update({
-          nom: competenceData.nom,
-          description: competenceData.description,
-          categorie: competenceData.categorie,
-          domaine_developpement: competenceData.domaineDeveloppement,
-          niveau_actuel: competenceData.niveauActuel,
-          objectif_niveau: competenceData.objectifNiveau,
-          statut: competenceData.statut,
-          action_prevue: competenceData.actionPrevue,
-          plateforme_formation: competenceData.plateformeFomation,
-          lien_formation: competenceData.lienFormation,
-          type_preuve: competenceData.typePreuve,
-          contenu_preuve: competenceData.contenuPreuve
-        })
-        .eq('id', id);
-
-      if (error) {
+      try {
+        await api.put(`/competences/${id}`, competenceData);
+      } catch (error) {
         console.error('Erreur lors de la mise à jour de la compétence:', error);
         toast({
           title: "Erreur",
@@ -186,12 +103,9 @@ export const useCompetences = () => {
   // Supprimer une compétence
   const deleteCompetence = async (id: string) => {
     try {
-      const { error } = await supabase
-        .from('competences')
-        .delete()
-        .eq('id', id);
-
-      if (error) {
+      try {
+        await api.delete(`/competences/${id}`);
+      } catch (error) {
         console.error('Erreur lors de la suppression de la compétence:', error);
         toast({
           title: "Erreur",
