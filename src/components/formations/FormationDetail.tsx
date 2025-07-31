@@ -27,6 +27,11 @@ const FormationDetail = ({ formation, onBack }: FormationDetailProps) => {
 
   const mentionsLegales = [
     {
+      title: "Code de la formation",
+      content: formation.code,
+      icon: FileText,
+    },
+    {
       title: "Prérequis",
       content: formation.prerequis,
       icon: Users,
@@ -37,12 +42,22 @@ const FormationDetail = ({ formation, onBack }: FormationDetailProps) => {
       icon: Users,
     },
     {
-      title: "Durée et horaires de la formation",
-      content: formation.dureeHoraires,
+      title: "Durée",
+      content: formation.duree,
       icon: Clock,
     },
     {
-      title: "Modalités, délais moyens d'accès",
+      title: "Horaires",
+      content: formation.horaires,
+      icon: Clock,
+    },
+    {
+      title: "Objectifs pédagogiques",
+      content: formation.objectifsPedagogiques,
+      icon: FileText,
+    },
+    {
+      title: "Modalités et délais d'accès",
       content: formation.modalitesAcces,
       icon: Calendar,
     },
@@ -57,9 +72,34 @@ const FormationDetail = ({ formation, onBack }: FormationDetailProps) => {
       icon: CreditCard,
     },
     {
-      title: "Accessibilité handicapée",
-      content: formation.accessibiliteHandicapee,
-      icon: Accessibility,
+      title: "Contact organisme",
+      content: formation.contactOrganisme,
+      icon: Users,
+    },
+    {
+      title: "Référent pédagogique",
+      content: formation.referentPedagogique,
+      icon: Users,
+    },
+    {
+      title: "Référent qualité",
+      content: formation.referentQualite,
+      icon: Users,
+    },
+    {
+      title: "Modalités techniques",
+      content: formation.modalitesTechniques,
+      icon: FileText,
+    },
+    {
+      title: "Formateur",
+      content: formation.formateur,
+      icon: Users,
+    },
+    {
+      title: "Ressources mises à disposition",
+      content: formation.ressourcesDisposition,
+      icon: FileText,
     },
     {
       title: "Modalités d'évaluation",
@@ -70,6 +110,21 @@ const FormationDetail = ({ formation, onBack }: FormationDetailProps) => {
       title: "Sanction de la formation",
       content: formation.sanctionFormation,
       icon: FileText,
+    },
+    {
+      title: "Niveau/certification",
+      content: formation.niveauCertification,
+      icon: FileText,
+    },
+    {
+      title: "Délai d'acceptation",
+      content: formation.delaiAcceptation,
+      icon: Calendar,
+    },
+    {
+      title: "Accessibilité handicapée",
+      content: formation.accessibiliteHandicapee,
+      icon: Accessibility,
     },
     {
       title: "Cessation anticipée ou abandon",
@@ -85,7 +140,7 @@ const FormationDetail = ({ formation, onBack }: FormationDetailProps) => {
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div className="flex-1">
-          <h2 className="text-2xl font-bold">{formation.titre}</h2>
+          <h2 className="text-2xl font-bold">{formation.code}</h2>
           <div className="flex items-center gap-4 mt-2">
             <Badge variant="secondary" className="flex items-center gap-1">
               <Clock className="h-3 w-3" />
@@ -97,7 +152,7 @@ const FormationDetail = ({ formation, onBack }: FormationDetailProps) => {
             </Badge>
             <Badge variant="default" className="flex items-center gap-1">
               <GitBranch className="h-3 w-3" />
-              Version {formation.version}
+              {new Date(formation.dateModification).toLocaleDateString('fr-FR')}
             </Badge>
           </div>
         </div>
@@ -111,40 +166,40 @@ const FormationDetail = ({ formation, onBack }: FormationDetailProps) => {
         <div className="lg:col-span-2 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Description</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-700 leading-relaxed">{formation.description}</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Public cible</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-700 leading-relaxed">{formation.public}</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
               <CardTitle>Objectifs pédagogiques</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="whitespace-pre-line text-gray-700 leading-relaxed">
-                {formation.objectifs}
+                {formation.objectifsPedagogiques}
               </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle>Programme détaillé</CardTitle>
+              <CardTitle>Public concerné</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-700 leading-relaxed">{formation.publicConcerne}</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Prérequis</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-700 leading-relaxed">{formation.prerequis}</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Modalités techniques</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="whitespace-pre-line text-gray-700 leading-relaxed">
-                {formation.programme}
+                {formation.modalitesTechniques}
               </div>
             </CardContent>
           </Card>

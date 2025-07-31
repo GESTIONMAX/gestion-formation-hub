@@ -1,18 +1,21 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Edit, Eye, Clock, CheckCircle, Calendar, FileText } from "lucide-react";
+import { Plus, Edit, Eye, Clock, CheckCircle, Calendar, FileText, BookOpen } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import RendezVousForm from "./RendezVousForm";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import WorkflowPositionnement from "./WorkflowPositionnement";
+import { useNavigate } from "react-router-dom";
 import api from "@/services/api";
 
 const RendezVousList = () => {
   const [showForm, setShowForm] = useState(false);
   const [showWorkflow, setShowWorkflow] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const [rdvToEdit, setRdvToEdit] = useState(null);
   const [rendezVous, setRendezVous] = useState([
     {
       id: "1",
@@ -27,6 +30,7 @@ const RendezVousList = () => {
   const [positionnementRequests, setPositionnementRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchPositionnementRequests();
@@ -52,8 +56,12 @@ const RendezVousList = () => {
 
   const updateRequestStatus = async (id: string, newStatus: string) => {
     try {
+      console.log(`Tentative de mise à jour du statut pour l'ID: ${id} vers ${newStatus}`);
+      
       // Mise à jour du statut via l'API
-      await api.put(`/positionnement-requests/${id}/status`, { status: newStatus });
+      const response = await api.put(`/positionnement-requests/${id}/status`, { status: newStatus });
+      
+      console.log('Réponse de l\'API:', response.data);
 
       // Rafraîchir la liste
       fetchPositionnementRequests();
@@ -64,6 +72,12 @@ const RendezVousList = () => {
       });
     } catch (error) {
       console.error('Erreur lors de la mise à jour:', error);
+      // Afficher plus de détails sur l'erreur
+      if (error.response) {
+        console.error('Données de réponse d\'erreur:', error.response.data);
+        console.error('Statut d\'erreur:', error.response.status);
+      }
+      
       toast({
         title: "Erreur",
         description: "Impossible de mettre à jour le statut.",
@@ -85,30 +99,122 @@ const RendezVousList = () => {
     }
   };
 
-  const handleCreate = async (rdvData: any) => {
+  const handleSubmitRdv = async (rdvData: any) => {
     try {
-      const newRdv = {
-        ...rdvData,
-        id: Date.now().toString(),
-      };
-      setRendezVous(prev => [newRdv, ...prev]);
+      if (editMode && rdvToEdit) {
+        // Mise à jour d'un RDV existant
+        await updateRendezVous(rdvData);
+      } else {
+        // Création d'un nouveau RDV
+        await createRendezVous(rdvData);
+      }
+      
+      // Réinitialiser les états et rafraîchir les données
       setShowForm(false);
-      toast({
-        title: "Rendez-vous créé",
-        description: "Le rendez-vous a été créé avec succès.",
-      });
+      setEditMode(false);
+      setRdvToEdit(null);
+      // Rafraîchir les données
+      fetchPositionnementRequests();
     } catch (error) {
+      console.error("Erreur lors de la soumission du rendez-vous:", error);
       toast({
         title: "Erreur",
-        description: "Une erreur est survenue lors de la création.",
+        description: "Une erreur est survenue lors de la soumission du rendez-vous.",
         variant: "destructive",
       });
     }
   };
 
+  const createRendezVous = async (rdvData: any) => {
+    try {
+      // Création via l'API
+      await api.post('/positionnement-requests', rdvData);
+      
+      toast({
+        title: "Rendez-vous créé",
+        description: "Le rendez-vous a été créé avec succès.",
+      });
+    } catch (error) {
+      console.error("Erreur lors de la création:", error);
+      throw error;
+    }
+  };
+  
+  const updateRendezVous = async (rdvData: any) => {
+    if (!rdvToEdit?.id) return;
+    
+    try {
+      // Mise à jour via l'API
+      await api.put(`/positionnement-requests/${rdvToEdit.id}`, rdvData);
+      
+      toast({
+        title: "Rendez-vous modifié",
+        description: "Le rendez-vous a été mis à jour avec succès.",
+      });
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour:", error);
+      throw error;
+    }
+  };
+  
+  const handleEditRdv = (rdv: any) => {
+    // Préparer les données pour l'édition
+    const formattedData = {
+      // Informations de base
+      date: rdv.date_rendez_vous || rdv.date || "",
+      canal: rdv.canal || "",
+      objectif: rdv.objectif_rendez_vous || rdv.objectif || "",
+      synthese: rdv.synthese || "",
+      apprenantNom: rdv.nom_beneficiaire ? `${rdv.nom_beneficiaire} ${rdv.prenom_beneficiaire || ""}` : rdv.apprenantNom || "",
+      formationTitre: rdv.formation_selectionnee || rdv.formationTitre || "",
+      
+      // Informations B2B
+      entreprise: rdv.entreprise || "",
+      siret: rdv.siret || "",
+      adresseEntreprise: rdv.adresse_entreprise || "",
+      interlocuteurNom: rdv.interlocuteur_nom || "",
+      interlocuteurFonction: rdv.interlocuteur_fonction || "",
+      interlocuteurEmail: rdv.interlocuteur_email || "",
+      interlocuteurTelephone: rdv.interlocuteur_telephone || "",
+      organismeFinanceur: rdv.organisme_financeur || "",
+      numeroConvention: rdv.numero_convention || "",
+      
+      // Informations complémentaires
+      typeFinancement: rdv.type_financement || "",
+      priseEnChargeOPCO: rdv.prise_en_charge_opco || false,
+      tauxPriseEnCharge: rdv.taux_prise_en_charge || "",
+      restePourEntreprise: rdv.reste_pour_entreprise || "",
+      besoinsSpecifiques: rdv.besoins_specifiques || "",
+      prerequisFormation: rdv.prerequis_formation || "",
+      contraintes: rdv.contraintes || "",
+      delaisDemarrage: rdv.delais_demarrage || "",
+      noteQualification: rdv.note_qualification || ""
+    };
+    
+    setRdvToEdit(rdv);
+    setEditMode(true);
+    setShowForm(true);
+  };
+
   const startWorkflow = (request: any) => {
     setSelectedRequest(request);
     setShowWorkflow(true);
+  };
+  
+  const creerFormation = (request: any) => {
+    // Naviguer vers la page de création de formation avec les données du positionnement
+    navigate('/admin/formations/new', { 
+      state: { 
+        positionnementRequestId: request.id,
+        nomBeneficiaire: `${request.prenom_beneficiaire} ${request.nom_beneficiaire}`,
+        formationSouhaitee: request.formation_selectionnee,
+        sourceData: 'positionnement'
+      } 
+    });
+    toast({
+      title: "Création de formation",
+      description: "Formulaire de création de formation pour " + request.prenom_beneficiaire + " " + request.nom_beneficiaire,
+    });
   };
 
   const handleWorkflowComplete = () => {
@@ -124,8 +230,14 @@ const RendezVousList = () => {
   if (showForm) {
     return (
       <RendezVousForm
-        onSubmit={handleCreate}
-        onCancel={() => setShowForm(false)}
+        onSubmit={handleSubmitRdv}
+        onCancel={() => {
+          setShowForm(false);
+          setEditMode(false);
+          setRdvToEdit(null);
+        }}
+        initialData={editMode && rdvToEdit ? rdvToEdit : undefined}
+        editMode={editMode}
       />
     );
   }
@@ -214,15 +326,29 @@ const RendezVousList = () => {
                         <Button 
                           variant="default" 
                           size="sm"
+                          onClick={() => creerFormation(request)}
+                          className="bg-blue-600 hover:bg-blue-700 mr-2"
+                        >
+                          <BookOpen className="h-4 w-4 mr-1" />
+                          Créer formation
+                        </Button>
+                        <Button 
+                          variant="default" 
+                          size="sm"
                           onClick={() => startWorkflow(request)}
                           disabled={request.status === 'traite'}
                           className="bg-green-600 hover:bg-green-700"
                         >
                           <FileText className="h-4 w-4 mr-1" />
-                          Créer dossier
+                          Créer programme
                         </Button>
-                        <Button variant="outline" size="sm">
-                          <Eye className="h-4 w-4" />
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleEditRdv(request)}
+                        >
+                          <Edit className="h-4 w-4 mr-1" />
+                          Éditer
                         </Button>
                       </div>
                     </CardContent>
@@ -259,11 +385,13 @@ const RendezVousList = () => {
                     </p>
                   )}
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm">
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <Edit className="h-4 w-4" />
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => handleEditRdv(rdv)}
+                    >
+                      <Edit className="h-4 w-4 mr-1" />
+                      Modifier
                     </Button>
                   </div>
                 </CardContent>

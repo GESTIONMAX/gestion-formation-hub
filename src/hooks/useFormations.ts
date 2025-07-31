@@ -6,28 +6,34 @@ import api from "@/services/api";
 // Interface pour les formations
 interface Formation {
   id: string;
-  titre: string;
-  description: string;
-  objectifs: string;
-  programme: string;
-  duree: string;
-  public: string;
-  pdfUrl?: string;
-  version: number;
-  dateCreation: Date;
-  dateModification: Date;
-  createdAt: Date;
-  // Informations légales
+  code: string;
+  
+  // Champs légaux et réglementaires
   prerequis: string;
   publicConcerne: string;
-  dureeHoraires: string;
+  duree: string;
+  horaires: string;
+  objectifsPedagogiques: string;
   modalitesAcces: string;
   tarif: string;
   modalitesReglement: string;
-  accessibiliteHandicapee: string;
+  contactOrganisme: string;
+  referentPedagogique: string;
+  referentQualite: string;
+  modalitesTechniques: string;
+  formateur: string;
+  ressourcesDisposition: string;
   modalitesEvaluation: string;
   sanctionFormation: string;
+  niveauCertification: string;
+  delaiAcceptation: string;
+  accessibiliteHandicapee: string;
   cessationAbandon: string;
+  
+  // Dates
+  dateCreation: Date;
+  dateModification: Date;
+  createdAt: Date;
 }
 
 export const useFormations = () => {
@@ -53,7 +59,7 @@ export const useFormations = () => {
   }, []);
 
   const createFormation = async (
-    formationData: Omit<Formation, 'id' | 'createdAt' | 'version' | 'dateCreation' | 'dateModification'>
+    formationData: Omit<Formation, 'id' | 'createdAt' | 'dateCreation' | 'dateModification'>
   ) => {
     try {
       const response = await api.post('/formations', formationData);
@@ -61,7 +67,7 @@ export const useFormations = () => {
       setFormations(prev => [newFormation, ...prev]);
       toast({
         title: 'Formation créée',
-        description: `Formation "${newFormation.titre}" créée avec succès`,
+        description: `Formation "${newFormation.code}" créée avec succès`,
       });
       return newFormation;
     } catch (error) {
@@ -77,7 +83,7 @@ export const useFormations = () => {
       setFormations(prev => prev.map(f => (f.id === id ? updated : f)));
       toast({
         title: 'Formation mise à jour',
-        description: `Formation "${updated.titre}" mise à jour`,
+        description: `Formation "${updated.code}" mise à jour`,
       });
     } catch (error) {
       console.error('Erreur lors de la modification:', error);
@@ -94,7 +100,7 @@ export const useFormations = () => {
 
       toast({
         title: 'Formation supprimée',
-        description: `Formation "${formation?.titre}" supprimée avec succès`,
+        description: `Formation "${formation?.code}" supprimée avec succès`,
       });
     } catch (error) {
       console.error("Erreur lors de la suppression:", error);

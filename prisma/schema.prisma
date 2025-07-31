@@ -72,24 +72,36 @@ model VerificationToken {
 
 model Formation {
   id                     String    @id @default(uuid())
-  titre                  String
-  description            String
-  objectifs              String
-  programme              String
-  duree                  String
-  public                 String
-  pdfUrl                 String?
-  version                Int       @default(1)
-  prerequis              String
-  publicConcerne         String
-  dureeHoraires          String
-  modalitesAcces         String
-  tarif                  String
-  modalitesReglement     String
-  accessibiliteHandicapee String
-  modalitesEvaluation    String
-  sanctionFormation      String
-  cessationAbandon       String
+  code                   String    // Code de la formation
+  libelle                String    // Libellé ou titre de la formation
+  
+  // Champs légaux et réglementaires (uniquement)
+  prerequis              String    // Prérequis
+  publicConcerne         String    @map("public_concerne")  // Public concerné
+  duree                  String    // Durée
+  horaires               String    @default("9h-12h30 et 14h-17h30, adaptables selon les besoins du bénéficiaire") @map("horaires") // Les horaires
+  objectifsPedagogiques  String    @map("objectifs_pedagogiques")  // Objectifs pédagogiques
+  contenuDetailleJours   String?   @map("contenu_detaille_jours") @db.Text  // Contenu détaillé par jour
+  modalitesAcces         String    @default("Formation accessible à distance ou en présentiel selon le contexte") @map("modalites_acces") // Modalités, délais moyens d'accès
+  
+  tarif                  String    // Tarif de la formation
+  modalitesReglement     String    @map("modalites_reglement") // Modalités de règlement
+  
+  contactOrganisme       String    @default("GestionMax - aurelien@gestionmax.fr - 01.23.45.67.89") @map("contact_organisme") // Contact de l'organisme
+  referentPedagogique    String    @default("Aurélien Lien - aurelien@gestionmax.fr") @map("referent_pedagogique") // Référent pédagogique
+  referentQualite        String    @default("Aurélien Lien - aurelien@gestionmax.fr") @map("referent_qualite") // Référent qualité
+  
+  modalitesTechniques    String    @default("Formation en présentiel individuel") // Modalités techniques et pédagogiques
+  formateur              String    @default("Formateur spécialisé WordPress avec 5+ ans d'expérience") @map("formateur") // Formateur
+  
+  ressourcesDisposition  String    @default("Support de cours, tutoriels vidéo, accès à une plateforme d'exercices") @map("ressources_disposition") // L'organisme de formation mettra à disposition de l'apprenant(e)
+  modalitesEvaluation    String    @map("modalites_evaluation") // Modalités d'évaluation
+  sanctionFormation      String    @map("sanction_formation") // Sanction de la formation
+  niveauCertification    String    @default("Formation non certifiante") @map("niveau_certification") // Niveau/certification obtenue
+  delaiAcceptation       String    @default("7 jours ouvrables") @map("delai_acceptation") // Délai d'acceptation
+  accessibiliteHandicapee String   @default("Formation accessible aux personnes en situation de handicap. Contactez notre référent handicap pour adapter le parcours.") @map("accessibilite_handicapee") // Accessibilité handicapée
+  cessationAbandon       String    @map("cessation_abandon") // Cessation anticipée de la formation ou abandon en cours de formation
+  
   dateCreation           DateTime  @default(now()) @map("date_creation")
   dateModification       DateTime  @default(now()) @updatedAt @map("date_modification")
   createdAt              DateTime  @default(now()) @map("created_at")
@@ -155,11 +167,41 @@ model PositionnementRequest {
   programmeFormation      String?   @map("programme_formation")
   attestationBesoin       Boolean   @default(false) @map("attestation_besoin")
   status                  String    @default("en_attente")
+  
+  // Informations B2B pour la formation professionnelle
+  entreprise              String?   @map("entreprise")
+  siret                   String?   @map("siret")
+  adresseEntreprise       String?   @map("adresse_entreprise")
+  interlocuteurNom        String?   @map("interlocuteur_nom")
+  interlocuteurFonction   String?   @map("interlocuteur_fonction")
+  interlocuteurEmail      String?   @map("interlocuteur_email")
+  interlocuteurTelephone  String?   @map("interlocuteur_telephone")
+  organismeFinanceur      String?   @map("organisme_financeur")
+  numeroConvention        String?   @map("numero_convention")
+  typeFinancement         String?   @map("type_financement") // OPCO, entreprise, personnel, CPF, etc.
+  priseEnChargeOPCO       Boolean?  @default(false) @map("prise_en_charge_opco")
+  tauxPriseEnCharge       String?   @map("taux_prise_en_charge")
+  restePourEntreprise     String?   @map("reste_pour_entreprise")
+  
+  // Qualification commerciale
+  besoinsSpecifiques      String?   @map("besoins_specifiques")
+  prerequisFormation      String?   @map("prerequis_formation")
+  contraintes             String?   @map("contraintes")
+  delaisDemarrage         String?   @map("delais_demarrage")
+  noteQualification       String?   @map("note_qualification")
+  
+  // Rendez-vous
+  dateRendezVous          DateTime? @map("date_rendez_vous")
+  canal                   String?   @map("canal") // telephone, visio, presentiel, email
+  objectifRendezVous      String?   @map("objectif_rendez_vous")
+  synthese                String?   @map("synthese")
+  
   createdAt               DateTime  @default(now()) @map("created_at")
   updatedAt               DateTime  @default(now()) @updatedAt @map("updated_at")
   
   // Relations
   dossierFormation        DossierFormation?
+  programmePersonnalise   ProgrammePersonnalise?
   
   @@map("positionnement_requests")
 }
@@ -289,19 +331,42 @@ model DocumentFormation {
 }
 
 model ProgrammePersonnalise {
-  id              String    @id @default(uuid())
-  formationId     String    @map("formation_id")
-  titre           String
-  description     String
-  contenu         String
-  duree           String
-  objectifsSpecifiques String  @map("objectifs_specifiques")
-  evaluationSur   String    @map("evaluation_sur")
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at")
+  id                    String    @id @default(uuid())
+  formationId           String    @map("formation_id")
+  positionnementRequestId String?  @unique @map("positionnement_request_id")
+  titre                 String
+  description           String
+  contenu               String
+  duree                 String
+  objectifsSpecifiques  String    @map("objectifs_specifiques")
+  evaluationSur         String    @map("evaluation_sur")
+  
+  // Champs légaux et réglementaires
+  prerequis             String?   @map("prerequis")
+  publicConcerne        String?   @map("public_concerne")
+  horaires              String?   @map("horaires")
+  modalitesAcces        String?   @map("modalites_acces")
+  delaiAcces            String?   @map("delai_acces")
+  tarif                 String?   @map("tarif")
+  modalitesReglement    String?   @map("modalites_reglement")
+  referentPedagogique   String?   @map("referent_pedagogique")
+  referentQualite       String?   @map("referent_qualite")
+  modalitesTechniques   String?   @map("modalites_techniques")
+  formateur            String?   @map("formateur")
+  ressourcesDisposition String?   @map("ressources_disposition")
+  modalitesEvaluation   String?   @map("modalites_evaluation")
+  sanctionFormation     String?   @map("sanction_formation")
+  niveauCertification   String?   @map("niveau_certification")
+  delaiAcceptation      String?   @map("delai_acceptation")
+  accessibiliteHandicap String?   @map("accessibilite_handicap")
+  cessationAnticipee    String?   @map("cessation_anticipee")
+  
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @default(now()) @updatedAt @map("updated_at")
   
   // Relations
-  formation       Formation @relation(fields: [formationId], references: [id])
+  formation             Formation @relation(fields: [formationId], references: [id])
+  positionnementRequest PositionnementRequest? @relation(fields: [positionnementRequestId], references: [id])
   
   @@map("programmes_personnalises")
 }

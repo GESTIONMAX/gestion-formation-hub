@@ -8,13 +8,16 @@ import formationsRoutes from './formations.routes';
 import apprenantsRoutes from './apprenants.routes';
 import competencesRoutes from './competences.routes';
 import actionsCorrectivesRoutes from './actions-correctives.routes';
+import documentsRoutes from './documents.routes';
+import programmesPersonnalisesRoutes from './programmes-personnalises.routes';
+import dossiersFormationRoutes from './dossiers-formation.routes';
 
 // Charger les variables d'environnement
 dotenv.config();
 
 // Créer l'application Express
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001; // Changement du port par défaut pour éviter les conflits
 
 // Middlewares
 app.use(cors());
@@ -30,6 +33,9 @@ app.use('/formations', formationsRoutes);
 app.use('/apprenants', apprenantsRoutes);
 app.use('/competences', competencesRoutes);
 app.use('/actions-correctives', actionsCorrectivesRoutes);
+app.use('/dossiers', documentsRoutes);
+app.use('/programmes-personnalises', programmesPersonnalisesRoutes);
+app.use('/dossiers-formation', dossiersFormationRoutes);
 
 // Route de santé
 app.get('/', (req, res) => {

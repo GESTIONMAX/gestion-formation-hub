@@ -151,7 +151,7 @@ const FormationsList = () => {
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
-                        <CardTitle className="text-lg">{formation.titre}</CardTitle>
+                        <CardTitle className="text-lg">{formation.code || "Code non défini"}</CardTitle>
                         <div className="flex items-center gap-2 mt-2 flex-wrap">
                           <Badge variant="secondary" className="flex items-center gap-1">
                             <Clock className="h-3 w-3" />
@@ -159,11 +159,7 @@ const FormationsList = () => {
                           </Badge>
                           <Badge variant="outline" className="flex items-center gap-1">
                             <Users className="h-3 w-3" />
-                            Qualiopi
-                          </Badge>
-                          <Badge variant="default" className="flex items-center gap-1">
-                            <GitBranch className="h-3 w-3" />
-                            v{formation.version}
+                            Formation
                           </Badge>
                         </div>
                       </div>
@@ -171,13 +167,17 @@ const FormationsList = () => {
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                      {formation.description}
+                      {formation.objectifsPedagogiques || "Objectifs non définis"}
                     </p>
                     
                     <div className="space-y-2 mb-4 text-xs text-gray-500">
                       <div className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
-                        <span>Créé le {formatDate(formation.dateCreation)}</span>
+                        <Users className="h-3 w-3" />
+                        <span>Public: {formation.publicConcerne || "Non défini"}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Info className="h-3 w-3" />
+                        <span>Prérequis: {formation.prerequis || "Aucun"}</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />

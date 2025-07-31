@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convocation - {{ref_dossier}}</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #2563eb;
+      padding-bottom: 10px;
+    }
+    .logo {
+      max-width: 200px;
+      height: auto;
+      margin-bottom: 15px;
+    }
+    h1 {
+      color: #2563eb;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .reference {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    .date {
+      text-align: right;
+      margin: 20px 0;
+    }
+    .recipient {
+      margin: 20px 0;
+    }
+    .content {
+      margin: 30px 0;
+    }
+    .formation-details {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #f9fafb;
+      border-radius: 5px;
+    }
+    .row {
+      display: flex;
+      margin-bottom: 10px;
+    }
+    .col-label {
+      flex: 1;
+      font-weight: bold;
+    }
+    .col-value {
+      flex: 2;
+    }
+    .signature {
+      margin-top: 50px;
+      text-align: right;
+    }
+    .footer {
+      margin-top: 30px;
+      font-size: 12px;
+      text-align: center;
+      color: #666;
+    }
+    .important {
+      font-weight: bold;
+      color: #dc2626;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>CONVOCATION À UNE FORMATION</h1>
+    <p class="reference">Référence : {{ref_dossier}}</p>
+  </div>
+
+  <div class="date">
+    Paris, le {{date_generation}}
+  </div>
+
+  <div class="recipient">
+    <p><strong>À l'attention de :</strong><br>
+    {{nom_apprenant}}</p>
+  </div>
+
+  <div class="content">
+    <p>Madame, Monsieur,</p>
+    
+    <p>
+      Nous avons le plaisir de vous confirmer votre inscription à la formation mentionnée ci-dessous :
+    </p>
+
+    <div class="formation-details">
+      <div class="row">
+        <div class="col-label">Intitulé :</div>
+        <div class="col-value">{{formation_titre}}</div>
+      </div>
+      <div class="row">
+        <div class="col-label">Dates :</div>
+        <div class="col-value">Du {{date_debut}} au {{date_fin}}</div>
+      </div>
+      <div class="row">
+        <div class="col-label">Horaires :</div>
+        <div class="col-value">9h00-12h00 / 13h00-17h00</div>
+      </div>
+      <div class="row">
+        <div class="col-label">Lieu :</div>
+        <div class="col-value">Formation à distance</div>
+      </div>
+      <div class="row">
+        <div class="col-label">Durée totale :</div>
+        <div class="col-value">{{duree_formation}} heures</div>
+      </div>
+    </div>
+
+    <p class="important">Veuillez vous connecter 15 minutes avant le début de la formation pour vérifier votre équipement.</p>
+
+    <p>
+      Pour toute demande concernant votre convocation ou des questions relatives à l'organisation de cette formation, n'hésitez pas à nous contacter au 01 23 45 67 89 ou par email à contact@gestionmax-formation.fr
+    </p>
+
+    <p>
+      Nous vous remercions de votre confiance et vous souhaitons une excellente formation.
+    </p>
+  </div>
+
+  <div class="signature">
+    <p>L'équipe GestionMax Formation</p>
+    <p>Maxime Formateur<br>
+    Responsable pédagogique</p>
+  </div>
+
+  <div class="footer">
+    <p>GestionMax Formation - 123 Avenue de la Formation, 75000 Paris - SIRET 12345678900010</p>
+    <p>Tél : 01 23 45 67 89 - Email : contact@gestionmax-formation.fr</p>
+  </div>
+</body>
+</html>

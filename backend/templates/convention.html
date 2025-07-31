@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convention de Formation - {{ref_dossier}}</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    .header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .logo {
+      max-width: 150px;
+      height: auto;
+      margin-bottom: 15px;
+    }
+    h1 {
+      color: #333;
+      font-size: 18px;
+      margin-bottom: 10px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    h2 {
+      color: #333;
+      font-size: 16px;
+      margin: 15px 0;
+    }
+    .reference {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    .section-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 15px;
+      margin-bottom: 10px;
+    }
+    .partie {
+      margin-bottom: 20px;
+    }
+    .bold {
+      font-weight: bold;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .signatures {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .signature-block {
+      flex: 1;
+      padding: 10px;
+      border-top: 1px solid #ddd;
+      margin: 0 10px;
+      height: 80px;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 10px;
+      text-align: center;
+      color: #666;
+    }
+    .page-break {
+      page-break-after: always;
+    }
+    .prix-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .prix-table th, .prix-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAAyCAYAAAAZUZThAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAJJSURBVHgB7dxRbttADIXhV1IWFPdEUdcLIXUBe9aNpAT5yARkSJHi03wk0LC5BUjC9n1/vL8/+ftL/+TBGj9/jLe32/bH+9vd7+/vLzXHUqKqHl6raFSiPCXa/7umavnrVWMsMUZFjzUqUWI9lJ8NVdU05KvBv0Y1UaKS+ee4RD2Wluifx3plXh4FCC5KkBJ9gBBKkBJNyFp5XYIQELwEKVESHQ3f6rWLICA+CUoQiwQgUH8+/nIsBChB0o3pxnITxK+r8jVH7ZJjLc9vv6qU5Xxee/0ShI5YycYblsIfhrK9+w4zx7vruHrOS4KFkS1XgrBgjRbffQf3I37nrk9omxW9JAgXqMGC9V0H+6vPrLY0TDYhIEFYsMYKHXTIHT3fQLYeJAgN1kikAfcuye6bepBsdQvDnAlCg3X04JXF6i4BZLMR30xcgtBgHT1kxdXpG1TZInIMJaoooxo0WEcPVnG1+sZTtshx4lJ5A22mqcpGgvBgnT1Q5dWZG0ZpC3ZXn6J9a4yu0QbVnk+kCJBpuOoGznH3G3LU7t4jN/VNtDTw9myNPnVKlCBWJ7GqJAcpNf1sfx+SmJCpnsqrMDT23YzYvbN3OI38GRswgZPc/ebmmn7Gzrs7Ynnf0PAfiZHzu9LFem1WtkpZjk/LcNAwEF6kR4Z/U9FZEiFEbbUsU/cHqNhdUBIs0QVOrm9Y+cbl35nfPgbplXV5FOW9qO9GCZLp9yr9thIkyxwxWYnPl9i2M7/WcXl6Bw0v9td18a1JAAAAAElFTkSuQmCC" alt="GestionMax" class="logo">
+    <h1>Convention de formation professionnelle</h1>
+    <p class="reference">(Articles L.6353-1 à L.6353-7 du Code du travail)</p>
+  </div>
+
+  <div class="partie">
+    <p><span class="bold">Intitulé Programme de formation:</span> {{formation_titre}} pour la mise opérationnelle: Opérationnel</p>
+    <p><span class="bold">Pour:</span> {{nom_apprenant}} de la région: Les régions Sud-Méditerranée - PACA / Corse</p>
+    <p><span class="bold">Déclaration d'activité:</span> 93XXXX99 du numéro du préfet de région Provence-Alpes Côte d'Azur.</p>
+    <p><span class="bold">SIRET:</span> XXXXXXXXXXX</p>
+    <p><span class="bold">Dirigé par:</span> Monsieur LXXXX</p>
+  </div>
+
+  <div class="section-title">1. Le destinataire / Nom de l'entreprise cliente</div>
+  <div class="partie">
+    <p><span class="bold">Nom:</span> {{nom_apprenant}}</p>
+    <p><span class="bold">Statut:</span> En cours de restructuration</p>
+    <p><span class="bold">Adresse:</span> 30000 Gard</p>
+  </div>
+
+  <div class="section-title">2. Présentation de la formation</div>
+  <div class="partie">
+    <p>Par la présente convention, conformément en application des dispositions du livre III et Code du travail portant sur l'organisation professionnelle continue dans le cadre de l'éducation permanente, l'organisme de formation s'engage à organiser l'action de formation décrite dans ce document.</p>
+    <p>La formation mentionnée ci-dessus sera dispensée par un partenaire issu de notre personnel à l'article de formation indiquée organisée par l'organisme de formation.</p>
+  </div>
+
+  <div class="section-title">3. Type et nature de la formation (Art. L.6313-1 du code du travail): Actions de promotion professionnelle</div>
+  <div class="partie">
+    <p><span class="bold">Intitulé:</span> {{formation_titre}}</p>
+    <p><span class="bold">Lieu de formation:</span> A distance - Les régions Sud-Méditerranée - 30000 Gard/Nîmes</p>
+    <p><span class="bold">Effectif formé:</span> 1</p>
+    
+    <table>
+      <tr>
+        <th>Date</th>
+        <th>Horaire</th>
+        <th>Durée</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>{{date_debut}}</td>
+        <td>09:00-13:00</td>
+        <td>4 h 00 min</td>
+        <td>{{objectifsSpecifiques}}</td>
+      </tr>
+      <tr>
+        <td>{{date_fin}}</td>
+        <td>09:00-13:00</td>
+        <td>4 h 00 min</td>
+        <td>{{contenu}}</td>
+      </tr>
+    </table>
+    <p>Le bénéficiaire atteste que le programme de formation et du formateur est fourni en annexe.</p>
+  </div>
+  
+  <div class="page-break"></div>
+  
+  <div class="section-title">4. Prix de la formation</div>
+  <div class="partie">
+    <p>Ce programme de formation est réalisé par notre organisme à titre gratuit suite à une demande d'aide exceptionnelle. Ces actions bénévoles en temps nécessaire sont faites sur engagement philanthropique.</p>
+    
+    <table class="prix-table">
+      <tr>
+        <td>Descriptif de cette période de formation</td>
+        <td class="bold">Prix</td>
+      </tr>
+      <tr>
+        <td>Supports de cours offert</td>
+        <td>0 €</td>
+      </tr>
+      <tr>
+        <td>Heures de cours</td>
+        <td>0 €</td>
+      </tr>
+      <tr>
+        <th>TOTAL NET DE TAXES: 0000 TTC</th>
+        <th>0 €</th>
+      </tr>
+    </table>
+    <p>Le prestataire atteste qu'il ne réalise aucun chiffre d'affaires. Il réalise ces actions pour valoriser l'apprenant au niveau de son employeur et l'acquisition de bonification.</p>
+    <p>TVA non applicable selon l'article du 293 B du CGI.</p>
+  </div>
+
+  <div class="section-title">5. Modalités pédagogiques et d'évaluation</div>
+  <div class="partie">
+    <p>Le bénéficiaire de formation est-en-ligne (UBL). Le Code du Travail, une attention particulière est apportée, au contenu et à la durée de la formation, aux supports pédagogiques et aux ressources nécessaires à la réalisation de la prestation.</p>
+  </div>
+
+  <div class="section-title">6. Non-réalisation, annulation ou report</div>
+  <div class="partie">
+    <p>En cas de résiliation de la présente convention par le client à moins de 10 jours ouvrés avant le début de la prestation mentionnée, sauf cas de force majeure, le bénéficiaire s'engage au versement d'une somme d'un montant de 0 euros représentant 0% du prix total mentionné.</p>
+  </div>
+
+  <div class="section-title">7. Dédommagement, réparation ou dédit</div>
+  <div class="partie">
+    <p>En cas de renoncement par le bénéficiaire avant le début du programme de formation:</p>
+    <ul>
+      <li>Dans un délai supérieur à 15 jours ouvrés avant le début de la formation: 0% du coût de la formation est dû.</li>
+      <li>Dans un délai compris entre 7 et 14 jours ouvrés avant le début de la formation: 0% du coût total de la formation est dû.</li>
+      <li>Dans un délai inférieur à 7 jours ouvrés avant le début de la formation: 0% du coût total de la formation est dû.</li>
+    </ul>
+  </div>
+
+  <div class="section-title">8. Litiges</div>
+  <div class="partie">
+    <p>Si une contestation ou un différend ne peuvent être réglés par voie à l'amiable, le Tribunal de Marseille sera seul compétent pour régler le litige.</p>
+    <p>Document établi en l'exemplaire à Marseille, le 20 Décembre 2024</p>
+  </div>
+
+  <div class="signatures">
+    <div class="signature-block">
+      <p>Pour l'organisme de formation,</p>
+      <p>Monsieur LXXXXXXXXXX</p>
+      <p>Signature et cachet:</p>
+    </div>
+    
+    <div class="signature-block">
+      <p>Pour le bénéficiaire,</p>
+      <p>{{nom_apprenant}}</p>
+      <p>Signature:</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>GestionMax | Les régions Sud-Méditerranée - Gard/Nîmes, France | SIRET XXXXXXXXXXX | Déclaration 93XXXX99</p>
+  </div>
+</body>
+</html>

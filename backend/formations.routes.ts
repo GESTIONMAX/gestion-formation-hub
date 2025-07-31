@@ -8,9 +8,7 @@ const prisma = new PrismaClient();
 // GET /api/formations - Récupérer toutes les formations
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const formations = await prisma.formation.findMany({
-      orderBy: { dateModification: 'desc' }
-    });
+    const formations = await prisma.formation.findMany();
     res.json(formations);
   } catch (error) {
     console.error('Erreur lors de la récupération des formations:', error);
@@ -41,10 +39,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 router.post('/', authMiddleware, async (req: Request, res: Response) => {
   try {
     const formationData = {
-      ...req.body,
-      dateCreation: new Date(),
-      dateModification: new Date(),
-      version: 1
+      ...req.body
     };
     
     const newFormation = await prisma.formation.create({
@@ -76,11 +71,7 @@ router.put('/:id', authMiddleware, async (req: Request, res: Response) => {
     // Mettre à jour la formation avec les nouvelles données
     const updatedFormation = await prisma.formation.update({
       where: { id },
-      data: {
-        ...formationData,
-        dateModification: new Date(),
-        version: existingFormation.version + 1
-      }
+      data: formationData
     });
     
     res.json(updatedFormation);
