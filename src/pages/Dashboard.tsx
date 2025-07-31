@@ -17,7 +17,7 @@ import ActionsCorrectivesList from "@/components/actions-correctives/ActionsCorr
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("formations");
-  const { user, signOut } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -35,7 +35,7 @@ const Dashboard = () => {
                 </p>
               )}
             </div>
-            <Button variant="outline" onClick={signOut}>
+            <Button variant="outline" onClick={logout}>
               Se déconnecter
             </Button>
           </div>

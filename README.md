@@ -52,24 +52,38 @@ npm run dev
 
 ## Environment variables
 
-The application uses Supabase for data storage. Two variables must be available when running the Vite dev server or building the project:
+The application uses Prisma with a PostgreSQL database. The following environment variables must be available when running the project:
 
 ```bash
-VITE_SUPABASE_URL=<your-supabase-url>
-VITE_SUPABASE_KEY=<your-supabase-key>
+DATABASE_URL="postgresql://<username>:<password>@<host>:<port>/<database_name>"
+
+# Configuration NextAuth.js
+NEXTAUTH_SECRET="your-nextauth-secret"
+NEXTAUTH_URL="http://localhost:5173"
+
+# Configuration JWT pour le backend Express
+JWT_SECRET="your-jwt-secret"
+PORT=5000
 ```
 
-Create a `.env` file at the project root or export them in your shell.
+Create a `.env` file at the project root with these variables.
 
-### Local development fallback
+### Local development database setup
 
-If you don't have a Supabase project you can run a local instance with the [Supabase CLI](https://supabase.com/docs/guides/cli):
+Make sure you have PostgreSQL installed and running locally. Then, set up your database and run the Prisma migrations:
 
 ```bash
-npx supabase start
+# Apply the database migrations
+npx prisma migrate dev
+
+# Generate the Prisma client
+npx prisma generate
+
+# (Optional) Open Prisma Studio to manage your database
+npx prisma studio
 ```
 
-The command outputs a local URL (usually `http://localhost:54321`) and anon key. Use these values for the variables above when developing locally.
+Prisma Studio provides a visual interface to view and edit your database at `http://localhost:5555`.
 
 ## What technologies are used for this project?
 

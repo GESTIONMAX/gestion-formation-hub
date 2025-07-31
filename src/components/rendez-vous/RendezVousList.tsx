@@ -191,7 +191,7 @@ const RendezVousList = () => {
                         {request.experience_wordpress && (
                           <p><strong>Expérience :</strong> {request.experience_wordpress.substring(0, 50)}...</p>
                         )}
-                        <p><strong>Reçu le :</strong> {new Date(request.created_at).toLocaleDateString('fr-FR')}</p>
+                        <p><strong>Reçu le :</strong> {request.createdAt ? new Date(request.createdAt).toLocaleDateString('fr-FR') : 'Date inconnue'}</p>
                       </div>
                       
                       <div className="flex gap-2 mt-4">

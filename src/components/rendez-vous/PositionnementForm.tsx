@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import api from "@/services/api";
 import PositionnementFormHeader from "./PositionnementFormHeader";
 import BeneficiaireInfoSection from "./BeneficiaireInfoSection";
 import CoordonneesSection from "./CoordonneesSection";
@@ -65,32 +65,28 @@ const PositionnementForm = ({ onSubmit, onCancel, formationTitre = "WordPress : 
     try {
       console.log("Données envoyées:", formData);
       
-      // Utilisation de la fonction RPC pour contourner les politiques RLS
-      const { data, error } = await supabase.rpc('create_positionnement_request', {
-        p_nom_beneficiaire: formData.nomBeneficiaire,
-        p_prenom_beneficiaire: formData.prenomBeneficiaire,
-        p_email: formData.email,
-        p_telephone: formData.telephone,
-        p_formation_selectionnee: formData.formationSelectionnee,
-        p_date_naissance: formData.dateNaissance || null,
-        p_sexe: formData.sexe,
-        p_situation_handicap: formData.situationHandicap,
-        p_adresse: formData.adresse,
-        p_code_postal: formData.codePostal,
-        p_ville: formData.ville,
-        p_statut: formData.statut,
-        p_experience_wordpress: formData.experienceWordPress,
-        p_objectifs_principaux: formData.objectifsPrincipaux,
-        p_niveau_maitrise: formData.niveauMaitrise,
-        p_programme_formation: formData.programmeFormation
+      // Utilisation de l'API qui interagit avec Prisma
+      const response = await api.post('/api/positionnement-requests', {
+        nomBeneficiaire: formData.nomBeneficiaire,
+        prenomBeneficiaire: formData.prenomBeneficiaire,
+        email: formData.email,
+        telephone: formData.telephone,
+        formationSelectionnee: formData.formationSelectionnee,
+        dateNaissance: formData.dateNaissance || null,
+        sexe: formData.sexe,
+        situationHandicap: formData.situationHandicap,
+        adresse: formData.adresse,
+        codePostal: formData.codePostal,
+        ville: formData.ville,
+        statut: formData.statut,
+        experienceWordpress: formData.experienceWordPress,
+        objectifsPrincipaux: formData.objectifsPrincipaux,
+        niveauMaitrise: formData.niveauMaitrise,
+        programmeFormation: formData.programmeFormation
       });
 
-      if (error) {
-        console.error('Erreur Supabase:', error);
-        throw error;
-      }
-
-      console.log('Demande créée avec succès, ID:', data);
+      const { data } = response;
+      console.log('Demande créée avec succès, ID:', data.id);
 
       toast({
         title: "Demande envoyée",
@@ -102,7 +98,7 @@ const PositionnementForm = ({ onSubmit, onCancel, formationTitre = "WordPress : 
       console.error('Erreur lors de l\'envoi:', error);
       toast({
         title: "Erreur",
-        description: `Une erreur est survenue lors de l'envoi de votre demande : ${error instanceof Error ? error.message : 'Erreur inconnue'}`,
+        description: `Une erreur est survenue lors de l'envoi de votre demande : ${error instanceof Error ? error.message : error?.response?.data?.message || 'Erreur inconnue'}`,
         variant: "destructive",
       });
     } finally {
