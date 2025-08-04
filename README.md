@@ -68,6 +68,33 @@ PORT=5000
 
 Create a `.env` file at the project root with these variables.
 
+## Available Commands
+
+This project includes several npm scripts to help with development and deployment:
+
+```bash
+# Start the frontend development server only
+npm run dev
+
+# Start both the frontend and backend authentication servers concurrently
+npm run dev:auth
+
+# Start only the backend authentication server
+npm run auth-server
+
+# Build the application for production
+npm run build
+
+# Build the application for development environment
+npm run build:dev
+
+# Run ESLint to check code quality
+npm run lint
+
+# Preview the production build locally
+npm run preview
+```
+
 ### Local development database setup
 
 Make sure you have PostgreSQL installed and running locally. Then, set up your database and run the Prisma migrations:
