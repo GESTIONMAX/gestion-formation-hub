@@ -33,8 +33,7 @@ const FormationsPreview = () => {
       modalites: "Présentiel ou à distance",
       tauxParticipation: "98%",
       tauxReussite: "95%",
-      programmeUrl: "/programmes/programme-exemple.html",
-      categorie: "WordPress"
+      programmeUrl: "/programmes/programme-exemple.html"
     },
     {
       id: "2", 
@@ -53,8 +52,7 @@ const FormationsPreview = () => {
       modalites: "Présentiel ou à distance",
       tauxParticipation: "96%",
       tauxReussite: "92%",
-      programmeUrl: "/programmes/programme-exemple.html",
-      categorie: "WordPress"
+      programmeUrl: "/programmes/programme-exemple.html"
     }
   ];
 

@@ -34,7 +34,7 @@ const Footer = () => {
           {/* Column 2 - Navigation */}
           <div>
             <h5 className="text-xl font-bold mb-4 text-blue-400">Navigation</h5>
-            <nav className="flex flex-col space-y-2">
+            <nav className="flex flex-col space-y-2" aria-label="Liens de pied de page">
               <Link to="/" className="text-gray-300 hover:text-white transition-colors">Accueil</Link>
               <Link to="/catalogue" className="text-gray-300 hover:text-white transition-colors">Catalogue</Link>
               <Link to="/blog" className="text-gray-300 hover:text-white transition-colors">Blog</Link>
@@ -93,7 +93,7 @@ const Footer = () => {
                 <span className="text-gray-300">Référencé Datadock</span>
               </div>
               <div className="mt-4">
-                <p className="text-sm text-gray-400">N° déclaration d'activité: 93 06 108 8906</p>
+                <p className="text-sm text-gray-300">N° déclaration d'activité: 93 06 108 8906</p>
                 <p className="text-xs text-gray-500 mt-1">Cet enregistrement ne vaut pas agrément de l'État (Article L.6352-12 du Code du travail)</p>
               </div>
             </div>
@@ -121,11 +121,11 @@ const Footer = () => {
       {/* Copyright Bar */}
       <div className="bg-gray-950 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center text-sm">
-          <p className="text-gray-400 mb-2 sm:mb-0">© {currentYear} GestionMax Formation. Tous droits réservés.</p>
+          <p className="text-gray-300 mb-2 sm:mb-0">© {currentYear} GestionMax Formation. Tous droits réservés.</p>
           <div className="flex space-x-6">
-            <Link to="/mentions-legales" className="text-gray-400 hover:text-white transition-colors">Mentions légales</Link>
-            <Link to="/politique-confidentialite" className="text-gray-400 hover:text-white transition-colors">Politique de confidentialité</Link>
-            <Link to="/accessibilite" className="text-gray-400 hover:text-white transition-colors">Accessibilité</Link>
+            <Link to="/mentions-legales" className="text-gray-300 hover:text-white transition-colors">Mentions légales</Link>
+            <Link to="/politique-confidentialite" className="text-gray-300 hover:text-white transition-colors">Politique de confidentialité</Link>
+            <Link to="/accessibilite" className="text-gray-300 hover:text-white transition-colors">Accessibilité</Link>
           </div>
         </div>
       </div>

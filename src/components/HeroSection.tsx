@@ -17,9 +17,9 @@ const HeroSection = () => {
       </div>
       <div className="relative z-10 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-5xl font-bold mb-6">
+          <h1 className="text-5xl font-bold mb-6">
             Formations WordPress Professionnelles
-          </h2>
+          </h1>
           <p className="text-xl mb-8 max-w-3xl mx-auto leading-relaxed">
             Développez vos compétences WordPress avec un formateur certifié. 
             Formations éligibles CPF et conformes Qualiopi.

@@ -8,7 +8,7 @@ const Navigation = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className="flex items-center gap-6">
+    <nav className="flex items-center gap-6" aria-label="Menu principal">
       <Link to="/">
         <Button 
           variant={isActive("/") ? "default" : "ghost"}

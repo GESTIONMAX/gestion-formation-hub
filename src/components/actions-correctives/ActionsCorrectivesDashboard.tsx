@@ -37,7 +37,7 @@ const ActionsCorrectivesDashboard = () => {
 
   // Statistiques par statut pour le graphique
   const statutStats = [
-    { name: 'Planifiées', value: stats.planifiees, color: '#6b7280' },
+    { name: 'Planifiées', value: stats.planifiees, color: '#4b5563' },
     { name: 'En cours', value: stats.enCours, color: '#f59e0b' },
     { name: 'Terminées', value: stats.terminees, color: '#10b981' },
     { name: 'Annulées', value: stats.annulees, color: '#ef4444' },

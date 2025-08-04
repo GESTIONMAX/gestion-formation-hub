@@ -11,6 +11,7 @@ export interface Formation {
   modalites: string;
   tauxParticipation?: string;
   tauxReussite?: string;
+  programmeUrl?: string;
 }
 
 export interface CategorieFormation {

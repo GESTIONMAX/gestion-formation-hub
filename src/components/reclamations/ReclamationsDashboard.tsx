@@ -40,7 +40,7 @@ const ReclamationsDashboard = () => {
     { name: 'Nouvelles', value: stats.nouvelles, color: '#ef4444' },
     { name: 'En cours', value: stats.enCours, color: '#f59e0b' },
     { name: 'Résolues', value: stats.resolues, color: '#10b981' },
-    { name: 'Fermées', value: stats.fermees, color: '#6b7280' },
+    { name: 'Fermées', value: stats.fermees, color: '#4b5563' },
   ];
 
   // Temps moyen de résolution (en jours)
