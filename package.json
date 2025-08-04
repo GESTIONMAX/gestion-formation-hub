@@ -79,6 +79,7 @@
     "zod": "^3.25.49"
   },
   "devDependencies": {
+    "@axe-core/react": "^4.10.2",
     "@eslint/js": "^9.9.0",
     "@tailwindcss/typography": "^0.5.15",
     "@types/bcrypt": "^6.0.0",
