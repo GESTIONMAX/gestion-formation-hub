@@ -14,6 +14,7 @@ import VeilleManager from "@/components/veille/VeilleManager";
 import CompetenceManager from "@/components/competences/CompetenceManager";
 import ReclamationsList from "@/components/reclamations/ReclamationsList";
 import ActionsCorrectivesList from "@/components/actions-correctives/ActionsCorrectivesList";
+import Header from "@/components/Header";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("formations");
@@ -21,26 +22,19 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">GestionMax Formation</h1>
-              <p className="text-gray-600">
-                Gestion des formations WordPress - Certifié Qualiopi
-              </p>
-              {user && (
-                <p className="text-sm text-gray-500 mt-1">
-                  Connecté en tant que: {user.email}
-                </p>
-              )}
-            </div>
-            <Button variant="outline" onClick={logout}>
-              Se déconnecter
-            </Button>
-          </div>
+      <Header />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex justify-between items-center">
+        <div>
+          {user && (
+            <p className="text-sm text-gray-500">
+              Connecté en tant que: {user.email}
+            </p>
+          )}
         </div>
-      </header>
+        <Button variant="outline" onClick={logout}>
+          Se déconnecter
+        </Button>
+      </div>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">

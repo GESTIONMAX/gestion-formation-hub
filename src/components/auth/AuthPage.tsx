@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import Header from "@/components/Header";
 
 const AuthPage = () => {
   const [email, setEmail] = useState("");
@@ -70,12 +71,14 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">GestionMax Formation</CardTitle>
-          <p className="text-gray-600">Accédez à votre espace formateur</p>
-        </CardHeader>
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <div className="flex items-center justify-center px-4 py-16">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl font-bold">GestionMax Formation</CardTitle>
+            <p className="text-gray-600">Accédez à votre espace formateur</p>
+          </CardHeader>
         <CardContent>
           <Tabs defaultValue="signin" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
@@ -210,7 +213,8 @@ const AuthPage = () => {
             </TabsContent>
           </Tabs>
         </CardContent>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 };

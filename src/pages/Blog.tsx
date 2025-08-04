@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, User, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
-import Navigation from "@/components/Navigation";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 const Blog = () => {
@@ -80,18 +80,7 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">GestionMax Formation</h1>
-              <p className="text-gray-600">Formations WordPress professionnelles - Certifié Qualiopi</p>
-            </div>
-            <Navigation />
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <section className="relative">

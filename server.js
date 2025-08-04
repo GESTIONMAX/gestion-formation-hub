@@ -6,9 +6,11 @@ import { fileURLToPath } from 'url';
 import cors from 'cors';
 import { PrismaClient } from '@prisma/client';
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import NextAuth from 'next-auth';
-import { default as CredentialsProvider } from 'next-auth/providers/credentials';
+import { default as NextAuth } from 'next-auth';
 import bcrypt from 'bcrypt';
+
+// Import next-auth providers dynamically
+const { default: CredentialsProvider } = await import('next-auth/providers/credentials');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const prisma = new PrismaClient();
