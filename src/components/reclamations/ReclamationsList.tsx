@@ -37,10 +37,10 @@ const ReclamationsList = () => {
 
   const getPriorityColor = (priorite: string) => {
     const colors = {
-      'basse': 'text-green-600 bg-green-50',
-      'normale': 'text-blue-600 bg-blue-50',
-      'haute': 'text-orange-600 bg-orange-50',
-      'urgente': 'text-red-600 bg-red-50'
+      'basse': 'text-green-800 bg-green-200',
+      'normale': 'text-blue-800 bg-blue-200',
+      'haute': 'text-orange-800 bg-orange-200',
+      'urgente': 'text-red-800 bg-red-200'
     };
     return colors[priorite as keyof typeof colors] || colors.normale;
   };
@@ -71,7 +71,7 @@ const ReclamationsList = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="text-gray-500">Chargement des réclamations...</div>
+        <div className="text-gray-700">Chargement des réclamations...</div>
       </div>
     );
   }
@@ -129,7 +129,7 @@ const ReclamationsList = () => {
               {filteredReclamations.length === 0 ? (
                 <Card>
                   <CardContent className="text-center py-8">
-                    <p className="text-gray-500">Aucune réclamation trouvée</p>
+                    <p className="text-gray-700">Aucune réclamation trouvée</p>
                   </CardContent>
                 </Card>
               ) : (
@@ -150,7 +150,7 @@ const ReclamationsList = () => {
                             {reclamation.telephone && <span> • {reclamation.telephone}</span>}
                           </div>
                           <p className="text-gray-700 line-clamp-2 mb-3">{reclamation.message}</p>
-                          <div className="text-xs text-gray-500">
+                          <div className="text-xs text-gray-700">
                             Créée le {new Date(reclamation.created_at).toLocaleDateString('fr-FR')} à {new Date(reclamation.created_at).toLocaleTimeString('fr-FR')}
                           </div>
                         </div>
@@ -211,7 +211,7 @@ const ReclamationsList = () => {
                                 </div>
                                 <div>
                                   <label className="text-sm font-medium text-gray-700">Message</label>
-                                  <p className="text-sm bg-gray-50 p-3 rounded-md">{reclamation.message}</p>
+                                  <p className="text-sm bg-gray-100 p-3 rounded-md">{reclamation.message}</p>
                                 </div>
                                 <div>
                                   <label className="text-sm font-medium text-gray-700">Notes internes</label>
@@ -222,7 +222,7 @@ const ReclamationsList = () => {
                                     className="mt-1"
                                   />
                                 </div>
-                                <div className="grid grid-cols-2 gap-4 text-xs text-gray-500">
+                                <div className="grid grid-cols-2 gap-4 text-xs text-gray-700">
                                   <div>
                                     <span className="font-medium">Créée le :</span><br />
                                     {new Date(reclamation.created_at).toLocaleString('fr-FR')}

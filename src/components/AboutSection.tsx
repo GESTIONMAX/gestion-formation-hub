@@ -8,9 +8,9 @@ const AboutSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h3 className="text-3xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">
               Votre formateur certifié
-            </h3>
+            </h2>
             <p className="text-lg text-gray-600 mb-6">
               Formateur indépendant certifié Qualiopi, je vous accompagne dans 
               l'apprentissage de WordPress avec une approche personnalisée et pratique.

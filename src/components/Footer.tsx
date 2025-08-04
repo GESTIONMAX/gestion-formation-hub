@@ -8,24 +8,24 @@ const Footer = () => {
   const isCataloguePage = location.pathname === "/catalogue";
   
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-primary/90 text-white">
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Column 1 - About */}
           <div>
-            <h5 className="text-xl font-bold mb-4 text-blue-400">GestionMax Formation</h5>
+            <h5 className="text-xl font-bold mb-4 text-accent">GestionMax Formation</h5>
             <p className="text-gray-300 mb-4">
               Organisme de formation spécialisé WordPress, certifié Qualiopi et référencé Datadock.
             </p>
             <div className="flex space-x-4 mt-4">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-blue-400 transition-colors" aria-label="Facebook">
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-accent transition-colors" aria-label="Facebook">
                 <Facebook size={20} />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-blue-400 transition-colors" aria-label="Instagram">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-accent transition-colors" aria-label="Instagram">
                 <Instagram size={20} />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-blue-400 transition-colors" aria-label="LinkedIn">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-accent transition-colors" aria-label="LinkedIn">
                 <Linkedin size={20} />
               </a>
             </div>
@@ -33,7 +33,7 @@ const Footer = () => {
           
           {/* Column 2 - Navigation */}
           <div>
-            <h5 className="text-xl font-bold mb-4 text-blue-400">Navigation</h5>
+            <h5 className="text-xl font-bold mb-4 text-accent">Navigation</h5>
             <nav className="flex flex-col space-y-2" aria-label="Liens de pied de page">
               <Link to="/" className="text-gray-300 hover:text-white transition-colors">Accueil</Link>
               <Link to="/catalogue" className="text-gray-300 hover:text-white transition-colors">Catalogue</Link>
@@ -45,18 +45,18 @@ const Footer = () => {
           
           {/* Column 3 - Contact */}
           <div>
-            <h5 className="text-xl font-bold mb-4 text-blue-400">Contact</h5>
+            <h5 className="text-xl font-bold mb-4 text-accent">Contact</h5>
             <div className="space-y-3">
               <div className="flex items-start space-x-3">
-                <Mail className="text-blue-400 mt-1 flex-shrink-0" size={18} />
+                <Mail className="text-secondary mt-1 flex-shrink-0" size={18} />
                 <span className="text-gray-300">aurelien@gestionmax.fr</span>
               </div>
               <div className="flex items-start space-x-3">
-                <Phone className="text-blue-400 mt-1 flex-shrink-0" size={18} />
+                <Phone className="text-secondary mt-1 flex-shrink-0" size={18} />
                 <span className="text-gray-300">06 46 02 24 68</span>
               </div>
               <div className="flex items-start space-x-3">
-                <MapPin className="text-blue-400 mt-1 flex-shrink-0" size={18} />
+                <MapPin className="text-secondary mt-1 flex-shrink-0" size={18} />
                 <span className="text-gray-300">Antibes, Alpes-Maritimes (06)</span>
               </div>
             </div>
@@ -64,7 +64,7 @@ const Footer = () => {
           
           {/* Column 4 - Certifications */}
           <div>
-            <h5 className="text-xl font-bold mb-4 text-blue-400">Certifications</h5>
+            <h5 className="text-xl font-bold mb-4 text-accent">Certifications</h5>
             <div className="space-y-3">
               {!isCataloguePage && (
                 <div className="mb-4">
@@ -85,16 +85,16 @@ const Footer = () => {
                 </div>
               )}
               <div className="flex items-start space-x-3">
-                <Award className="text-blue-400 mt-1 flex-shrink-0" size={18} />
+                <Award className="text-secondary mt-1 flex-shrink-0" size={18} />
                 <span className="text-gray-300">Certifié Qualiopi</span>
               </div>
               <div className="flex items-start space-x-3">
-                <ExternalLink className="text-blue-400 mt-1 flex-shrink-0" size={18} />
+                <ExternalLink className="text-secondary mt-1 flex-shrink-0" size={18} />
                 <span className="text-gray-300">Référencé Datadock</span>
               </div>
               <div className="mt-4">
                 <p className="text-sm text-gray-300">N° déclaration d'activité: 93 06 108 8906</p>
-                <p className="text-xs text-gray-500 mt-1">Cet enregistrement ne vaut pas agrément de l'État (Article L.6352-12 du Code du travail)</p>
+                <p className="text-xs text-gray-400 mt-1">Cet enregistrement ne vaut pas agrément de l'État (Article L.6352-12 du Code du travail)</p>
               </div>
             </div>
           </div>
@@ -112,14 +112,14 @@ const Footer = () => {
                 className="flex-1 px-4 py-2 rounded-md bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 aria-label="Email pour newsletter"
               />
-              <Button className="bg-blue-600 hover:bg-blue-700">S'inscrire</Button>
+              <Button className="bg-accent hover:bg-accent/80">S'inscrire</Button>
             </div>
           </div>
         </div>
       </div>
       
       {/* Copyright Bar */}
-      <div className="bg-gray-950 py-4">
+      <div className="bg-primary py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center text-sm">
           <p className="text-gray-300 mb-2 sm:mb-0">© {currentYear} GestionMax Formation. Tous droits réservés.</p>
           <div className="flex space-x-6">

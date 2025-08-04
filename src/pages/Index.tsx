@@ -99,7 +99,7 @@ const Index = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
           <h2 className="text-center text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">Formations d'excellence</span>
+            <span className="text-blue-700">Formations d'excellence</span>
           </h2>
           <div className="flex justify-center mb-12">
             <div className="h-1 w-24 bg-blue-600 rounded"></div>
@@ -131,7 +131,7 @@ const Index = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
           <h2 className="text-center text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">Partenariats internationaux</span>
+            <span className="text-indigo-700">Partenariats internationaux</span>
           </h2>
           <div className="flex justify-center mb-12">
             <div className="h-1 w-24 bg-indigo-600 rounded"></div>

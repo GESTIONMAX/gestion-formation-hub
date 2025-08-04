@@ -99,9 +99,9 @@ const PartenaireFormations = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10">
             <div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-2">
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">
                 En partenariat avec {partenaireNom}
-              </h3>
+              </h2>
               <p className="text-lg text-gray-600">
                 Des formations en anglais dispensées par notre partenaire de confiance.
               </p>
@@ -135,7 +135,7 @@ const PartenaireFormations = () => {
                       <CardTitle className="text-lg font-bold text-indigo-900 uppercase mb-2">
                         {formation.titre}
                       </CardTitle>
-                      <Badge className="bg-indigo-100 text-indigo-800 hover:bg-indigo-200">
+                      <Badge className="bg-indigo-200 text-indigo-900 hover:bg-indigo-300">
                         {formation.langue}
                       </Badge>
                     </div>
@@ -161,8 +161,8 @@ const PartenaireFormations = () => {
 
                   {/* Niveau et badges */}
                   <div className="flex flex-wrap gap-2 mb-4">
-                    <Badge variant="outline" className="text-xs bg-indigo-50">{formation.niveau}</Badge>
-                    <Badge variant="secondary" className="text-xs bg-green-50 text-green-700">Certification English 360°</Badge>
+                    <Badge variant="outline" className="text-xs bg-indigo-200 text-indigo-900">{formation.niveau}</Badge>
+                    <Badge variant="secondary" className="text-xs bg-green-200 text-green-900">Certification English 360°</Badge>
                   </div>
 
                   {/* Objectifs */}

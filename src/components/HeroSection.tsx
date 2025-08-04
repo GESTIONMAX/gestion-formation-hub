@@ -13,7 +13,7 @@ const HeroSection = () => {
           alt="Formation WordPress Antibes" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-blue-900/70"></div>
+        <div className="absolute inset-0 bg-primary/80"></div>
       </div>
       <div className="relative z-10 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -30,7 +30,7 @@ const HeroSection = () => {
                 Voir le catalogue
               </Button>
             </Link>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-4 bg-white/10 hover:bg-white/20 border-white text-white">
+            <Button size="lg" variant="outline" className="text-lg px-8 py-4 bg-accent/90 hover:bg-accent border-white text-white">
               Demander un devis
             </Button>
           </div>

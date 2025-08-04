@@ -79,7 +79,7 @@ export default function DocumentGenerator({ dossierId, refDevis }: DocumentGener
       <CardContent>
         {status.documents.length > 0 ? (
           <div className="space-y-4">
-            <h3 className="font-medium text-sm text-gray-500">Documents disponibles:</h3>
+            <h3 className="font-medium text-sm text-gray-700">Documents disponibles:</h3>
             <div className="grid gap-3">
               {status.documents.map((doc) => (
                 <div key={doc.name} className="flex items-center justify-between p-3 border rounded-md bg-gray-50">
