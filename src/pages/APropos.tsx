@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Award, CheckCircle, Users, BookOpen, Clock, Mail, Phone } from "lucide-react";
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 
 const APropos = () => {
   return (
@@ -22,16 +23,26 @@ const APropos = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-6">
-            À propos de GestionMax Formation
-          </h2>
-          <p className="text-xl leading-relaxed">
-            Organisme de formation spécialisé dans WordPress, certifié Qualiopi 
-            et référencé Datadock. Notre mission : vous accompagner dans la maîtrise 
-            de WordPress avec des formations de qualité et un suivi personnalisé.
-          </p>
+      <section className="relative">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/formation-wordpress-antibes.webp" 
+            alt="Formation WordPress Antibes" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-blue-900/70"></div>
+        </div>
+        <div className="relative z-10 text-white py-16">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-4xl font-bold mb-6">
+              À propos de GestionMax Formation
+            </h2>
+            <p className="text-xl leading-relaxed">
+              Organisme de formation spécialisé dans WordPress, certifié Qualiopi 
+              et référencé Datadock. Notre mission : vous accompagner dans la maîtrise 
+              de WordPress avec des formations de qualité et un suivi personnalisé.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -194,16 +205,19 @@ const APropos = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="flex items-center gap-2">
                 <Mail className="h-5 w-5" />
-                contact@gestionmax-formation.fr
+                aurelien@gestionmax.fr
               </Button>
               <Button variant="outline" size="lg" className="flex items-center gap-2">
                 <Phone className="h-5 w-5" />
-                06 12 34 56 78
+                06 46 02 24 68
               </Button>
             </div>
           </div>
         </div>
       </section>
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

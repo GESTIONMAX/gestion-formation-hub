@@ -3,26 +3,27 @@ import jsPDF from 'jspdf';
 
 interface Formation {
   id: string;
-  titre: string;
-  description: string;
-  objectifs: string;
-  programme: string;
+  code: string;
+  libelle: string;
   duree: string;
-  public: string;
-  version: number;
-  dateCreation: string;
-  dateModification: string;
-  // Informations légales
+  // Informations légales et pédagogiques
+  objectifsPedagogiques: string;
+  contenuDetailleJours?: string;
   prerequis: string;
   publicConcerne: string;
-  dureeHoraires: string;
+  horaires: string;
   modalitesAcces: string;
   tarif: string;
   modalitesReglement: string;
-  accessibiliteHandicapee: string;
+  contactOrganisme: string;
+  referentPedagogique: string;
+  referentQualite: string;
+  modalitesTechniques: string;
+  formateur: string;
+  ressourcesDisposition: string;
   modalitesEvaluation: string;
   sanctionFormation: string;
-  cessationAbandon: string;
+  niveauCertification: string;
 }
 
 export const generateFormationPDF = (formation: Formation) => {
@@ -33,7 +34,8 @@ export const generateFormationPDF = (formation: Formation) => {
   let yPosition = margin;
 
   // Helper function to add text with word wrapping
-  const addWrappedText = (text: string, x: number, y: number, maxWidth: number, fontSize: number = 12) => {
+  const addWrappedText = (text: string | null | undefined, x: number, y: number, maxWidth: number, fontSize: number = 12) => {
+    if (!text) return y;
     doc.setFontSize(fontSize);
     const lines = doc.splitTextToSize(text, maxWidth);
     doc.text(lines, x, y);
@@ -54,30 +56,27 @@ export const generateFormationPDF = (formation: Formation) => {
   doc.text('Programme de Formation', pageWidth / 2, yPosition, { align: 'center' });
   yPosition += 15;
 
-  // Title
+  // Title (use libelle instead of titre)
   doc.setFontSize(16);
   doc.setFont('helvetica', 'bold');
-  yPosition = addWrappedText(formation.titre, margin, yPosition, pageWidth - 2 * margin, 16);
+  yPosition = addWrappedText(formation.libelle, margin, yPosition, pageWidth - 2 * margin, 16);
   yPosition += 10;
 
-  // Version and dates
+  // Code and duration
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
-  doc.text(`Version: ${formation.version}`, margin, yPosition);
+  doc.text(`Code: ${formation.code}`, margin, yPosition);
   doc.text(`Durée: ${formation.duree}`, pageWidth - margin - 60, yPosition);
-  yPosition += 8;
-  doc.text(`Créé le: ${new Date(formation.dateCreation).toLocaleDateString('fr-FR')}`, margin, yPosition);
-  doc.text(`Modifié le: ${new Date(formation.dateModification).toLocaleDateString('fr-FR')}`, pageWidth - margin - 80, yPosition);
   yPosition += 15;
 
-  // Description
+  // Description (using objectifsPedagogiques instead)
   doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
   doc.text('Description', margin, yPosition);
   yPosition += 8;
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(11);
-  yPosition = addWrappedText(formation.description, margin, yPosition, pageWidth - 2 * margin, 11);
+  yPosition = addWrappedText(formation.objectifsPedagogiques, margin, yPosition, pageWidth - 2 * margin, 11);
   yPosition += 10;
 
   checkNewPage();
@@ -89,7 +88,7 @@ export const generateFormationPDF = (formation: Formation) => {
   yPosition += 8;
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(11);
-  yPosition = addWrappedText(formation.public, margin, yPosition, pageWidth - 2 * margin, 11);
+  yPosition = addWrappedText(formation.publicConcerne, margin, yPosition, pageWidth - 2 * margin, 11);
   yPosition += 10;
 
   checkNewPage();
@@ -101,28 +100,28 @@ export const generateFormationPDF = (formation: Formation) => {
   yPosition += 8;
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(11);
-  yPosition = addWrappedText(formation.objectifs, margin, yPosition, pageWidth - 2 * margin, 11);
+  yPosition = addWrappedText(formation.objectifsPedagogiques, margin, yPosition, pageWidth - 2 * margin, 11);
   yPosition += 10;
 
   checkNewPage();
 
-  // Programme
+  // Programme (contenu détaillé par jours)
   doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
-  doc.text('Programme détaillé', margin, yPosition);
+  doc.text('Programme', margin, yPosition);
   yPosition += 8;
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(11);
-  yPosition = addWrappedText(formation.programme, margin, yPosition, pageWidth - 2 * margin, 11);
-  yPosition += 15;
+  yPosition = addWrappedText(formation.contenuDetailleJours, margin, yPosition, pageWidth - 2 * margin, 11);
+  yPosition += 10;
 
   checkNewPage();
 
-  // SECTION INFORMATIONS LÉGALES
+  // Informations légales et réglementaires
   doc.setFontSize(16);
   doc.setFont('helvetica', 'bold');
-  doc.text('Informations légales et conformité Qualiopi', margin, yPosition);
-  yPosition += 15;
+  doc.text('Informations légales et réglementaires', margin, yPosition);
+  yPosition += 12;
 
   // Prérequis
   doc.setFontSize(12);
@@ -131,7 +130,7 @@ export const generateFormationPDF = (formation: Formation) => {
   yPosition += 6;
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
-  yPosition = addWrappedText(formation.prerequis, margin, yPosition, pageWidth - 2 * margin, 10);
+  yPosition = addWrappedText(formation.prerequis, margin + 5, yPosition, pageWidth - 2 * margin - 5, 10);
   yPosition += 8;
 
   checkNewPage();
@@ -143,17 +142,19 @@ export const generateFormationPDF = (formation: Formation) => {
   yPosition += 6;
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
-  yPosition = addWrappedText(formation.publicConcerne, margin, yPosition, pageWidth - 2 * margin, 10);
+  yPosition = addWrappedText(formation.publicConcerne, margin + 5, yPosition, pageWidth - 2 * margin - 5, 10);
   yPosition += 8;
+
+  checkNewPage();
 
   // Durée et horaires
   doc.setFontSize(12);
   doc.setFont('helvetica', 'bold');
-  doc.text('Durée et horaires de la formation', margin, yPosition);
+  doc.text('Durée et horaires', margin, yPosition);
   yPosition += 6;
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
-  yPosition = addWrappedText(formation.dureeHoraires, margin, yPosition, pageWidth - 2 * margin, 10);
+  yPosition = addWrappedText(`${formation.duree} - ${formation.horaires}`, margin + 5, yPosition, pageWidth - 2 * margin - 5, 10);
   yPosition += 8;
 
   checkNewPage();
@@ -197,7 +198,8 @@ export const generateFormationPDF = (formation: Formation) => {
   yPosition += 6;
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
-  yPosition = addWrappedText(formation.accessibiliteHandicapee, margin, yPosition, pageWidth - 2 * margin, 10);
+  // Changement de nom de champ : contactOrganisme contient souvent cette information
+  yPosition = addWrappedText(formation.contactOrganisme, margin, yPosition, pageWidth - 2 * margin, 10);
   yPosition += 8;
 
   checkNewPage();
@@ -231,7 +233,7 @@ export const generateFormationPDF = (formation: Formation) => {
   yPosition += 6;
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
-  yPosition = addWrappedText(formation.cessationAbandon, margin, yPosition, pageWidth - 2 * margin, 10);
+  yPosition = addWrappedText(formation.niveauCertification, margin, yPosition, pageWidth - 2 * margin, 10);
 
   // Footer
   const totalPages = doc.getNumberOfPages();
@@ -243,7 +245,7 @@ export const generateFormationPDF = (formation: Formation) => {
   }
 
   // Generate filename
-  const fileName = `formation-${formation.titre.replace(/[^a-zA-Z0-9]/g, '_')}-v${formation.version}.pdf`;
+  const fileName = `formation-${formation.code}-${formation.libelle.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
   
   // Download the PDF
   doc.save(fileName);

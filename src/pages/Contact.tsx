@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useReclamations } from "@/hooks/useReclamations";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import MapLocation from "@/components/MapLocation";
 import { Mail, Phone, MapPin, FileText, Shield, Scale } from "lucide-react";
 
 const formSchema = z.object({
@@ -109,7 +110,7 @@ const Contact = () => {
                   <Mail className="h-5 w-5 text-blue-600" />
                   <div>
                     <p className="font-medium">Email</p>
-                    <p className="text-gray-600">contact@gestionmax-formation.fr</p>
+                    <p className="text-gray-600">aurelien@gestionmax.fr</p>
                   </div>
                 </div>
                 
@@ -117,7 +118,7 @@ const Contact = () => {
                   <Phone className="h-5 w-5 text-blue-600" />
                   <div>
                     <p className="font-medium">Téléphone</p>
-                    <p className="text-gray-600">06 12 34 56 78</p>
+                    <p className="text-gray-600">06 46 02 24 68</p>
                   </div>
                 </div>
                 
@@ -126,8 +127,8 @@ const Contact = () => {
                   <div>
                     <p className="font-medium">Adresse</p>
                     <p className="text-gray-600">
-                      123 Rue de la Formation<br />
-                      75001 Paris, France
+                      300 chemin de la suquette<br />
+                      06600 Antibes , France
                     </p>
                   </div>
                 </div>
@@ -202,7 +203,7 @@ const Contact = () => {
                       <FormItem>
                         <FormLabel>Téléphone</FormLabel>
                         <FormControl>
-                          <Input placeholder="06 12 34 56 78" {...field} />
+                          <Input placeholder="06 46 02 24 68" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -300,6 +301,23 @@ const Contact = () => {
         </div>
 
         <div className="space-y-8">
+          {/* Carte Leaflet pour le SEO local */}
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">
+              Nous situer à Antibes
+            </h2>
+            <p className="text-lg text-gray-600 text-center mb-8">
+              GestionMax Formation - Formations WordPress Professionnelles à Antibes
+            </p>
+            <MapLocation 
+              latitude={43.5853}
+              longitude={7.1232}
+              zoom={14}
+              popupText="GestionMax Formation - Formations WordPress professionnelles à Antibes"
+              height="450px"
+            />
+          </div>
+          
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               Mentions légales et conformité Qualiopi
@@ -380,57 +398,7 @@ const Contact = () => {
             </Card>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Informations légales complémentaires</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-                <div>
-                  <h4 className="font-semibold mb-2">Modalités techniques et pédagogiques</h4>
-                  <ul className="space-y-1 text-gray-600">
-                    <li>• Formation en présentiel individuel</li>
-                    <li>• Méthode expositive et démonstrative</li>
-                    <li>• Support de cours fourni</li>
-                    <li>• Exercices pratiques personnalisés</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-2">Modalités d'évaluation</h4>
-                  <ul className="space-y-1 text-gray-600">
-                    <li>• Quiz de validation des acquis</li>
-                    <li>• Grille de compétences</li>
-                    <li>• Évaluation à chaud et à froid</li>
-                    <li>• Certificat de réalisation</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-2">Adaptation aux publics</h4>
-                  <ul className="space-y-1 text-gray-600">
-                    <li>• Accompagnement adapté proposé</li>
-                    <li>• Accessibilité handicap étudiée</li>
-                    <li>• Adaptation des supports si besoin</li>
-                    <li>• Contact référent handicap disponible</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-2">Organisme de formation</h4>
-                  <ul className="space-y-1 text-gray-600">
-                    <li>• SIRET : 123 456 789 00012</li>
-                    <li>• N° déclaration : 11 75 12345 75</li>
-                    <li>• Certification Qualiopi : 2024-QUAL-1234</li>
-                    <li>• Référencement Datadock</li>
-                  </ul>
-                </div>
-              </div>
-              <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                <p className="text-xs text-gray-500">
-                  Cet enregistrement ne vaut pas agrément de l'État (Article L.6352-12 du Code du travail).
-                  La certification qualité a été délivrée au titre de la catégorie d'action suivante : ACTIONS DE FORMATION.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+
         </div>
       </div>
 

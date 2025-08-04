@@ -181,7 +181,7 @@ const FormationsList = () => {
                       </div>
                       <div className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
-                        <span>Modifié le {formatDate(formation.dateModification)}</span>
+                        <span>Code: {formation.code}</span>
                       </div>
                     </div>
 

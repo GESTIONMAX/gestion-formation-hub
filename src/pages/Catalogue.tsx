@@ -7,6 +7,7 @@ import CatalogueHeader from "@/components/catalogue/CatalogueHeader";
 import CatalogueHero from "@/components/catalogue/CatalogueHero";
 import FormationsList from "@/components/catalogue/FormationsList";
 import CustomFormationCTA from "@/components/catalogue/CustomFormationCTA";
+import Footer from "@/components/Footer";
 
 const Catalogue = () => {
   const [showPositionnementForm, setShowPositionnementForm] = useState(false);
@@ -89,6 +90,7 @@ const Catalogue = () => {
           onPositionnement={handlePositionnement} 
         />
         <CustomFormationCTA />
+        <Footer />
       </div>
 
       <Dialog open={showPositionnementForm} onOpenChange={setShowPositionnementForm}>

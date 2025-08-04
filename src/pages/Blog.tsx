@@ -1,10 +1,10 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, User, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 
 const Blog = () => {
   const articles = [
@@ -94,18 +94,45 @@ const Blog = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-4">
-            Blog WordPress
-          </h2>
-          <p className="text-xl max-w-3xl mx-auto">
-            Conseils, tutoriels et actualités pour maîtriser WordPress. 
-            Restez à jour avec les dernières tendances et bonnes pratiques.
-          </p>
+      <section className="relative">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/formation-wordpress-antibes.webp" 
+            alt="Formation WordPress Antibes" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-blue-900/70"></div>
+        </div>
+        <div className="relative z-10 text-white py-12 flex items-center justify-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-4xl font-bold mb-4">
+              Blog WordPress
+            </h2>
+            <p className="text-xl max-w-3xl mx-auto">
+              Conseils, tutoriels et actualités pour maîtriser WordPress. 
+              Restez à jour avec les dernières tendances et bonnes pratiques.
+            </p>
+          </div>
         </div>
       </section>
 
+      {/* Notification de mise à jour */}
+      <section className="py-8 bg-amber-50 border-y border-amber-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="flex items-center justify-center mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <h3 className="text-xl font-medium text-amber-800 mb-2">
+            Blog en cours de mise à jour
+          </h3>
+          <p className="text-amber-700">
+            Nous sommes en train d'améliorer notre blog pour vous offrir un contenu de meilleure qualité. Merci de votre patience.
+          </p>
+        </div>
+      </section>
+      
       {/* Filters */}
       <section className="py-8 bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -189,6 +216,9 @@ const Blog = () => {
           </div>
         </div>
       </section>
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
