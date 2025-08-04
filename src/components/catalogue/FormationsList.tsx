@@ -1,48 +1,56 @@
-
+import { useState } from "react";
 import FormationCard from "./FormationCard";
-
-interface Formation {
-  id: string;
-  titre: string;
-  description: string;
-  duree: string;
-  prix: string;
-  niveau: string;
-  participants: string;
-  objectifs: string[];
-  prerequis: string;
-  modalites: string;
-}
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Formation, CategorieFormation } from "./types";
 
 interface FormationsListProps {
-  formations: Formation[];
-  onPositionnement: (titre: string) => void;
+  categoriesFormations: CategorieFormation[];
+  onPositionnement: (formationTitre: string) => void;
 }
 
-const FormationsList = ({ formations, onPositionnement }: FormationsListProps) => {
+const FormationsList = ({ categoriesFormations, onPositionnement }: FormationsListProps) => {
+  const [activeTab, setActiveTab] = useState(categoriesFormations[0]?.id || "");
+
   return (
-    <section className="py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h3 className="text-3xl font-bold text-gray-900 mb-4">
-            Nos formations disponibles
-          </h3>
-          <p className="text-lg text-gray-600">
-            Chaque formation nécessite un rendez-vous de positionnement préalable
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-          {formations.map((formation) => (
-            <FormationCard
-              key={formation.id}
-              formation={formation}
-              onPositionnement={onPositionnement}
-            />
+    <div className="bg-white py-16">
+      <div className="container mx-auto px-4">
+        <Tabs defaultValue={activeTab} onValueChange={setActiveTab} className="w-full">
+          <div className="border-b sticky top-0 bg-white z-10 pb-2">
+            <h2 className="text-3xl font-bold text-gray-900 mb-5">Nos formations par catégorie</h2>
+            <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2 bg-gray-100 p-1">
+              {categoriesFormations.map((categorie) => (
+                <TabsTrigger 
+                  key={categorie.id} 
+                  value={categorie.id}
+                  className="font-medium data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+                >
+                  {categorie.titre}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
+          
+          {categoriesFormations.map((categorie) => (
+            <TabsContent key={categorie.id} value={categorie.id} className="mt-6">
+              <div className="mb-8">
+                <h3 className="text-xl font-bold text-gray-800 mb-3">{categorie.titre}</h3>
+                <p className="text-lg text-gray-600">{categorie.description}</p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {categorie.formations.map((formation) => (
+                  <FormationCard
+                    key={formation.id}
+                    formation={formation}
+                    onPositionnement={onPositionnement}
+                  />
+                ))}
+              </div>
+            </TabsContent>
           ))}
-        </div>
+        </Tabs>
       </div>
-    </section>
+    </div>
   );
 };
 

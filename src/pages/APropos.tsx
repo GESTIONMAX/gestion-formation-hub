@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Award, CheckCircle, Users, BookOpen, Clock, Mail, Phone } from "lucide-react";
+import { Award, CheckCircle, Users, BookOpen, Clock, Mail, Phone, FileDown, ExternalLink } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -49,6 +49,17 @@ const APropos = () => {
                 dans l'enseignement WordPress. Passionné par la transmission de connaissances 
                 et l'accompagnement personnalisé de chaque apprenant.
               </p>
+              
+              <div className="mb-8">
+                <Button variant="default" size="lg" className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700" onClick={() => window.open('/documents/cv-formateur-gestionmax.pdf', '_blank')}>
+                  <FileDown className="h-5 w-5" />
+                  Télécharger le CV du formateur
+                  <ExternalLink className="h-4 w-4 ml-1" />
+                </Button>
+                <p className="text-sm text-gray-500 mt-2">
+                  Conformément aux exigences Qualiopi, notre CV est disponible pour consultation
+                </p>
+              </div>
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <CheckCircle className="h-5 w-5 text-green-500" />
