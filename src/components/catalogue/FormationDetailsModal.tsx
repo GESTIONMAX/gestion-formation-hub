@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogClose
 } from "@/components/ui/dialog";
-import { Formation } from "./types";
+import { Formation } from "../catalogue/types";
 import { Badge } from "@/components/ui/badge";
 
 interface FormationDetailsModalProps {
