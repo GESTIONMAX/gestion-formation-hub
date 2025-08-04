@@ -1,9 +1,11 @@
-import { Link } from "react-router-dom";
-import { Facebook, Instagram, Linkedin, Mail, Phone, MapPin, Award, ExternalLink } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { Facebook, Instagram, Linkedin, Mail, Phone, MapPin, Award, ExternalLink, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const location = useLocation();
+  const isCataloguePage = location.pathname === "/catalogue";
   
   return (
     <footer className="bg-gray-900 text-white">
@@ -64,6 +66,24 @@ const Footer = () => {
           <div>
             <h5 className="text-xl font-bold mb-4 text-blue-400">Certifications</h5>
             <div className="space-y-3">
+              {!isCataloguePage && (
+                <div className="mb-4">
+                  <div className="flex flex-col items-center bg-white p-3 rounded-lg">
+                    <img 
+                      src="/logo-qualiopi-gestionmax.webp" 
+                      alt="Certification Qualiopi GestionMax" 
+                      className="h-20 w-auto mb-2"
+                    />
+                    <a 
+                      href="/documents/certification-qualiopi-gestionmax.pdf" 
+                      download
+                      className="flex items-center text-sm text-blue-600 hover:text-blue-800 transition-colors mt-1"
+                    >
+                      <Download size={14} className="mr-1" /> Télécharger certification
+                    </a>
+                  </div>
+                </div>
+              )}
               <div className="flex items-start space-x-3">
                 <Award className="text-blue-400 mt-1 flex-shrink-0" size={18} />
                 <span className="text-gray-300">Certifié Qualiopi</span>
