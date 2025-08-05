@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Clock, Users, Globe, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import ContactForm from "@/components/ContactForm";
+import EnglishFAQ from "@/components/english/EnglishFAQ";
 
 interface PartenaireFormation {
   id: string;
@@ -264,6 +265,9 @@ const PartenaireFormations = () => {
           />
         </DialogContent>
       </Dialog>
+      
+      {/* Section FAQ pour les formations d'anglais */}
+      <EnglishFAQ />
     </>
   );
 };

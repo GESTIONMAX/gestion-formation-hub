@@ -47,7 +47,7 @@ const IllustrationSection = () => {
             <div className="bg-gradient-to-tr from-blue-500 to-indigo-600 absolute inset-0 rounded-lg transform -rotate-6 scale-95 opacity-20 blur-xl"></div>
             <div className="relative p-2 bg-white border-2 border-gray-100 rounded-lg shadow-xl transform transition-transform hover:scale-105 duration-300">
               <img 
-                src="/img/illustrations/business-man-dynamic-pose.png" 
+                src="/professionnel-dynamique-en-costume-bleujpg-20250805-070512.webp" 
                 alt="Professionnel dynamique en costume bleu" 
                 className="w-full h-auto rounded"
               />
@@ -72,8 +72,8 @@ const IllustrationSection = () => {
             <div className="bg-gradient-to-bl from-yellow-400 to-orange-500 absolute inset-0 rounded-lg transform rotate-6 scale-95 opacity-20 blur-xl"></div>
             <div className="relative p-2 bg-white border-2 border-gray-100 rounded-lg shadow-xl transform transition-transform hover:scale-105 duration-300">
               <img 
-                src="/img/illustrations/business-woman-yellow-suit.png" 
-                alt="Professionnelle dynamique en tailleur jaune avec ordinateur portable" 
+                src="/professinnelle-dynamique-tailleurjpg-20250805-070512.webp" 
+                alt="Professionnelle dynamique en tailleur" 
                 className="w-full h-auto rounded"
               />
               <div className="absolute -bottom-4 -right-4 bg-amber-500 text-white px-4 py-2 rounded-full shadow-lg">

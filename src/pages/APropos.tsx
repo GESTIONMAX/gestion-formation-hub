@@ -24,12 +24,12 @@ const APropos = () => {
         <div className="relative z-10 text-white py-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-4xl font-bold mb-6">
-              À propos de GestionMax Formation
+              À propos de GestionMax Formateur
             </h2>
             <p className="text-xl leading-relaxed">
-              Organisme de formation spécialisé dans WordPress, certifié Qualiopi 
-              et référencé Datadock. Notre mission : vous accompagner dans la maîtrise 
-              de WordPress avec des formations de qualité et un suivi personnalisé.
+              Formateur indépendant certifié Qualiopi avec plus de 8 ans d'expérience 
+              dans l'enseignement WordPress. Passionné par la transmission de connaissances 
+              et l'accompagnement personnalisé de chaque apprenant.
             </p>
           </div>
         </div>

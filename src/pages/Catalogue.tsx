@@ -8,6 +8,7 @@ import CatalogueHero from "@/components/catalogue/CatalogueHero";
 import FormationsList from "@/components/catalogue/FormationsList";
 import CustomFormationCTA from "@/components/catalogue/CustomFormationCTA";
 import Footer from "@/components/Footer";
+import WordPressFAQ from "@/components/wordpress/WordPressFAQ";
 
 const Catalogue = () => {
   const [showPositionnementForm, setShowPositionnementForm] = useState(false);
@@ -276,6 +277,8 @@ const Catalogue = () => {
           categoriesFormations={categoriesFormations} 
           onPositionnement={handlePositionnement} 
         />
+        {/* FAQ WordPress intégrée juste après la liste des formations */}
+        <WordPressFAQ />
         <CustomFormationCTA />
         <Footer />
       </div>

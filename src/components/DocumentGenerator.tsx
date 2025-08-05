@@ -94,11 +94,12 @@ const DocumentGenerator: React.FC<DocumentGeneratorProps> = ({
                 href={doc.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                button
                 sx={{
                   border: '1px solid #e0e0e0',
                   borderRadius: '4px',
                   mb: 1,
+                  padding: '8px 16px',
+                  cursor: 'pointer',
                   transition: 'all 0.2s',
                   '&:hover': {
                     backgroundColor: '#f5f5f5',

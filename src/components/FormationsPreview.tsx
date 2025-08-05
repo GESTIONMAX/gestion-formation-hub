@@ -84,7 +84,7 @@ const FormationsPreview = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
             {formationsPreview.map((formation) => (
-              <Card key={formation.id} className="hover:shadow-lg transition-all duration-300 flex flex-col border-t-4 border-blue-600 overflow-hidden">
+              <Card key={formation.id} className="hover:shadow-lg transition-all duration-300 flex flex-col border-t-4 border-primary overflow-hidden">
                 {/* En-tête avec style "STARTER PACK" */}
                 <div className="bg-yellow-500 text-xs font-bold uppercase tracking-wider text-white py-1 px-3 text-center">
                   STARTER PACK
@@ -157,7 +157,7 @@ const FormationsPreview = () => {
                     <div className="flex justify-between items-center mb-4">
                       <div>
                         <span className="text-xs text-gray-500">À partir de</span>
-                        <p className="text-2xl font-bold text-blue-600">
+                        <p className="text-2xl font-bold text-primary">
                           {formation.prix}
                         </p>
                         <span className="text-xs text-gray-500">Net de taxes</span>
@@ -167,14 +167,14 @@ const FormationsPreview = () => {
                     {/* Boutons */}
                     <div className="flex flex-col space-y-2">
                       <Button 
-                        className="w-full bg-blue-600 hover:bg-blue-700"
+                        className="w-full bg-accent hover:bg-accent/80"
                         onClick={() => handlePositionnement(formation.titre)}
                       >
                         RDV de positionnement
                       </Button>
                       <Button 
                         variant="outline" 
-                        className="w-full border-blue-200 text-blue-600 hover:bg-blue-50"
+                        className="w-full border-secondary/20 text-secondary hover:bg-secondary/10"
                         onClick={() => {
                           setSelectedFormationDetails(formation);
                           setModalOpen(true);

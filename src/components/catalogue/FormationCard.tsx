@@ -20,7 +20,7 @@ const FormationCard = ({ formation, onPositionnement }: FormationCardProps) => {
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
       />
-    <Card className="hover:shadow-lg transition-all duration-300 flex flex-col border-t-4 border-blue-600 overflow-hidden">
+    <Card className="hover:shadow-lg transition-all duration-300 flex flex-col border-t-4 border-primary overflow-hidden">
       {/* En-tête avec style "STARTER PACK" */}
       <div className="bg-yellow-500 text-xs font-bold uppercase tracking-wider text-white py-1 px-3 text-center">
         STARTER PACK
@@ -36,11 +36,11 @@ const FormationCard = ({ formation, onPositionnement }: FormationCardProps) => {
       <CardContent className="flex-1 flex flex-col">
         <div className="border-t border-b border-gray-100 py-3 mb-4">
           <div className="flex items-center gap-2 mb-2">
-            <Clock className="h-4 w-4 text-blue-600" />
+            <Clock className="h-4 w-4 text-secondary" />
             <span className="text-sm font-medium">{formation.duree}</span>
           </div>
           <div className="flex items-center gap-2">
-            <Users className="h-4 w-4 text-blue-600" />
+            <Users className="h-4 w-4 text-secondary" />
             <span className="text-sm">{formation.participants}</span>
           </div>
         </div>
@@ -93,7 +93,7 @@ const FormationCard = ({ formation, onPositionnement }: FormationCardProps) => {
           <div className="flex justify-between items-center mb-4">
             <div>
               <span className="text-xs text-gray-500">À partir de</span>
-              <p className="text-2xl font-bold text-blue-600">
+              <p className="text-2xl font-bold text-primary">
                 {formation.prix}
               </p>
               <span className="text-xs text-gray-500">Net de taxes</span>
@@ -103,14 +103,14 @@ const FormationCard = ({ formation, onPositionnement }: FormationCardProps) => {
           {/* Boutons */}
           <div className="flex flex-col space-y-2">
             <Button 
-              className="w-full bg-blue-600 hover:bg-blue-700"
+              className="w-full bg-accent hover:bg-accent/80"
               onClick={() => onPositionnement(formation.titre)}
             >
               RDV de positionnement
             </Button>
             <Button 
               variant="outline" 
-              className="w-full border-blue-200 text-blue-600 hover:bg-blue-50"
+              className="w-full border-secondary/20 text-secondary hover:bg-secondary/10"
               onClick={() => setModalOpen(true)}
             >
               En savoir plus
