@@ -22,7 +22,7 @@ const FormationsList = ({ categoriesFormations, onPositionnement }: FormationsLi
                 <TabsTrigger 
                   key={categorie.id} 
                   value={categorie.id}
-                  className="font-medium data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+                  className={`font-medium data-[state=active]:text-white ${categorie.id === 'visibilite' || categorie.id === 'entreprises' ? 'data-[state=active]:bg-[#1869ba]' : 'data-[state=active]:bg-[#f58a3d]'}`}
                 >
                   {categorie.titre}
                 </TabsTrigger>

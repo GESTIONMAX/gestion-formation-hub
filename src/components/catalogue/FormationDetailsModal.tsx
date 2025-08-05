@@ -30,9 +30,7 @@ const FormationDetailsModal = ({ formation, isOpen, onClose }: FormationDetailsM
         <DialogHeader className="border-b pb-4 mb-4">
           <div className="flex items-start justify-between">
             <DialogTitle className="text-2xl text-blue-900">{formation.titre}</DialogTitle>
-            <DialogClose className="h-8 w-8 rounded-full hover:bg-gray-100 flex items-center justify-center">
-              <X className="h-4 w-4" />
-            </DialogClose>
+            {/* Croix personnalisée supprimée - utilisation de la croix par défaut du Dialog */}
           </div>
           <DialogDescription className="text-base mt-2">{formation.description}</DialogDescription>
           <div className="flex items-center gap-3 mt-3 text-xs bg-gray-50 p-2 rounded">
@@ -202,7 +200,7 @@ const FormationDetailsModal = ({ formation, isOpen, onClose }: FormationDetailsM
             <FileDown className="h-4 w-4" />
             Télécharger le programme complet (PDF)
           </Button>
-          <Button onClick={onClose}>Fermer</Button>
+          {/* Bouton de fermeture supprimé pour n'avoir qu'une seule croix */}
         </DialogFooter>
       </DialogContent>
     </Dialog>
