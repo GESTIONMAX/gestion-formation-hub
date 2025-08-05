@@ -39,16 +39,16 @@ const WordPressFAQ = () => {
   ];
 
   return (
-    <section className="py-12 bg-white">
+    <section className="py-12 bg-blue-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-gray-900">
+          <h2 className="text-3xl font-bold text-blue-900">
             Questions fréquentes sur nos formations WordPress
           </h2>
           <div className="flex justify-center mt-3 mb-6">
             <div className="h-1 w-24 bg-blue-600 rounded"></div>
           </div>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg text-blue-700 max-w-3xl mx-auto">
             Retrouvez les réponses aux questions les plus courantes sur nos formations WordPress
           </p>
         </div>
@@ -56,11 +56,11 @@ const WordPressFAQ = () => {
         <div className="max-w-3xl mx-auto">
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left text-lg font-medium text-gray-800">
+              <AccordionItem key={index} value={`item-${index}`} className="bg-white mb-2 rounded-lg border border-blue-200">
+                <AccordionTrigger className="text-left text-lg font-medium text-blue-800 px-4 py-2">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-600">
+                <AccordionContent className="text-blue-700 px-4 pb-4">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
