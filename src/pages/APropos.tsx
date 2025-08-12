@@ -180,11 +180,11 @@ const APropos = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3 text-sm">
-                  <p><span className="font-semibold">Raison sociale :</span> GestionMax Formation</p>
+                  <p><span className="font-semibold">Raison sociale :</span> GestionMax</p>
                   <p><span className="font-semibold">Statut juridique :</span> Entreprise individuelle</p>
-                  <p><span className="font-semibold">SIRET :</span> 123 456 789 00012</p>
+                  <p><span className="font-semibold">SIRET :</span> 483 797 213 00061</p>
                   <p><span className="font-semibold">N° déclaration d'activité :</span> 11 75 12345 75</p>
-                  <p><span className="font-semibold">Certification Qualiopi :</span> 2024-QUAL-1234</p>
+                  <p><span className="font-semibold">Certification Qualiopi :</span> QUA230C60046 </p>
                   <p className="text-xs text-gray-500 mt-4">
                     Cet enregistrement ne vaut pas agrément de l'État (Article L.6352-12 du Code du travail)
                   </p>

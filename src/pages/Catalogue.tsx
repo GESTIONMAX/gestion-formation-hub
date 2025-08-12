@@ -6,6 +6,7 @@ import PositionnementForm from "@/components/rendez-vous/PositionnementForm";
 import CatalogueHeader from "@/components/catalogue/CatalogueHeader";
 import CatalogueHero from "@/components/catalogue/CatalogueHero";
 import FormationsList from "@/components/catalogue/FormationsList";
+import FormationsAdaptabilite from "@/components/catalogue/FormationsAdaptabilite";
 import CustomFormationCTA from "@/components/catalogue/CustomFormationCTA";
 import Footer from "@/components/Footer";
 import WordPressFAQ from "@/components/wordpress/WordPressFAQ";
@@ -22,87 +23,111 @@ const Catalogue = () => {
       description: "Des formations essentielles pour débuter dans l'univers du digital et acquérir des compétences fondamentales.",
       formations: [
         {
-          id: "d1",
-          titre: "CRÉATION SITE WEB DÉBUTANT",
-          description: "Apprenez à créer un site web professionnel avec WordPress sans connaissances techniques préalables.",
-          duree: "21 heures",
-          prix: "1 790€",
+          id: "A001-WP-DD",
+          titre: "CRÉATION DE SON SITE INTERNET (WORDPRESS) + STRATÉGIE DE DÉVELOPPEMENT DIGITAL",
+          description: "Formation complète pour créer et gérer un site WordPress et développer une stratégie digitale efficace pour votre activité.",
+          duree: "14 heures (2 jours)",
+          prix: "980€",
           niveau: "Débutant",
-          participants: "Formation individuelle",
+          participants: "Artisans, commerçants ou professions libérales",
           objectifs: [
-            "Installer et configurer WordPress",
-            "Créer et structurer des pages",
-            "Personnaliser l'apparence",
-            "Gérer le contenu efficacement"
+            "Créer et personnaliser un site internet avec WordPress",
+            "Gérer le contenu et la structure du site",
+            "Définir une stratégie de développement digital",
+            "Mettre en œuvre des actions SEO et réseaux sociaux"
           ],
-          prerequis: "Aucun prérequis technique",
-          modalites: "Présentiel ou distanciel",
+          prerequis: "Maîtriser son environnement et les fonctions de base pour utiliser un ordinateur",
+          modalites: "Présentiel",
           tauxParticipation: "98%",
-          tauxReussite: "95%"
+          tauxReussite: "94%",
+          programmeUrl: "/programmes/A001-WP-DD-programme.html"
         },
         {
-          id: "d2",
-          titre: "MARKETING DIGITAL",
-          description: "Découvrez les fondamentaux du marketing en ligne pour promouvoir votre activité et atteindre vos clients.",
-          duree: "28 heures",
-          prix: "2 290€",
+          id: "A010-WP-IM",
+          titre: "CRÉER ET GÉRER UN SITE WORDPRESS & STRATÉGIE DE CONTENU INBOUND MARKETING",
+          description: "Apprenez à créer et gérer un site WordPress tout en développant une stratégie de contenu efficace basée sur l'Inbound Marketing.",
+          duree: "14 heures (2 jours)",
+          prix: "980€",
+          niveau: "Débutant",
+          participants: "Artisans, commerçants ou professions libérales",
+          objectifs: [
+            "Créer et gérer un site WordPress",
+            "Développer une stratégie de contenu Inbound Marketing",
+            "Attirer et convertir des prospects",
+            "Mesurer les performances de votre stratégie"
+          ],
+          prerequis: "Maîtriser son environnement et les fonctions de base pour utiliser un ordinateur",
+          modalites: "Présentiel",
+          tauxParticipation: "97%",
+          tauxReussite: "93%",
+          programmeUrl: "/programmes/A010-WP-IM-programme.html"
+        },
+        {
+          id: "A015-IA-CGPT",
+          titre: "GÉNÉRATION DE CONTENU AVEC CHATGPT + AUTOMATISATION MARKETING",
+          description: "Maîtrisez les techniques de génération de contenu avec ChatGPT et mettez en place des stratégies d'automatisation marketing efficaces.",
+          duree: "14 heures (2 jours)",
+          prix: "980€",
           niveau: "Débutant à intermédiaire",
-          participants: "Formation individuelle",
+          participants: "Artisans, commerçants ou professions libérales",
           objectifs: [
-            "Créer une stratégie digitale",
-            "Maîtriser les réseaux sociaux",
-            "Analyser les performances",
-            "Générer du trafic qualifié"
+            "Comprendre les fondamentaux de ChatGPT",
+            "Créer des contenus optimisés pour le web et les réseaux sociaux",
+            "Mettre en place des stratégies d'automatisation marketing",
+            "Utiliser des outils comme ChatGPT, Brevo et Make"
           ],
-          prerequis: "Connaissances informatiques de base",
-          modalites: "Présentiel ou distanciel",
-          tauxParticipation: "96%",
-          tauxReussite: "93%"
+          prerequis: "Maîtriser son environnement et les fonctions de base pour utiliser un ordinateur",
+          modalites: "Présentiel",
+          tauxParticipation: "95%",
+          tauxReussite: "92%",
+          programmeUrl: "/programmes/A015-IA-CGPT-programme.html"
         },
         {
-          id: "d3",
-          titre: "GESTION DE LA E-RÉPUTATION",
-          description: "Apprenez à surveiller, gérer et améliorer votre image en ligne pour protéger votre marque et votre réputation.",
-          duree: "14 heures",
-          prix: "1 490€",
-          niveau: "Intermédiaire",
-          participants: "Formation individuelle",
+          id: "A012-CV-WEB-WC",
+          titre: "MAÎTRISER CANVA POUR LE WEB, LES RÉSEAUX SOCIAUX ET LA VENTE EN LIGNE",
+          description: "Découvrez comment utiliser Canva pour créer des visuels professionnels pour le web, les réseaux sociaux et votre boutique en ligne.",
+          duree: "14 heures (2 jours)",
+          prix: "980€",
+          niveau: "Débutant",
+          participants: "Artisans, commerçants ou professions libérales",
           objectifs: [
-            "Surveiller son image en ligne",
-            "Répondre aux avis négatifs",
-            "Créer du contenu positif",
-            "Mettre en place une stratégie"
+            "Maîtriser l'interface et les fonctionnalités de Canva",
+            "Créer des visuels professionnels pour le web et les réseaux sociaux",
+            "Concevoir des supports pour votre boutique en ligne",
+            "Optimiser votre workflow avec Canva Pro"
           ],
-          prerequis: "Connaissances en marketing digital",
-          modalites: "Présentiel ou distanciel",
-          tauxParticipation: "95%",
-          tauxReussite: "91%"
+          prerequis: "Maîtriser son environnement et les fonctions de base pour utiliser un ordinateur",
+          modalites: "Présentiel",
+          tauxParticipation: "98%",
+          tauxReussite: "95%",
+          programmeUrl: "/programmes/A012-CV-WEB-WC-programme.html"
         }
       ]
     },
     {
-      id: "visibilite",
-      titre: "Réussir votre visibilité",
-      description: "Des formations pour augmenter votre présence en ligne et attirer de nouveaux clients grâce au référencement.",
+      id: "reussir",
+      titre: "Réussir votre Stratégie Publicitaire",
+      description: "Des formations pour réussir votre présence en ligne et développer votre activité grâce aux compétences digitales avancées.",
       formations: [
         {
-          id: "v1",
-          titre: "STRATÉGIE DIGITALE COMPLÈTE",
-          description: "Créez une stratégie digitale cohérente pour développer votre présence en ligne et atteindre vos objectifs commerciaux.",
-          duree: "35 heures",
-          prix: "2 890€",
-          niveau: "Intermédiaire à avancé",
-          participants: "Formation individuelle",
+          id: "A014-FB-LI",
+          titre: "MAÎTRISER FACEBOOK ADS ET LINKEDIN ADS POUR UNE STRATÉGIE PUBLICITAIRE EFFICACE",
+          description: "Apprenez à utiliser efficacement les plateformes publicitaires Facebook Ads et LinkedIn Ads pour atteindre vos objectifs marketing.",
+          duree: "28 heures (4 jours)",
+          prix: "1960€",
+          niveau: "Débutant à intermédiaire",
+          participants: "Artisans, commerçants ou professions libérales",
           objectifs: [
-            "Analyser votre marché",
-            "Définir vos personas",
-            "Planifier vos actions",
-            "Mesurer vos résultats"
+            "Comprendre les fondamentaux de la publicité sur Facebook et LinkedIn",
+            "Créer et gérer des campagnes publicitaires performantes",
+            "Utiliser les outils avancés de Meta Business Suite et de LinkedIn Ads",
+            "Optimiser les performances des campagnes"
           ],
-          prerequis: "Connaissances marketing de base",
-          modalites: "Présentiel uniquement",
-          tauxParticipation: "94%",
-          tauxReussite: "89%"
+          prerequis: "Maîtriser son environnement et les fonctions de base pour utiliser un ordinateur",
+          modalites: "Présentiel",
+          tauxParticipation: "95%",
+          tauxReussite: "90%",
+          programmeUrl: "/programmes/A014-FB-LI-programme.html"
         },
         {
           id: "v2",
@@ -122,6 +147,53 @@ const Catalogue = () => {
           modalites: "Présentiel ou distanciel",
           tauxParticipation: "97%",
           tauxReussite: "94%"
+        }
+      ]
+    },
+    {
+      id: "visibilite",
+      titre: "Optimiser votre Visibilité en Ligne",
+      description: "Des formations pour augmenter votre présence en ligne et attirer de nouveaux clients grâce au référencement et à une stratégie digitale efficace.",
+      formations: [
+        {
+          id: "A011-SW-SEOPRESS",
+          titre: "SEO LES FONDAMENTAUX (SEOPRESS)",
+          description: "Maîtrisez les techniques de référencement naturel avec SEOPress pour WordPress et améliorez votre visibilité sur les moteurs de recherche.",
+          duree: "14 heures (2 jours)",
+          prix: "980€",
+          niveau: "Débutant à intermédiaire",
+          participants: "Artisans, commerçants ou professions libérales",
+          objectifs: [
+            "Comprendre les fondamentaux du référencement naturel",
+            "Maîtriser l'outil SEOPress pour WordPress",
+            "Optimiser votre site web pour les moteurs de recherche",
+            "Analyser et améliorer vos performances SEO"
+          ],
+          prerequis: "Maîtriser son environnement et les fonctions de base pour utiliser un ordinateur",
+          modalites: "Présentiel",
+          tauxParticipation: "96%",
+          tauxReussite: "93%",
+          programmeUrl: "/programmes/A011-SW-SEOPRESS-programme.html"
+        },
+        {
+          id: "A011-SW-WC",
+          titre: "SEO + WOOCOMMERCE (SEOPRESS & WOOCOMMERCE)",
+          description: "Optimisez votre boutique en ligne WooCommerce avec des techniques SEO avancées grâce à SEOPress.",
+          duree: "14 heures (2 jours)",
+          prix: "980€",
+          niveau: "Intermédiaire",
+          participants: "Artisans, commerçants ou professions libérales",
+          objectifs: [
+            "Maîtriser SEOPress pour WooCommerce",
+            "Optimiser les fiches produits pour le référencement",
+            "Améliorer l'expérience utilisateur et le taux de conversion",
+            "Analyser et améliorer les performances de votre boutique en ligne"
+          ],
+          prerequis: "Connaissances de base de WordPress et WooCommerce",
+          modalites: "Présentiel",
+          tauxParticipation: "95%",
+          tauxReussite: "92%",
+          programmeUrl: "/programmes/A011-SW-WC-programme.html"
         },
         {
           id: "v3",
@@ -145,10 +217,50 @@ const Catalogue = () => {
       ]
     },
     {
-      id: "entreprises",
+      id: "strategies",
       titre: "Stratégies des Entreprises",
       description: "Des formations dédiées aux entreprises pour optimiser leur présence en ligne et leurs stratégies numériques.",
       formations: [
+        {
+          id: "A008-BD-WC",
+          titre: "MARKETING DIGITAL BREVO + TECHNIQUES DE VENTE EN LIGNE (WOOCOMMERCE)",
+          description: "Maîtrisez les outils de marketing digital avec Brevo et apprenez à mettre en place une boutique en ligne performante avec WooCommerce.",
+          duree: "28 heures (4 jours)",
+          prix: "1960€",
+          niveau: "Intermédiaire",
+          participants: "Artisans, commerçants ou professions libérales",
+          objectifs: [
+            "Maîtriser la plateforme Brevo pour l'email marketing",
+            "Mettre en place une boutique WooCommerce",
+            "Développer des stratégies de vente en ligne efficaces",
+            "Analyser et optimiser les performances marketing"
+          ],
+          prerequis: "Maîtriser son environnement et les fonctions de base pour utiliser un ordinateur",
+          modalites: "Présentiel",
+          tauxParticipation: "94%",
+          tauxReussite: "90%",
+          programmeUrl: "/programmes/A008-BD-WC-programme.html"
+        },
+        {
+          id: "A009-SW-MA",
+          titre: "GESTION DE LA SÉCURITÉ (WORDPRESS) + TECHNIQUES D'ANALYSE STATISTIQUE WEB (MATOMO)",
+          description: "Sécurisez votre site WordPress et analysez efficacement vos statistiques web avec Matomo pour optimiser votre présence en ligne.",
+          duree: "14 heures (2 jours)",
+          prix: "980€",
+          niveau: "Intermédiaire",
+          participants: "Artisans, commerçants ou professions libérales",
+          objectifs: [
+            "Sécuriser votre site WordPress contre les menaces courantes",
+            "Mettre en place et configurer Matomo",
+            "Analyser les données de trafic et comprendre les comportements utilisateurs",
+            "Optimiser votre site web grâce aux données analytiques"
+          ],
+          prerequis: "Maîtriser son environnement et les fonctions de base pour utiliser un ordinateur",
+          modalites: "Présentiel",
+          tauxParticipation: "95%",
+          tauxReussite: "92%",
+          programmeUrl: "/programmes/A009-SW-MA-programme.html"
+        },
         {
           id: "e1",
           titre: "WORDPRESS POUR ENTREPRISE",
@@ -167,7 +279,14 @@ const Catalogue = () => {
           modalites: "Présentiel uniquement",
           tauxParticipation: "92%",
           tauxReussite: "90%"
-        },
+        }
+      ]
+    },
+    {
+      id: "fondateurs",
+      titre: "Devenez Co-Fondateur",
+      description: "Des formations avancées pour les entrepreneurs souhaitant maîtriser tous les aspects du digital et de la création d'entreprise.",
+      formations: [
         {
           id: "e2",
           titre: "STRATÉGIE DIGITALE B2B",
@@ -186,14 +305,7 @@ const Catalogue = () => {
           modalites: "Présentiel ou distanciel",
           tauxParticipation: "94%",
           tauxReussite: "91%"
-        }
-      ]
-    },
-    {
-      id: "fondateurs",
-      titre: "Devenez Co-Fondateur",
-      description: "Des formations avancées pour les entrepreneurs souhaitant maîtriser tous les aspects du digital et de la création d'entreprise.",
-      formations: [
+        },
         {
           id: "f1",
           titre: "CRÉATION D'UNE PLATEFORME WEB",
@@ -250,6 +362,26 @@ const Catalogue = () => {
           modalites: "Présentiel uniquement",
           tauxParticipation: "90%",
           tauxReussite: "87%"
+        },
+        {
+          id: "A016-RE-HL",
+          titre: "BACKEND HEADLESS AVEC WORDPRESS ET FRONTEND REACT",
+          description: "Développez des applications modernes en utilisant WordPress comme backend headless et React pour créer des interfaces utilisateur dynamiques et performantes.",
+          duree: "35 heures (5 jours)",
+          prix: "2450€",
+          niveau: "Avancé",
+          participants: "Développeurs web, intégrateurs, freelances",
+          objectifs: [
+            "Configurer WordPress comme API headless",
+            "Développer une application frontend avec React",
+            "Connecter React à l'API WordPress REST",
+            "Déployer et maintenir une architecture headless"
+          ],
+          prerequis: "Connaissances en développement web et notions de JavaScript",
+          modalites: "Présentiel ou distanciel",
+          tauxParticipation: "92%",
+          tauxReussite: "88%",
+          programmeUrl: "/programmes/A016-RE-HL-programme.html"
         }
       ]
     }
@@ -272,6 +404,7 @@ const Catalogue = () => {
       <div className="min-h-screen bg-gray-50">
         <CatalogueHeader />
         <CatalogueHero />
+        <FormationsAdaptabilite />
         <ProcessusPedagogique />
         <FormationsList 
           categoriesFormations={categoriesFormations} 

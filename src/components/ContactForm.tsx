@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useConfetti } from "@/hooks/useConfetti";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -53,6 +54,7 @@ const ContactForm = ({
   onCancel 
 }: ContactFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { fireConfetti } = useConfetti();
   
   // Options pour le select de type de formation
   const trainingTypes = [
@@ -93,6 +95,10 @@ const ContactForm = ({
         // Par exemple, envoi d'une copie au partenaire ou marquage dans le CRM
       }
       
+      // Lancer l'effet de confetti
+      fireConfetti();
+      
+      // Appeler la fonction de soumission fournie en props
       onSubmit(data);
     } catch (error) {
       console.error("Erreur lors de la soumission du formulaire", error);

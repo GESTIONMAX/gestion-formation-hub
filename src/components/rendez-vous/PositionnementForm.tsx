@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { useConfetti } from "@/hooks/useConfetti";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
@@ -46,6 +47,7 @@ const PositionnementForm = ({ onSubmit, onCancel, formationTitre = "WordPress : 
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const { fireConfetti } = useConfetti();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,6 +94,9 @@ const PositionnementForm = ({ onSubmit, onCancel, formationTitre = "WordPress : 
         title: "Demande envoyée",
         description: "Votre demande de rendez-vous de positionnement a été envoyée avec succès. Nous vous recontacterons rapidement.",
       });
+      
+      // Lancer l'effet de confetti pour célébrer la soumission réussie
+      fireConfetti();
       
       onSubmit(formData);
     } catch (error) {
