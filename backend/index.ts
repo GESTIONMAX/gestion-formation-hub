@@ -11,6 +11,8 @@ import actionsCorrectivesRoutes from './actions-correctives.routes';
 import documentsRoutes from './documents.routes';
 import programmesPersonnalisesRoutes from './programmes-personnalises.routes';
 import dossiersFormationRoutes from './dossiers-formation.routes';
+import programmesFormationRoutes from './programmes-formation.routes';
+import programmeRoutes from './programme.routes';
 
 // Charger les variables d'environnement
 dotenv.config();
@@ -36,6 +38,8 @@ app.use('/actions-correctives', actionsCorrectivesRoutes);
 app.use('/dossiers', documentsRoutes);
 app.use('/programmes-personnalises', programmesPersonnalisesRoutes);
 app.use('/dossiers-formation', dossiersFormationRoutes);
+app.use('/programmes-formation', programmesFormationRoutes);
+app.use('/api/programmes', programmeRoutes); // Nouvelle API pour les programmes du catalogue
 
 // Route de santé
 app.get('/', (req, res) => {

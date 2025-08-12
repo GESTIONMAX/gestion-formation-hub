@@ -10,6 +10,95 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Nouveau modèle unifié pour les programmes de formation
+model ProgrammeFormation {
+  id                    String    @id @default(uuid())
+  code                  String    // Code unique du programme (ex: A001-WP-DD)
+  type                  String    // "catalogue" ou "sur-mesure"
+  typeProgramme         String?   @map("type_programme") // "standard", "court", "intensif", etc.
+  
+  // Métadonnées
+  version               Int       @default(1) // Numéro de version
+  estActif              Boolean   @default(true) @map("est_actif")
+  estVisible            Boolean   @default(true) @map("est_visible") // Visible dans le catalogue
+  categorieId           String?   @map("categorie_id") // ID de la catégorie
+  programmeSourId       String?   @map("programme_source_id") // ID du programme source si dérivé
+  pictogramme           String?   // Pictogramme pour le catalogue
+  
+  // Informations générales
+  titre                 String    // Titre du programme
+  description           String    // Description courte
+  duree                 String    // Durée en heures
+  prix                  String    // Prix public
+  niveau                String    // Niveau (débutant, intermédiaire, etc.)
+  participants          String    // Nombre de participants max/min
+  
+  // Contenu pédagogique
+  objectifs             String[]  // Objectifs pédagogiques sous forme de liste
+  objectifsSpecifiques  String?   @map("objectifs_specifiques") // Objectifs spécifiques (sur-mesure)
+  prerequis             String    // Prérequis
+  publicConcerne        String    @map("public_concerne") // Public concerné
+  contenuDetailleJours  String    @map("contenu_detaille_jours") @db.Text // Programme détaillé par jour
+  evaluationSur         String?   @map("evaluation_sur") // Critères d'évaluation
+  
+  // Modalités pratiques
+  horaires              String    @default("9h-12h30 et 14h-17h30") // Horaires
+  modalites             String    // Modalités pédagogiques (présentiel, distanciel, mixte)
+  modalitesAcces        String    @map("modalites_acces") // Modalités d'accès
+  modalitesTechniques   String    @map("modalites_techniques") // Modalités techniques
+  delaiAcces            String?   @map("delai_acces") // Délai d'accès
+  
+  // Informations réglementaires
+  modalitesReglement    String    @map("modalites_reglement") // Modalités de règlement
+  contactOrganisme      String    @default("GestionMax - aurelien@gestionmax.fr - 06.46.02.24.68") @map("contact_organisme") // Contact de l'organisme
+  referentPedagogique   String    @default("Aurélien Lien - aurelien@gestionmax.fr") @map("referent_pedagogique") // Référent pédagogique
+  referentQualite       String    @default("Aurélien Lien - aurelien@gestionmax.fr") @map("referent_qualite") // Référent qualité
+  formateur             String    // Formateur
+  ressourcesDisposition String    @map("ressources_disposition") // Ressources mises à disposition
+  modalitesEvaluation   String    @map("modalites_evaluation") // Modalités d'évaluation
+  sanctionFormation     String    @map("sanction_formation") // Sanction de la formation
+  niveauCertification   String    @map("niveau_certification") // Niveau/certification obtenue
+  delaiAcceptation      String    @map("delai_acceptation") // Délai d'acceptation
+  accessibiliteHandicap String    @map("accessibilite_handicap") // Accessibilité handicap
+  cessationAbandon      String    @map("cessation_abandon") // Conditions en cas de cessation/abandon
+  
+  // Ressources
+  programmeUrl          String?   @map("programme_url") // URL du template HTML du programme
+  ressourcesAssociees   String[]  @map("ressources_associees") // Liste des ressources associées
+  
+  // Dates
+  dateCreation          DateTime  @default(now()) @map("date_creation")
+  dateModification      DateTime  @default(now()) @updatedAt @map("date_modification")
+
+  // Relations
+  beneficiaireId        String?   @map("beneficiaire_id") // ID du bénéficiaire si sur-mesure
+  formateurId           String?   @map("formateur_id") // ID du formateur assigné
+  positionnementRequestId String?  @unique @map("positionnement_request_id") // Lien vers la demande de positionnement
+  programmeSource       ProgrammeFormation? @relation("VersionsProgramme", fields: [programmeSourId], references: [id])
+  versionsDerivees      ProgrammeFormation[] @relation("VersionsProgramme")
+  positionnementRequest PositionnementRequest? @relation(fields: [positionnementRequestId], references: [id])
+  dossiers              DossierFormation[]
+  categorie             CategorieProgramme? @relation("ProgrammesCategorie", fields: [categorieId], references: [id])
+  
+  @@map("programmes_formation")
+}
+
+// Modèle pour les catégories de programmes
+model CategorieProgramme {
+  id            String    @id @default(uuid())
+  code          String    @unique // Identifiant court (ex: "digital")
+  titre         String    // Titre de la catégorie
+  description   String    // Description de la catégorie
+  ordre         Int       @default(0) // Pour l'ordre d'affichage
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @default(now()) @updatedAt @map("updated_at")
+  
+  // Relations
+  programmes    ProgrammeFormation[] @relation("ProgrammesCategorie")
+  
+  @@map("categories_programme")
+}
+
 // NextAuth.js Models
 model Account {
   id                String  @id @default(cuid())
@@ -152,24 +241,21 @@ model PositionnementRequest {
   formationSelectionnee   String?   @map("formation_selectionnee")
   nomBeneficiaire         String    @map("nom_beneficiaire")
   prenomBeneficiaire      String    @map("prenom_beneficiaire")
-  dateNaissance           DateTime? @map("date_naissance")
-  sexe                    String?
-  situationHandicap       String?   @map("situation_handicap")
-  email                   String
-  telephone               String
-  adresse                 String?
-  codePostal              String?   @map("code_postal")
-  ville                   String?
-  statut                  String?
-  experienceWordpress     String?   @map("experience_wordpress")
-  objectifsPrincipaux     String?   @map("objectifs_principaux")
-  niveauMaitrise          String    @default("non") @map("niveau_maitrise")
-  programmeFormation      String?   @map("programme_formation")
-  attestationBesoin       Boolean   @default(false) @map("attestation_besoin")
-  status                  String    @default("en_attente")
-  
-  // Informations B2B pour la formation professionnelle
-  entreprise              String?   @map("entreprise")
+  emailBeneficiaire       String    @map("email_beneficiaire")
+  telephoneBeneficiaire   String?   @map("telephone_beneficiaire")
+  niveauBeneficiaire      String?   @map("niveau_beneficiaire")
+  objectifs               String[]
+  situationActuelle       String    @map("situation_actuelle") // Salarié, indépendant, en création d'entreprise, etc.
+  attentes                String
+  pratiqueActuelle        String    @map("pratique_actuelle")
+  dateDispo               String    @map("date_dispo")
+  modaliteFormation       String?   @map("modalite_formation")
+  isFinancement           Boolean   @default(false) @map("is_financement") // Besoin de financement externe
+  typeFinancement         String?   @map("type_financement") // CPF, OPCO, etc.
+  hasHandicap             Boolean   @default(false) @map("has_handicap")
+  detailsHandicap         String?   @map("details_handicap")
+  besoinHandicap          String?   @map("besoin_handicap")
+  entreprise              String?
   siret                   String?   @map("siret")
   adresseEntreprise       String?   @map("adresse_entreprise")
   interlocuteurNom        String?   @map("interlocuteur_nom")
@@ -177,24 +263,12 @@ model PositionnementRequest {
   interlocuteurEmail      String?   @map("interlocuteur_email")
   interlocuteurTelephone  String?   @map("interlocuteur_telephone")
   organismeFinanceur      String?   @map("organisme_financeur")
-  numeroConvention        String?   @map("numero_convention")
-  typeFinancement         String?   @map("type_financement") // OPCO, entreprise, personnel, CPF, etc.
-  priseEnChargeOPCO       Boolean?  @default(false) @map("prise_en_charge_opco")
-  tauxPriseEnCharge       String?   @map("taux_prise_en_charge")
-  restePourEntreprise     String?   @map("reste_pour_entreprise")
-  
-  // Qualification commerciale
-  besoinsSpecifiques      String?   @map("besoins_specifiques")
-  prerequisFormation      String?   @map("prerequis_formation")
-  contraintes             String?   @map("contraintes")
-  delaisDemarrage         String?   @map("delais_demarrage")
-  noteQualification       String?   @map("note_qualification")
-  
-  // Rendez-vous
-  dateRendezVous          DateTime? @map("date_rendez_vous")
-  canal                   String?   @map("canal") // telephone, visio, presentiel, email
-  objectifRendezVous      String?   @map("objectif_rendez_vous")
-  synthese                String?   @map("synthese")
+  commentaires            String?
+  statut                  String    @default("nouveau") // nouveau, contact_pris, rdv_programme, en_cours, termine, abandonne
+  dateContact             DateTime? @map("date_contact") // Date de premier contact
+  dateRdv                 DateTime? @map("date_rdv") // Date de rendez-vous
+  dateDebutSouhaitee      DateTime? @map("date_debut_souhaitee") // Date de début souhaitée
+  dateFinSouhaitee        DateTime? @map("date_fin_souhaitee") // Date de fin souhaitée
   
   createdAt               DateTime  @default(now()) @map("created_at")
   updatedAt               DateTime  @default(now()) @updatedAt @map("updated_at")
@@ -202,6 +276,7 @@ model PositionnementRequest {
   // Relations
   dossierFormation        DossierFormation?
   programmePersonnalise   ProgrammePersonnalise?
+  programmeFormation      ProgrammeFormation? // Nouvelle relation avec le modèle unifié
   
   @@map("positionnement_requests")
 }
@@ -300,7 +375,9 @@ model DossierFormation {
   formationId            String    @map("formation_id")
   apprenantId            String    @map("apprenant_id")
   positionnementId       String?   @unique @map("positionnement_id")
-  statutDossier          String    @default("en_attente") @map("statut_dossier") // 'en_attente' | 'valide' | 'en_cours' | 'termine'
+  programmeFormationId   String?   @map("programme_formation_id") // Nouveau champ pour le modèle unifié
+  
+  statut                 String    @default("inscrit") // inscrit, en_cours, termine, annule
   dateInscription        DateTime  @default(now()) @map("date_inscription")
   dateDebut              DateTime? @map("date_debut")
   dateFin                DateTime? @map("date_fin")
@@ -312,6 +389,7 @@ model DossierFormation {
   apprenant              Apprenant @relation(fields: [apprenantId], references: [id])
   positionnement         PositionnementRequest? @relation(fields: [positionnementId], references: [id])
   documents              DocumentFormation[]
+  programmeFormation     ProgrammeFormation? @relation(fields: [programmeFormationId], references: [id]) // Nouvelle relation
   
   @@map("dossiers_formation")
 }

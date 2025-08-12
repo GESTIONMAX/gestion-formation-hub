@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -199,7 +199,7 @@ const FormationForm = ({ formation, onSubmit, onCancel }: FormationFormProps) =>
                       id="participants"
                       value={formData.participants}
                       onChange={(e) => handleChange("participants", e.target.value)}
-                      placeholder="Ex: 1 à 5 personnes"
+                      placeholder="Ex: 1 à 5"
                       required
                     />
                   </div>
@@ -230,19 +230,32 @@ const FormationForm = ({ formation, onSubmit, onCancel }: FormationFormProps) =>
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="categorieId">Catégorie</Label>
+                  <Label htmlFor="pictogramme">Pictogramme</Label>
+                  <Input
+                    id="pictogramme"
+                    value={formData.pictogramme}
+                    onChange={(e) => handleChange("pictogramme", e.target.value)}
+                    placeholder="Ex: 📚"
+                    required
+                  />
+                  <div className="text-sm text-muted-foreground mt-1">
+                    Emoji ou icône pour représenter cette formation dans le catalogue
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="categorieId">Catégorie *</Label>
                   <Select
-                    value={formData.categorieId || ""}
-                    onValueChange={(value) => handleChange("categorieId", value || null)}
+                    value={formData.categorieId?.toString() || ""}
+                    onValueChange={(value) => handleChange("categorieId", parseInt(value))}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Sélectionnez une catégorie" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Aucune catégorie</SelectItem>
-                      {categories?.map((categorie) => (
-                        <SelectItem key={categorie?.id} value={categorie?.id}>
-                          {categorie?.titre}
+                      {categories.map((categorie) => (
+                        <SelectItem key={categorie.id} value={categorie.id.toString()}>
+                          {categorie.titre}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -250,85 +263,71 @@ const FormationForm = ({ formation, onSubmit, onCancel }: FormationFormProps) =>
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="pictogramme">Pictogramme</Label>
+                  <Label htmlFor="programmeUrl">URL du programme HTML</Label>
                   <Input
-                    id="pictogramme"
-                    value={formData.pictogramme}
-                    onChange={(e) => handleChange("pictogramme", e.target.value)}
-                    placeholder="Ex: 📚, 🚀, 💻"
+                    id="programmeUrl"
+                    value={formData.programmeUrl || ""}
+                    onChange={(e) => handleChange("programmeUrl", e.target.value)}
+                    placeholder="Ex: /programmes/wordpress-debutant.html"
                   />
+                  <div className="text-sm text-muted-foreground mt-1">
+                    URL relative vers le fichier HTML du programme détaillé (dans le dossier public)
+                  </div>
                 </div>
               </TabsContent>
               
               <TabsContent value="contenu" className="space-y-4">
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label>Objectifs de la formation *</Label>
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      size="sm"
-                      onClick={addObjectif}
-                    >
-                      <Plus className="h-4 w-4 mr-1" />
-                      Ajouter un objectif
-                    </Button>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    {objectifsArray.map((objectif, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        <Input
-                          value={objectif}
-                          onChange={(e) => updateObjectif(index, e.target.value)}
-                          placeholder={`Objectif ${index + 1}`}
-                        />
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => removeObjectif(index)}
-                          disabled={objectifsArray.length <= 1}
-                        >
-                          <Minus className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
                   <Label htmlFor="prerequis">Prérequis *</Label>
-                  <Textarea
+                  <Input
                     id="prerequis"
                     value={formData.prerequis}
                     onChange={(e) => handleChange("prerequis", e.target.value)}
-                    placeholder="Prérequis nécessaires pour suivre la formation"
-                    rows={2}
+                    placeholder="Ex: Aucun prérequis spécifique"
                     required
                   />
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="publicConcerne">Public concerné *</Label>
-                  <Textarea
-                    id="publicConcerne"
-                    value={formData.publicConcerne}
-                    onChange={(e) => handleChange("publicConcerne", e.target.value)}
-                    placeholder="Type de public visé par cette formation"
-                    rows={2}
-                    required
-                  />
+                  <Label htmlFor="objectifs">Objectifs *</Label>
+                  {objectifsArray.map((objectif, index) => (
+                    <div key={index} className="flex items-center gap-2 mb-2">
+                      <Input
+                        value={objectif}
+                        onChange={(e) => updateObjectif(index, e.target.value)}
+                        placeholder={`Objectif ${index + 1}`}
+                      />
+                      {index > 0 && (
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          size="icon" 
+                          onClick={() => removeObjectif(index)}
+                        >
+                          <Minus className="h-4 w-4" />
+                        </Button>
+                      )}
+                      {index === objectifsArray.length - 1 && (
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          size="icon" 
+                          onClick={addObjectif}
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
                 </div>
                 
                 <div className="space-y-2">
                   <Label htmlFor="modalites">Modalités *</Label>
-                  <Textarea
+                  <Input
                     id="modalites"
                     value={formData.modalites}
                     onChange={(e) => handleChange("modalites", e.target.value)}
-                    placeholder="Modalités de la formation (distanciel, présentiel, etc.)"
-                    rows={2}
+                    placeholder="Ex: A distance ou en présentiel"
                     required
                   />
                 </div>
@@ -337,157 +336,146 @@ const FormationForm = ({ formation, onSubmit, onCancel }: FormationFormProps) =>
                   <Label htmlFor="contenuDetailleJours">Contenu détaillé par jour</Label>
                   <Textarea
                     id="contenuDetailleJours"
-                    value={formData.contenuDetailleJours}
+                    value={formData.contenuDetailleJours || ""}
                     onChange={(e) => handleChange("contenuDetailleJours", e.target.value)}
-                    placeholder="Détaillez le contenu de la formation jour par jour (Jour 1: ..., Jour 2: ...)"
-                    rows={6}
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="programmeUrl">URL du programme HTML</Label>
-                  <Input
-                    id="programmeUrl"
-                    value={formData.programmeUrl || ""}
-                    onChange={(e) => handleChange("programmeUrl", e.target.value || null)}
-                    placeholder="Ex: /programmes/template-a001-wp-intro.html"
+                    placeholder="Détail du programme jour par jour"
+                    rows={10}
                   />
                 </div>
               </TabsContent>
               
               <TabsContent value="reglementaire" className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="modalitesAcces">Modalités et délais d'accès *</Label>
-                    <Textarea
-                      id="modalitesAcces"
-                      value={formData.modalitesAcces}
-                      onChange={(e) => handleChange("modalitesAcces", e.target.value)}
-                      placeholder="Modalités et délais moyens d'accès"
-                      rows={2}
-                      required
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="modalitesReglement">Modalités de règlement *</Label>
-                    <Textarea
-                      id="modalitesReglement"
-                      value={formData.modalitesReglement}
-                      onChange={(e) => handleChange("modalitesReglement", e.target.value)}
-                      placeholder="Conditions et modalités de paiement"
-                      rows={2}
-                      required
-                    />
-                  </div>
+                <div className="space-y-2">
+                  <Label htmlFor="publicConcerne">Public concerné *</Label>
+                  <Input
+                    id="publicConcerne"
+                    value={formData.publicConcerne}
+                    onChange={(e) => handleChange("publicConcerne", e.target.value)}
+                    placeholder="Ex: Tout public désirant se former à WordPress"
+                    required
+                  />
                 </div>
                 
-                <Accordion type="single" collapsible className="w-full border rounded-md p-2">
-                  <AccordionItem value="details" className="border-none">
-                    <AccordionTrigger className="py-2 font-semibold text-lg">
-                      Détails réglementaires
-                    </AccordionTrigger>
-                    <AccordionContent className="space-y-4 pt-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="modalitesTechniques">Modalités techniques et pédagogiques</Label>
-                          <Textarea
-                            id="modalitesTechniques"
-                            value={formData.modalitesTechniques}
-                            onChange={(e) => handleChange("modalitesTechniques", e.target.value)}
-                            placeholder="Modalités techniques et pédagogiques de la formation"
-                            rows={2}
-                          />
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor="formateur">Formateur</Label>
-                          <Input
-                            id="formateur"
-                            value={formData.formateur}
-                            onChange={(e) => handleChange("formateur", e.target.value)}
-                            placeholder="Informations sur le formateur"
-                          />
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor="ressourcesDisposition">Ressources mises à disposition</Label>
-                          <Textarea
-                            id="ressourcesDisposition"
-                            value={formData.ressourcesDisposition}
-                            onChange={(e) => handleChange("ressourcesDisposition", e.target.value)}
-                            placeholder="Ressources mises à disposition des apprenants"
-                            rows={2}
-                          />
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor="modalitesEvaluation">Modalités d'évaluation</Label>
-                          <Textarea
-                            id="modalitesEvaluation"
-                            value={formData.modalitesEvaluation}
-                            onChange={(e) => handleChange("modalitesEvaluation", e.target.value)}
-                            placeholder="Modalités d'évaluation des apprenants"
-                            rows={2}
-                          />
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor="sanctionFormation">Sanction de la formation</Label>
-                          <Textarea
-                            id="sanctionFormation"
-                            value={formData.sanctionFormation}
-                            onChange={(e) => handleChange("sanctionFormation", e.target.value)}
-                            placeholder="Sanction de la formation (certificat, attestation...)"
-                            rows={2}
-                          />
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor="niveauCertification">Niveau/certification obtenue</Label>
-                          <Input
-                            id="niveauCertification"
-                            value={formData.niveauCertification}
-                            onChange={(e) => handleChange("niveauCertification", e.target.value)}
-                            placeholder="Niveau ou certification obtenue"
-                          />
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor="delaiAcceptation">Délai d'acceptation</Label>
-                          <Input
-                            id="delaiAcceptation"
-                            value={formData.delaiAcceptation}
-                            onChange={(e) => handleChange("delaiAcceptation", e.target.value)}
-                            placeholder="Délai d'acceptation de la formation"
-                          />
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor="accessibiliteHandicap">Accessibilité handicap</Label>
-                          <Textarea
-                            id="accessibiliteHandicap"
-                            value={formData.accessibiliteHandicap}
-                            onChange={(e) => handleChange("accessibiliteHandicap", e.target.value)}
-                            placeholder="Informations sur l'accessibilité aux personnes en situation de handicap"
-                            rows={2}
-                          />
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor="cessationAbandon">Cessation anticipée/abandon</Label>
-                          <Textarea
-                            id="cessationAbandon"
-                            value={formData.cessationAbandon}
-                            onChange={(e) => handleChange("cessationAbandon", e.target.value)}
-                            placeholder="Conditions en cas de cessation anticipée ou d'abandon"
-                            rows={2}
-                          />
-                        </div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+                <div className="space-y-2">
+                  <Label htmlFor="modalitesAcces">Modalités d'accès *</Label>
+                  <Input
+                    id="modalitesAcces"
+                    value={formData.modalitesAcces}
+                    onChange={(e) => handleChange("modalitesAcces", e.target.value)}
+                    placeholder="Ex: Formation accessible à distance ou en présentiel selon le contexte"
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="modalitesTechniques">Modalités techniques *</Label>
+                  <Input
+                    id="modalitesTechniques"
+                    value={formData.modalitesTechniques}
+                    onChange={(e) => handleChange("modalitesTechniques", e.target.value)}
+                    placeholder="Ex: Formation synchrone à distance via visioconférence et partage d'écran"
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="modalitesReglement">Modalités de règlement *</Label>
+                  <Input
+                    id="modalitesReglement"
+                    value={formData.modalitesReglement}
+                    onChange={(e) => handleChange("modalitesReglement", e.target.value)}
+                    placeholder="Ex: Règlement à 30 jours, sans escompte"
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="delaiAcceptation">Délai d'acceptation *</Label>
+                  <Input
+                    id="delaiAcceptation"
+                    value={formData.delaiAcceptation}
+                    onChange={(e) => handleChange("delaiAcceptation", e.target.value)}
+                    placeholder="Ex: 7 jours ouvrables"
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="formateur">Formateur *</Label>
+                  <Input
+                    id="formateur"
+                    value={formData.formateur}
+                    onChange={(e) => handleChange("formateur", e.target.value)}
+                    placeholder="Ex: Formateur spécialisé WordPress avec 5+ ans d'expérience"
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="ressourcesDisposition">Ressources à disposition *</Label>
+                  <Input
+                    id="ressourcesDisposition"
+                    value={formData.ressourcesDisposition}
+                    onChange={(e) => handleChange("ressourcesDisposition", e.target.value)}
+                    placeholder="Ex: Support de cours, tutoriels vidéo, accès à une plateforme d'exercices"
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="modalitesEvaluation">Modalités d'évaluation *</Label>
+                  <Input
+                    id="modalitesEvaluation"
+                    value={formData.modalitesEvaluation}
+                    onChange={(e) => handleChange("modalitesEvaluation", e.target.value)}
+                    placeholder="Ex: QCM et exercices pratiques"
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="sanctionFormation">Sanction de la formation *</Label>
+                  <Input
+                    id="sanctionFormation"
+                    value={formData.sanctionFormation}
+                    onChange={(e) => handleChange("sanctionFormation", e.target.value)}
+                    placeholder="Ex: Attestation de formation"
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="niveauCertification">Niveau de certification *</Label>
+                  <Input
+                    id="niveauCertification"
+                    value={formData.niveauCertification}
+                    onChange={(e) => handleChange("niveauCertification", e.target.value)}
+                    placeholder="Ex: Formation non certifiante"
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="accessibiliteHandicap">Accessibilité handicap *</Label>
+                  <Textarea
+                    id="accessibiliteHandicap"
+                    value={formData.accessibiliteHandicap}
+                    onChange={(e) => handleChange("accessibiliteHandicap", e.target.value)}
+                    placeholder="Ex: Formation accessible aux personnes en situation de handicap..."
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="cessationAbandon">Cessation / abandon *</Label>
+                  <Input
+                    id="cessationAbandon"
+                    value={formData.cessationAbandon}
+                    onChange={(e) => handleChange("cessationAbandon", e.target.value)}
+                    placeholder="Ex: En cas d'abandon, la facturation sera établie au prorata..."
+                    required
+                  />
+                </div>
               </TabsContent>
               
               {formData.type === "sur-mesure" && (
@@ -496,8 +484,8 @@ const FormationForm = ({ formation, onSubmit, onCancel }: FormationFormProps) =>
                     <Label htmlFor="beneficiaireId">ID du bénéficiaire</Label>
                     <Input
                       id="beneficiaireId"
-                      value={formData.beneficiaireId || ""}
-                      onChange={(e) => handleChange("beneficiaireId", e.target.value || null)}
+                      value={formData.beneficiaireId?.toString() || ""}
+                      onChange={(e) => handleChange("beneficiaireId", e.target.value ? parseInt(e.target.value) : null)}
                       placeholder="ID du bénéficiaire"
                     />
                   </div>
@@ -507,9 +495,9 @@ const FormationForm = ({ formation, onSubmit, onCancel }: FormationFormProps) =>
                     <Textarea
                       id="objectifsSpecifiques"
                       value={formData.objectifsSpecifiques || ""}
-                      onChange={(e) => handleChange("objectifsSpecifiques", e.target.value || null)}
-                      placeholder="Objectifs spécifiques pour cette formation sur-mesure"
-                      rows={4}
+                      onChange={(e) => handleChange("objectifsSpecifiques", e.target.value)}
+                      placeholder="Objectifs spécifiques pour ce programme sur-mesure"
+                      rows={5}
                     />
                   </div>
                   
@@ -517,21 +505,25 @@ const FormationForm = ({ formation, onSubmit, onCancel }: FormationFormProps) =>
                     <Label htmlFor="positionnementRequestId">ID de la demande de positionnement</Label>
                     <Input
                       id="positionnementRequestId"
-                      value={formData.positionnementRequestId || ""}
-                      onChange={(e) => handleChange("positionnementRequestId", e.target.value || null)}
+                      value={formData.positionnementRequestId?.toString() || ""}
+                      onChange={(e) => handleChange("positionnementRequestId", e.target.value ? parseInt(e.target.value) : null)}
                       placeholder="ID de la demande de positionnement associée"
                     />
                   </div>
                 </TabsContent>
               )}
             </Tabs>
-
-            <div className="flex gap-4">
-              <Button type="submit" className="flex-1">
-                {formation ? "Modifier" : "Créer"} le programme de formation
-              </Button>
-              <Button type="button" variant="outline" onClick={onCancel}>
+            
+            <div className="flex justify-end gap-4">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={onCancel}
+              >
                 Annuler
+              </Button>
+              <Button type="submit">
+                {formation ? "Mettre à jour" : "Créer le programme"}
               </Button>
             </div>
           </form>
