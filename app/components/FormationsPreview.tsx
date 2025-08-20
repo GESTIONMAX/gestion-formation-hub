@@ -142,7 +142,7 @@ const FormationsPreview = () => {
           </div>
 
           <div className="text-center">
-            <Link href="/catalogue">
+            <Link href="/catalogue" legacyBehavior>
               <Button size="lg" className="text-lg px-8 py-3">
                 Voir toutes nos formations
               </Button>
@@ -150,7 +150,6 @@ const FormationsPreview = () => {
           </div>
         </div>
       </section>
-
       {/* Modal pour le formulaire de positionnement */}
       <Dialog open={showPositionnementForm} onOpenChange={setShowPositionnementForm}>
         <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
@@ -167,7 +166,6 @@ const FormationsPreview = () => {
           />
         </DialogContent>
       </Dialog>
-      
       {/* Modal pour les détails de la formation */}
       {selectedFormationDetails && (
         <FormationDetailsModal

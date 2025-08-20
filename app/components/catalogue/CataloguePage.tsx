@@ -27,7 +27,6 @@ const CataloguePage: React.FC = () => {
       <Typography variant="h4" component="h1" gutterBottom sx={{ mb: 3 }}>
         Catalogue de formations
       </Typography>
-
       {loading ? (
         <Box display="flex" justifyContent="center" my={4}>
           <CircularProgress />
@@ -63,7 +62,7 @@ const CataloguePage: React.FC = () => {
           {/* Affichage des formations par catégorie */}
           {activeTab === 0 ? (
             // Affichage de toutes les catégories
-            <>
+            (<>
               {categories.map((category: CategorieFormation) => {
                 // Skip les catégories sans formations
                 if (!category.formations || category.formations.length === 0) return null;
@@ -166,10 +165,10 @@ const CataloguePage: React.FC = () => {
                   </Box>
                 );
               })}
-            </>
+            </>)
           ) : (
             // Affichage d'une seule catégorie
-            <Box>
+            (<Box>
               {categories[activeTab - 1] && categories[activeTab - 1].formations && categories[activeTab - 1].formations.length > 0 ? (
                 <Grid container spacing={3}>
                   {categories[activeTab - 1].formations?.map((programme: ProgrammeFormation) => (
@@ -251,7 +250,7 @@ const CataloguePage: React.FC = () => {
               ) : (
                 <Alert severity="info">Aucune formation disponible dans cette catégorie</Alert>
               )}
-            </Box>
+            </Box>)
           )}
         </>
       )}

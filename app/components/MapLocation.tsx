@@ -95,11 +95,11 @@ const MapLocation = ({
           <div id="map-container" style={{ height: '100%', width: '100%' }}></div>
         ) : (
           // Solution de repli pour le SSR ou si Leaflet n'est pas chargé
-          <img 
+          (<img 
             src={staticMapUrl} 
             alt="Carte de localisation GestionMax Formation" 
             style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-          />
+          />)
         )}
       </div>
       <div className="p-2 bg-white text-xs text-center text-gray-500">

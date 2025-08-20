@@ -11,7 +11,7 @@ const Navigation = () => {
 
   return (
     <nav className="flex items-center gap-6" aria-label="Menu principal">
-      <Link href="/">
+      <Link href="/" legacyBehavior>
         <Button 
           variant={isActive("/") ? "default" : "ghost"}
           className="text-base"
@@ -19,7 +19,7 @@ const Navigation = () => {
           Accueil
         </Button>
       </Link>
-      <Link href="/catalogue">
+      <Link href="/catalogue" legacyBehavior>
         <Button 
           variant={isActive("/catalogue") ? "default" : "ghost"}
           className="text-base"
@@ -27,7 +27,7 @@ const Navigation = () => {
           Catalogue
         </Button>
       </Link>
-      <Link href="/blog">
+      <Link href="/blog" legacyBehavior>
         <Button 
           variant={isActive("/blog") ? "default" : "ghost"}
           className="text-base"
@@ -35,7 +35,7 @@ const Navigation = () => {
           Blog
         </Button>
       </Link>
-      <Link href="/a-propos">
+      <Link href="/a-propos" legacyBehavior>
         <Button 
           variant={isActive("/a-propos") ? "default" : "ghost"}
           className="text-base"
@@ -43,7 +43,7 @@ const Navigation = () => {
           À propos
         </Button>
       </Link>
-      <Link href="/contact">
+      <Link href="/contact" legacyBehavior>
         <Button 
           variant={isActive("/contact") ? "default" : "ghost"}
           className="text-base"
@@ -51,7 +51,7 @@ const Navigation = () => {
           Contact
         </Button>
       </Link>
-      <Link href="/dashboard">
+      <Link href="/dashboard" legacyBehavior>
         <Button variant="outline" className="text-base">
           Espace formation
         </Button>
