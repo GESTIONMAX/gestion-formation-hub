@@ -1,75 +1,89 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import api from "@/services/api";
 import { ApiError, ApiResponse } from "@/types";
+import { ProgrammeFormation } from "@/types/programme";
 
-// Interface pour les programmes de formation unifiés
-export interface ProgrammeFormation {
-  id: string;
-  code: string;
-  type: "catalogue" | "sur-mesure"; // Type du programme (catalogue ou sur-mesure)
-  titre: string;
-  description: string;
-  
-  // Champs descriptifs
-  niveau: string;
-  participants: string;
-  duree: string;
-  prix: string;
-  objectifs: string[];
-  prerequis: string;
-  modalites: string;
-  
-  // Champs réglementaires
-  publicConcerne: string;
-  contenuDetailleJours: string;
-  modalitesAcces: string;
-  modalitesTechniques: string;
-  modalitesReglement: string;
-  formateur: string;
-  ressourcesDisposition: string;
-  modalitesEvaluation: string;
-  sanctionFormation: string;
-  niveauCertification: string;
-  delaiAcceptation: string;
-  accessibiliteHandicap: string;
-  cessationAbandon: string;
-  
-  // Champs spécifiques aux programmes sur-mesure
-  beneficiaireId: string | null;
-  objectifsSpecifiques: string | null;
-  positionnementRequestId: string | null;
-  
-  // URL vers le programme HTML
-  programmeUrl: string | null;
-  programme?: string; // Contenu détaillé du programme au format HTML ou texte
-  contenuDetailleHtml?: string; // Contenu détaillé au format HTML
-  
-  // Catégorie
-  categorieId: string | null;
-  categorie?: {
-    id: string;
-    code: string;
-    titre: string;
-    description: string;
-  };
-  
-  // Style
-  pictogramme: string;
-  
-  // Statut
-  estActif?: boolean;
-  version?: string;
-  typeProgramme?: string;
-  
-  // Dates
-  createdAt: Date;
-  updatedAt: Date;
-}
+// Note: L'interface ProgrammeFormation est maintenant importée depuis @/types/programme
 
+/**
+ * @description Hook personnalisé pour gérer les programmes de formation (CRUD)
+ * @note Composant client - Nécessite la directive "use client" et utilise les API navigateur
+ *
+ * @returns {Object} Fonctions et états pour manipuler les programmes de formation
+ * @returns {ProgrammeFormation[]} programmes - Liste des programmes de formation
+ * @returns {boolean} loading - Indicateur de chargement
+ * @returns {Function} createProgramme - Création d'un nouveau programme
+ * @returns {Function} updateProgramme - Mise à jour d'un programme
+ * @returns {Function} deleteProgramme - Suppression d'un programme
+ * @returns {Function} duplicateProgramme - Duplication d'un programme (ex: catalogue vers sur-mesure)
+ * @returns {Function} updateProgrammeStatus - Mise à jour du statut (actif/inactif)
+ * @returns {Function} getProgrammesByCategorie - Filtrage par catégorie
+ * @returns {Function} getProgrammesByType - Filtrage par type (catalogue/sur-mesure)
+ * @returns {Function} refreshProgrammes - Rechargement des programmes
+ */
+/**
+ * @description Hook de gestion des programmes de formation
+ * 
+ * Ce hook fournit toutes les fonctionnalités nécessaires pour interagir avec les programmes
+ * de formation. Il encapsule les opérations CRUD (Create, Read, Update, Delete), la recherche,
+ * le filtrage et la gestion des statuts des programmes.
+ *
+ * @returns {Object} Objet contenant les états et fonctions pour gérer les programmes de formation
+ * @returns {ProgrammeFormation[]} programmes - Liste des programmes de formation
+ * @returns {boolean} loading - État de chargement des programmes
+ * @returns {ProgrammeFormation["categorie"][]} categories - Liste des catégories de programmes
+ * @returns {boolean} loadingCategories - État de chargement des catégories
+ * @returns {Function} fetchProgrammes - Fonction pour charger les programmes
+ * @returns {Function} createProgramme - Fonction pour créer un programme
+ * @returns {Function} updateProgramme - Fonction pour mettre à jour un programme
+ * @returns {Function} deleteProgramme - Fonction pour supprimer un programme
+ * @returns {Function} duplicateProgramme - Fonction pour dupliquer un programme
+ * @returns {Function} updateProgrammeStatus - Fonction pour mettre à jour le statut d'un programme
+ * @returns {Function} getProgrammesByCategorie - Fonction pour filtrer les programmes par catégorie
+ * @returns {Function} getProgrammesByType - Fonction pour filtrer les programmes par type
+ * 
+ * @example
+ * // Utilisation dans un composant
+ * const {
+ *   programmes,
+ *   loading,
+ *   createProgramme,
+ *   updateProgramme,
+ *   deleteProgramme
+ * } = useProgrammesFormation();
+ * 
+ * // Afficher la liste des programmes
+ * return (
+ *   <div>
+ *     {loading ? (
+ *       <p>Chargement...</p>
+ *     ) : (
+ *       <ul>
+ *         {programmes.map(prog => (
+ *           <li key={prog.id}>{prog.titre}</li>
+ *         ))}
+ *       </ul>
+ *     )}
+ *   </div>
+ * );
+ */
 export const useProgrammesFormation = () => {
+  /**
+   * @description État stockant la liste des programmes de formation
+   */
   const [programmes, setProgrammes] = useState<ProgrammeFormation[]>([]);
+  
+  /**
+   * @description État de chargement général des programmes
+   */
   const [loading, setLoading] = useState(true);
+  
+  /**
+   * @description Hook de notification pour afficher des alertes utilisateur
+   */
   const { toast } = useToast();
 
   // Données simulées pour démonstration quand l'API n'est pas disponible
@@ -221,21 +235,32 @@ export const useProgrammesFormation = () => {
     }
   ];
 
+  /**
+   * @description Charge la liste complète des programmes de formation depuis l'API
+   * @note Cette fonction est appelée automatiquement au montage du composant et met à jour l'état local
+   * 
+   * @returns {Promise<void>}
+   * @throws {Error} Capture les erreurs en interne mais ne les propage pas
+   * 
+   * @example
+   * // Rafraîchir manuellement la liste des programmes
+   * await fetchProgrammes();
+   * console.log(`${programmes.length} programmes chargés`);
+   */
   const fetchProgrammes = async () => {
     try {
       setLoading(true);
-      console.log('Récupération des programmes de formation publiés...');
-      const response = await api.get('/api/programmes-formation/catalogue');
-      console.log('Programmes récupérés:', response.data);
+      console.log('Chargement des programmes de formation...');
+      const response = await api.get('/api/programmes-formation');
+      console.log('Programmes chargés:', response.data.length, 'items');
       setProgrammes(response.data);
     } catch (error) {
-      console.error('Erreur lors du chargement des programmes de formation:', error);
+      console.error('Erreur lors du chargement des programmes:', error);
       toast({
-        title: 'Mode démonstration',
-        description: 'Affichage de données simulées pour la démonstration',
+        title: 'Erreur',
+        description: 'Impossible de charger les programmes de formation',
+        variant: 'destructive',
       });
-      // Utiliser des données simulées si l'API n'est pas disponible
-      setProgrammes(MOCK_PROGRAMMES);
     } finally {
       setLoading(false);
     }
@@ -245,20 +270,39 @@ export const useProgrammesFormation = () => {
     fetchProgrammes();
   }, []);
 
-  const createProgramme = async (
-    programmeData: Omit<ProgrammeFormation, 'id' | 'createdAt' | 'updatedAt'>
-  ) => {
+  /**
+   * @description Crée un nouveau programme de formation
+   * 
+   * @param {Omit<ProgrammeFormation, 'id' | 'createdAt' | 'updatedAt'>} programmeData - Données du programme sans id et dates automatiques
+   * @returns {Promise<ProgrammeFormation>} Le programme créé
+   * @throws {Error} Si la création échoue
+   * 
+   * @example
+   * // Créer un nouveau programme de formation
+   * const nouveauProgramme = await createProgramme({
+   *   code: "DEV-WEB-02",
+   *   titre: "Développement Web Full-Stack",
+   *   type: "catalogue",
+   *   // autres propriétés obligatoires...
+   * });
+   */
+  const createProgramme = async (programmeData: Omit<ProgrammeFormation, 'id' | 'createdAt' | 'updatedAt'>) => {
     try {
+      console.log('Création d\'un nouveau programme avec les données:', programmeData);
       const response = await api.post('/api/programmes-formation', programmeData);
+      console.log('Programme créé avec succès:', response.data);
+      
       const newProgramme = response.data;
       setProgrammes(prev => [newProgramme, ...prev]);
+      
       toast({
         title: 'Programme créé',
         description: `Programme "${newProgramme.titre}" créé avec succès`,
       });
+      
       return newProgramme;
     } catch (error) {
-      console.error('Erreur lors de la création:', error);
+      console.error('Erreur lors de la création du programme:', error);
       toast({
         title: 'Erreur',
         description: 'Impossible de créer le programme',
@@ -268,17 +312,34 @@ export const useProgrammesFormation = () => {
     }
   };
 
+  /**
+   * @description Met à jour un programme de formation existant
+   * 
+   * @param {string} id - Identifiant du programme à mettre à jour
+   * @param {Partial<ProgrammeFormation>} programmeData - Données partielles à mettre à jour
+   * @returns {Promise<ProgrammeFormation>} Le programme mis à jour
+   * @throws {Error} Si la mise à jour échoue
+   * 
+   * @example
+   * // Mettre à jour un programme existant
+   * const programmeModifie = await updateProgramme("prog-123", {
+   *   titre: "Nouveau titre",
+   *   description: "Nouvelle description"
+   * });
+   */
   const updateProgramme = async (id: string, programmeData: Partial<ProgrammeFormation>) => {
     try {
+      console.log('Mise à jour du programme', id, 'avec les données:', programmeData);
       const response = await api.put(`/api/programmes-formation/${id}`, programmeData);
-      const updated = response.data;
-      setProgrammes(prev => prev.map(p => (p.id === id ? updated : p)));
+      const updatedProgramme = response.data;
+      setProgrammes(prev => prev.map(p => (p.id === id ? updatedProgramme : p)));
       toast({
         title: 'Programme mis à jour',
-        description: `Programme "${updated.titre}" mis à jour`,
+        description: `Programme "${updatedProgramme.titre}" mis à jour avec succès`,
       });
+      return updatedProgramme;
     } catch (error) {
-      console.error('Erreur lors de la modification:', error);
+      console.error('Erreur lors de la mise à jour:', error);
       toast({
         title: 'Erreur',
         description: 'Impossible de mettre à jour le programme',
@@ -288,17 +349,33 @@ export const useProgrammesFormation = () => {
     }
   };
 
+  /**
+   * @description Supprime un programme de formation
+   * 
+   * @param {string} id - Identifiant du programme à supprimer
+   * @returns {Promise<void>}
+   * @throws {Error} Si la suppression échoue
+   * 
+   * @example
+   * // Supprimer un programme
+   * await deleteProgramme("prog-123");
+   * console.log("Programme supprimé");
+   */
   const deleteProgramme = async (id: string) => {
     try {
-      const programme = programmes.find(p => p.id === id);
+      // Trouver le programme pour l'inclure dans la notification
+      const programmeToDelete = programmes.find(p => p.id === id);
+      console.log('Suppression du programme:', id, programmeToDelete?.titre);
       await api.delete(`/api/programmes-formation/${id}`);
       setProgrammes(prev => prev.filter(p => p.id !== id));
       toast({
         title: 'Programme supprimé',
-        description: `Programme "${programme?.titre}" supprimé avec succès`,
+        description: programmeToDelete
+          ? `Programme "${programmeToDelete.titre}" supprimé`
+          : 'Programme supprimé avec succès',
       });
     } catch (error) {
-      console.error("Erreur lors de la suppression:", error);
+      console.error('Erreur lors de la suppression:', error);
       toast({
         title: 'Erreur',
         description: 'Impossible de supprimer le programme',
@@ -308,15 +385,33 @@ export const useProgrammesFormation = () => {
     }
   };
 
-  // Récupérer les catégories de programmes
+  /**
+   * @description État pour les catégories de programmes de formation disponibles
+   */
   const [categories, setCategories] = useState<ProgrammeFormation["categorie"][]>([]);
+  
+  /**
+   * @description État de chargement des catégories
+   */
   const [loadingCategories, setLoadingCategories] = useState(false);
 
+  /**
+   * @description Charge les catégories de programmes depuis l'API
+   * @returns {Promise<void>}
+   * @throws {Error} Capture les erreurs en interne mais ne les propage pas
+   * 
+   * @example
+   * // Recharger manuellement les catégories
+   * await fetchCategories();
+   * console.log("Catégories rechargées");
+   */
   const fetchCategories = async () => {
     try {
       setLoadingCategories(true);
+      console.log('Chargement des catégories de programmes...');
       const response = await api.get('/api/categories-programme');
       setCategories(response.data);
+      console.log('Catégories chargées avec succès:', response.data);
     } catch (error) {
       console.error('Erreur lors du chargement des catégories:', error);
     } finally {
@@ -324,21 +419,61 @@ export const useProgrammesFormation = () => {
     }
   };
 
+  // Charger les catégories au montage du composant
   useEffect(() => {
     fetchCategories();
   }, []);
 
-  // Filtrer les programmes par catégorie
+  /**
+   * @description Filtre les programmes par catégorie
+   * 
+   * @param {string} categorieId - Identifiant de la catégorie à filtrer
+   * @returns {ProgrammeFormation[]} Liste des programmes appartenant à la catégorie
+   * 
+   * @example
+   * // Récupérer les programmes de la catégorie "Développement Web"
+   * const programmesDevWeb = getProgrammesByCategorie("cat-dev-web");
+   */
   const getProgrammesByCategorie = (categorieId: string) => {
     return programmes.filter(prog => prog.categorieId === categorieId);
   };
 
-  // Filtrer les programmes par type
+  /**
+   * @description Filtre les programmes par type (catalogue ou sur-mesure)
+   * 
+   * @param {"catalogue" | "sur-mesure"} type - Type de programme à filtrer
+   * @returns {ProgrammeFormation[]} Liste des programmes du type spécifié
+   * 
+   * @example
+   * // Récupérer tous les programmes catalogue
+   * const programmesCatalogue = getProgrammesByType("catalogue");
+   * 
+   * @example
+   * // Récupérer tous les programmes sur-mesure
+   * const programmesSurMesure = getProgrammesByType("sur-mesure");
+   */
   const getProgrammesByType = (type: "catalogue" | "sur-mesure") => {
     return programmes.filter(prog => prog.type === type);
   };
 
-  // Dupliquer un programme (catalogue vers sur-mesure ou vice-versa)
+  /**
+   * @description Duplique un programme existant avec des modifications (par ex: de catalogue vers sur-mesure)
+   * @note Cette fonction tente d'abord d'utiliser un endpoint spécifique de duplication, puis recourt à une création standard en cas d'échec
+   * 
+   * @param {string} id - Identifiant du programme source à dupliquer
+   * @param {Partial<ProgrammeFormation>} modificationData - Modifications à appliquer à la copie
+   * @returns {Promise<ProgrammeFormation>} Le programme dupliqué
+   * @throws {Error} Si la duplication échoue ou si le programme source n'est pas trouvé
+   * 
+   * @example
+   * // Dupliquer un programme catalogue en version sur-mesure
+   * const programmeSurMesure = await duplicateProgramme("prog-catalogue-123", {
+   *   type: "sur-mesure",
+   *   titre: "Formation DevOps Personnalisée - Client ABC",
+   *   beneficiaireId: "client-123",
+   *   objectifsSpecifiques: "Objectifs adaptés au client ABC"
+   * });
+   */
   const duplicateProgramme = async (id: string, modificationData: Partial<ProgrammeFormation>) => {
     try {
       console.log('duplicateProgramme appelé avec id:', id, 'et modifications:', modificationData);
@@ -404,7 +539,24 @@ export const useProgrammesFormation = () => {
     }
   };
 
-  // Mettre à jour le statut d'un programme (actif/inactif)
+  /**
+   * @description Met à jour le statut d'activation d'un programme (actif/inactif)
+   * @note Cette fonction tente d'utiliser un endpoint dédié au statut, puis recourt à une mise à jour standard en cas d'échec
+   * 
+   * @param {string} id - Identifiant du programme à modifier
+   * @param {{ estActif: boolean }} options - Options avec le statut d'activation
+   * @param {boolean} options.estActif - Nouveau statut d'activation (true = actif, false = inactif)
+   * @returns {Promise<ProgrammeFormation>} Le programme mis à jour
+   * @throws {Error} Si la mise à jour du statut échoue
+   * 
+   * @example
+   * // Activer un programme
+   * await updateProgrammeStatus("prog-123", { estActif: true });
+   * 
+   * @example
+   * // Désactiver un programme
+   * await updateProgrammeStatus("prog-456", { estActif: false });
+   */
   const updateProgrammeStatus = async (id: string, { estActif }: { estActif: boolean }) => {
     console.log('updateProgrammeStatus appelé avec id:', id, 'estActif:', estActif);
     try {

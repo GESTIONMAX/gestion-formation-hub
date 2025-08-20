@@ -48,6 +48,8 @@ model ProgrammeFormation {
   accessibiliteHandicap   String                 @map("accessibilite_handicap")
   cessationAbandon        String                 @map("cessation_abandon")
   programmeUrl            String?                @map("programme_url")
+  tauxParticipation       String?                @map("taux_participation")
+  tauxReussite            String?                @map("taux_reussite")
   ressourcesAssociees     String[]               @map("ressources_associees")
   dateCreation            DateTime               @default(now()) @map("date_creation")
   dateModification        DateTime               @default(now()) @updatedAt @map("date_modification")

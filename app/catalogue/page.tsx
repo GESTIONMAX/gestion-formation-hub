@@ -21,103 +21,37 @@ export default function CataloguePage() {
   const [categoriesFormations, setCategoriesFormations] = useState<CategorieFormation[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
-  // Fonction pour transformer les données du backend au format attendu par le frontend
-  const transformBackendData = (backendData: any[]): CategorieFormation[] => {
-    return backendData.map(category => ({
-      id: category.id,
-      titre: category.titre,
-      description: category.description,
-      formations: category.formations.map((formation: any) => ({
-        id: formation.id,
-        titre: formation.titre,
-        description: formation.description,
-        duree: formation.duree || '7h',
-        prix: formation.prix || '980€',
-        niveau: formation.niveau || 'Débutant',
-        // Champs requis par le type Formation mais potentiellement manquants dans les données du backend
-        participants: formation.participants || 'Tout public', // Champ requis
-        objectifs: Array.isArray(formation.objectifs) ? formation.objectifs : 
-                 (formation.objectifs ? [formation.objectifs] : ['Objectif à définir']),
-        prerequis: formation.prerequis || 'Aucun prérequis spécifique',
-        modalites: formation.modalites || 'Formation à distance ou en présentiel',
-        // Champs optionnels
-        tauxParticipation: formation.tauxParticipation,
-        tauxReussite: formation.tauxReussite,
-        programmeUrl: formation.programmeUrl || `/formations/${formation.id}`
-      }))
-    }));
-  };
   
   useEffect(() => {
     const fetchCatalogueFormations = async () => {
       try {
         setLoading(true);
+        console.log("Démarrage du chargement catalogue...");
         
-        // Récupérer les templates HTML depuis l'API (nouvelles routes)
-        const htmlResponse = await axios.get('/api/programmes-html/par-categorie/groupes');
-        let allCategories: CategorieFormation[] = [];
+        // Utiliser l'API comme source unique de vérité
+        const response = await axios.get('/api/programmes-formation/par-categorie');
         
-        if (htmlResponse.data && Array.isArray(htmlResponse.data)) {
-          // Transformation des données des templates HTML
-          const htmlData = transformBackendData(htmlResponse.data);
-          allCategories = htmlData;
-          console.log('Templates HTML chargés:', htmlData);
-        }
-        
-        try {
-          // Aussi récupérer les données de la base de données (route existante)
-          const dbResponse = await axios.get('/api/programmes-formation/par-categorie');
+        if (response.data && Array.isArray(response.data)) {
+          // Les données sont déjà formatées correctement par l'API
+          console.log('Catégories chargées depuis l\'API:', response.data.map((c: any) => c.titre));
           
-          if (dbResponse.data && Array.isArray(dbResponse.data)) {
-            // Transformation des données de la base de données
-            const dbData = transformBackendData(dbResponse.data);
-            
-            // Fusion des deux sources de données (templates HTML et base de données)
-            // Pour chaque catégorie dans dbData
-            dbData.forEach(dbCategory => {
-              // Vérifier si cette catégorie existe déjà dans allCategories
-              const existingCategoryIndex = allCategories.findIndex(cat => cat.id === dbCategory.id);
-              
-              if (existingCategoryIndex >= 0) {
-                // La catégorie existe, fusionner les formations
-                dbCategory.formations.forEach(dbFormation => {
-                  // Ne pas ajouter les formations en double
-                  const existingFormationIndex = allCategories[existingCategoryIndex].formations
-                    .findIndex(f => f.id === dbFormation.id || f.titre === dbFormation.titre);
-                  
-                  if (existingFormationIndex < 0) {
-                    allCategories[existingCategoryIndex].formations.push(dbFormation);
-                  }
-                });
-              } else {
-                // La catégorie n'existe pas, l'ajouter
-                allCategories.push(dbCategory);
-              }
-            });
-            
-            console.log('Données combinées:', allCategories);
-          }
-        } catch (dbErr) {
-          console.warn("Erreur lors du chargement des données de la base:", dbErr);
-          // On continue avec uniquement les données HTML si la base est indisponible
+          // Mise à jour de l'état directement avec les données de l'API
+          setCategoriesFormations(response.data);
+          setLoading(false);
+          return;
         }
-        
-        if (allCategories.length > 0) {
-          setCategoriesFormations(allCategories);
-        } else {
-          setError("Aucune formation trouvée dans le catalogue");
-        }
-      } catch (err) {
-        console.error("Erreur lors du chargement du catalogue:", err);
-        setError("Impossible de charger le catalogue de formations");
-      } finally {
+      } catch (err: any) {
+        console.error("Erreur lors du chargement des données depuis l'API:", err);
+        setError(err.message || "Une erreur est survenue lors du chargement du catalogue");
         setLoading(false);
       }
     };
 
     fetchCatalogueFormations();
   }, []);
+  
+  // Log simple pour confirmer que les données sont chargées
+  console.log("Nombre de catégories chargées:", categoriesFormations.length);
 
   // Affichage des états de chargement et d'erreur
   if (loading) {
@@ -159,7 +93,7 @@ export default function CataloguePage() {
     );
   }
 
-  // Utiliser les données combinées pour l'affichage
+  // Utiliser directement les catégories sans filtrage (le filtrage est fait côté API)
   const categoriesToDisplay = categoriesFormations;
 
   const handlePositionnement = (formationTitre: string) => {
@@ -174,6 +108,9 @@ export default function CataloguePage() {
     setSelectedFormation("");
   };
 
+  // Log simple avant rendu
+  console.log("Nombre de catégories envoyées au composant FormationsList:", categoriesToDisplay.length);
+  
   return (
     <>
       <div className="min-h-screen bg-gray-50">
@@ -182,7 +119,7 @@ export default function CataloguePage() {
         <FormationsAdaptabilite />
         <ProcessusPedagogique />
         <FormationsList 
-          categoriesFormations={categoriesToDisplay} 
+          categoriesFormations={categoriesToDisplay}
           onPositionnement={handlePositionnement} 
         />
         {/* FAQ WordPress intégrée juste après la liste des formations */}

@@ -142,7 +142,7 @@ const FormationsPreview = () => {
           </div>
 
           <div className="text-center">
-            <Link href="/catalogue" legacyBehavior>
+            <Link href="/catalogue">
               <Button size="lg" className="text-lg px-8 py-3">
                 Voir toutes nos formations
               </Button>

@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Clock, Users, CheckCircle, Globe, Laptop, Code, BookOpen, BarChart, Search, ShoppingBag, Lightbulb, Sparkles } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Clock, Users, CheckCircle, FileDown, Eye, Calendar, Computer, Globe, ShoppingBag, Search, BarChart, Code, Lightbulb, Sparkles, BookOpen } from "lucide-react";
 import { Formation } from "./types";
 import FormationDetailsModal from "./FormationDetailsModal";
 
@@ -40,6 +39,12 @@ const getFormationIcon = (formation: Formation) => {
 const FormationCard = ({ formation, onPositionnement }: FormationCardProps) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const router = useRouter();
+  
+  // Extraire la durée en heures et jours
+  const dureeMatch = formation.duree?.match(/\d+/);
+  const heures = dureeMatch ? dureeMatch[0] : "14";
+  const jours = Math.ceil(parseInt(heures) / 7);
+  
   return (
     <>
       <FormationDetailsModal 
@@ -47,63 +52,109 @@ const FormationCard = ({ formation, onPositionnement }: FormationCardProps) => {
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
       />
-    <Card className="hover:shadow-lg transition-all duration-300 flex flex-col border-t-4 border-primary overflow-hidden h-auto">
-      {/* En-tête avec style "STARTER PACK" */}
-      <div className="bg-yellow-500 text-xs font-bold uppercase tracking-wider text-white py-1 px-3 text-center flex items-center justify-center gap-2">
-        <Sparkles className="h-3 w-3" />
-        STARTER PACK
-      </div>
       
-      <CardHeader className="py-3 relative">
-        <div className="flex justify-between items-start">
-          <div className="flex flex-col">
-            <span className="text-xs font-semibold text-blue-700 mb-1">Réf: {formation.id}</span>
-            <CardTitle className="text-base font-bold text-blue-900 uppercase pr-8">{formation.titre}</CardTitle>
-          </div>
-          <div className="absolute top-3 right-4 bg-white rounded-full p-1 shadow-sm">
-            {getFormationIcon(formation)}
+      <Card className="hover:shadow-md transition-all duration-300 flex flex-col overflow-hidden h-full border rounded-md">
+        {/* En-tête avec texture dynamique */}
+        <div className="relative overflow-hidden">
+          {/* Texture de fond dynamique */}
+          <div 
+            className="absolute inset-0 opacity-10" 
+            style={{
+              backgroundImage: `linear-gradient(30deg, #4f46e5 12%, transparent 12.5%, transparent 87%, #4f46e5 87.5%, #4f46e5),
+                               linear-gradient(150deg, #4f46e5 12%, transparent 12.5%, transparent 87%, #4f46e5 87.5%, #4f46e5),
+                               linear-gradient(30deg, #4f46e5 12%, transparent 12.5%, transparent 87%, #4f46e5 87.5%, #4f46e5),
+                               linear-gradient(150deg, #4f46e5 12%, transparent 12.5%, transparent 87%, #4f46e5 87.5%, #4f46e5),
+                               linear-gradient(60deg, #4f46e577 25%, transparent 25.5%, transparent 75%, #4f46e577 75%, #4f46e577)`,
+              backgroundSize: '10px 18px',
+              backgroundPosition: '0 0, 0 0, 5px 9px, 5px 9px, 0 0'
+            }}
+          />
+          {/* Contenu de l'en-tête */}
+          <div className="flex items-center p-4 relative z-10">
+            <div className="mr-3 bg-white p-2 rounded-md shadow-sm">
+              <Computer className="h-6 w-6 text-blue-700" />
+            </div>
+            
+            <div className="flex-1">
+              <p className="text-xs font-medium text-blue-600 mb-0.5">Réf: {formation.id}</p>
+              <h3 className="font-semibold text-gray-900 line-clamp-2">{formation.titre}</h3>
+            </div>
           </div>
         </div>
-      </CardHeader>
-      
-      <CardContent className="pt-0 pb-4 flex flex-col">
-        {/* Niveau et badges */}
-        <div className="flex flex-wrap gap-2 mb-3">
-          <Badge variant="outline" className="text-xs bg-blue-50">{formation.niveau}</Badge>
-          <Badge variant="secondary" className="text-xs bg-green-50 text-green-700">Éligible FAF et OPCO</Badge>
-        </div>
+        
+        <CardContent className="p-4 pt-3 flex flex-col gap-2">
+          <div className="flex flex-col gap-1.5 mb-2">
+            <div className="flex items-center text-sm text-gray-600 mb-1">
+              <Clock className="h-4 w-4 mr-2" />
+              <span>{heures} heures ({jours} jour{jours > 1 ? 's' : ''})</span>
+            </div>
+            
+            <div className="flex items-center text-sm text-gray-600">
+              <Users className="h-4 w-4 mr-2" />
+              <span>{formation.participants || 'Tout public'}</span>
+            </div>
 
-        <div className="mt-auto">
-          {/* Prix */}
-          <div className="flex justify-between items-center mb-3">
-            <div>
-              <span className="text-xs text-gray-500">À partir de</span>
-              <p className="text-xl font-bold text-primary">
-                {formation.prix}
-              </p>
-              <span className="text-xs text-gray-500">Net de taxes</span>
+            <div className="flex items-center text-sm font-medium text-blue-600">
+              <CheckCircle className="h-4 w-4 mr-2 text-blue-600" />
+              <span>Formation présentielle individuelle</span>
             </div>
           </div>
           
-          {/* Boutons */}
-          <div className="flex flex-col space-y-2">
-            <Button 
-              className="w-full bg-accent hover:bg-accent/80"
-              onClick={() => onPositionnement(formation.titre)}
-            >
-              RDV de positionnement
-            </Button>
-            <Button 
-              variant="outline" 
-              className="w-full border-secondary/20 text-secondary hover:bg-secondary/10"
-              onClick={() => router.push(`/formations/${formation.id}`)}
-            >
-              En savoir plus
-            </Button>
+          <div className="flex flex-col gap-2 text-gray-600 mb-4">
+            
+            <div className="flex items-start">
+              <CheckCircle className="h-4 w-4 mr-2 mt-0.5" />
+              <p className="flex-1"><span className="font-medium">Prérequis:</span> {formation.prerequis || "Maîtriser son environnement et les fonctions de base pour utiliser un ordinateur"}</p>
+            </div>
+            
+            <div className="flex items-start">
+              <Computer className="h-4 w-4 mr-2 mt-0.5" />
+              <p className="flex-1"><span className="font-medium">Catégorie:</span> Maîtriser les Bases du Digital</p>
+            </div>
           </div>
-        </div>
-      </CardContent>
-    </Card>
+          
+          <div className="flex flex-col gap-2 mt-auto pt-3">
+            {/* Version 1: Avec icônes */}
+            <div className="flex flex-col gap-2">
+              {/* Bouton Consulter supprimé à la demande de l'utilisateur */}
+              
+              <button 
+                onClick={() => setModalOpen(true)}
+                className="flex items-center justify-center py-2 px-4 bg-orange-500 text-white rounded hover:bg-orange-600 transition-colors w-full"
+              >
+                <FileDown className="h-4 w-4 mr-2" /> Consulter
+              </button>
+              
+              <button 
+                onClick={() => onPositionnement(formation.titre)}
+                className="flex items-center justify-center py-2 px-4 bg-green-600 text-white rounded hover:bg-green-700 transition-colors w-full"
+              >
+                <Calendar className="h-4 w-4 mr-2" /> Réserver un entretien de positionnement
+              </button>
+            </div>
+            
+            {/* Version 2: Sans icônes (commentée pour le moment) 
+            <div className="flex flex-col gap-2">
+              <!-- Bouton Consulter supprimé à la demande de l'utilisateur -->
+              
+              <button 
+                onClick={() => setModalOpen(true)}
+                className="py-2 px-4 bg-gray-700 text-white rounded hover:bg-gray-800 transition-colors w-full"
+              >
+                Consulter
+              </button>
+              
+              <button 
+                onClick={() => onPositionnement(formation.titre)}
+                className="py-2 px-4 bg-green-600 text-white rounded hover:bg-green-700 transition-colors w-full"
+              >
+                Réserver un entretien de positionnement
+              </button>
+            </div>
+            */}
+          </div>
+        </CardContent>
+      </Card>
     </>
   );
 };

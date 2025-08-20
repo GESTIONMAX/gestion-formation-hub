@@ -376,7 +376,7 @@ export default function ProgrammeListEnhanced({
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleGeneratePDF(programme)}>
                         <Download className="h-4 w-4 mr-2" />
-                        Télécharger PDF
+                        Consulter
                       </DropdownMenuItem>
                       
                       <DropdownMenuSeparator />
@@ -528,7 +528,7 @@ export default function ProgrammeListEnhanced({
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem onClick={() => handleGeneratePDF(programme)}>
                               <Download className="h-4 w-4 mr-2" />
-                              Télécharger PDF
+                              Consulter
                             </DropdownMenuItem>
                             {programme.type === 'catalogue' && (
                               <DropdownMenuItem onClick={() => openDuplicateDialog(programme, 'sur-mesure')}>

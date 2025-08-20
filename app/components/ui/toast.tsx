@@ -18,8 +18,8 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const Toast = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+  ToastProps
+>(({ className, open, onOpenChange, ...props }, ref) => (
   <div
     ref={ref}
     className={cn(

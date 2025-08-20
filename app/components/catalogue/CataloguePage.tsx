@@ -143,7 +143,7 @@ const CataloguePage: React.FC = () => {
                             </CardContent>
                             
                             <CardActions sx={{ p: 2, pt: 0 }}>
-                              <Link href={`/formations/${programme.id}`} passHref legacyBehavior>
+                              <Link href={`/formations/${programme.id}`} passHref >
                                 <Button 
                                   fullWidth
                                   variant="contained"
@@ -228,7 +228,7 @@ const CataloguePage: React.FC = () => {
                         </CardContent>
                         
                         <CardActions sx={{ p: 2, pt: 0 }}>
-                          <Link href={`/formations/${programme.id}`} passHref legacyBehavior>
+                          <Link href={`/formations/${programme.id}`} passHref >
                             <Button 
                               fullWidth
                               variant="contained"

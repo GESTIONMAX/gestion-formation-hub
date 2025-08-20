@@ -18,5 +18,6 @@ export interface CategorieFormation {
   id: string;
   titre: string;
   description: string;
+  code: string;
   formations: Formation[];
 }

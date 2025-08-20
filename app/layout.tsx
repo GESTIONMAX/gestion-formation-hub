@@ -2,10 +2,12 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ClientProviders } from './components/providers/ClientProviders';
 import { ReactQueryProvider } from './components/providers/ReactQueryProvider';
-import { AuthProvider } from "./hooks/useAuth";
+import { AuthClientProvider } from './components/providers/AuthClientProvider';
+import { BodyAttributes } from './components/providers/BodyAttributes';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+// Précharge la police Inter avec le sous-ensemble latin
+export const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'GestionMax Formation Hub',
@@ -21,13 +23,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
-      <body className={inter.className}>
+      {/* Suppression de cz-shortcut-listen qui cause l'erreur d'hydratation */}
+      <body className={inter.className} suppressHydrationWarning={true}>
         <ReactQueryProvider>
-          <AuthProvider>
+          <AuthClientProvider>
             <ClientProviders>
-              {children}
+              <BodyAttributes>
+                {children}
+              </BodyAttributes>
             </ClientProviders>
-          </AuthProvider>
+          </AuthClientProvider>
         </ReactQueryProvider>
       </body>
     </html>
