@@ -1,11 +1,11 @@
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
 import { Plus, Eye, Edit, FileText, Users } from "lucide-react";
-import { useAccessibilite } from "@/hooks/useAccessibilite";
+import { useAccessibilite } from "../../_lib/hooks/useAccessibilite";
 import PlanAccessibiliteForm from "./PlanAccessibiliteForm";
 import DemandeAccessibiliteDetail from "./DemandeAccessibiliteDetail";
 

@@ -8,14 +8,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter
-} from '@/app/components/ui/dialog';
-import { Input } from '@/app/components/ui/input';
-import { Button } from '@/app/components/ui/button';
-import { Textarea } from '@/app/components/ui/textarea';
-import { Label } from '@/app/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
+} from '../ui/dialog';
+import { Input } from '../ui/input';
+import { Button } from '../ui/button';
+import { Textarea } from '../ui/textarea';
+import { Label } from '../ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { ProgrammeFormation } from '@/app/types/programme';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
+import { useEntretiensPositionnement } from '../../_lib/hooks/useEntretiensPositionnement';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 
 interface ProgrammeFormationModalProps {
   isOpen: boolean;
@@ -61,6 +62,9 @@ export const ProgrammeFormationModal = ({
   const [formData, setFormData] = useState<Partial<ProgrammeFormation>>(initialFormState);
   const [saving, setSaving] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<string>("informations");
+  
+  // Utilisation du hook pour les entretiens de positionnement
+  const { entretiens, loading: loadingEntretiens, getEntretienById } = useEntretiensPositionnement();
   
   // Initialiser le formulaire avec les données du programme si en mode édition
   useEffect(() => {
@@ -110,6 +114,9 @@ export const ProgrammeFormationModal = ({
               <TabsTrigger value="informations">Informations générales</TabsTrigger>
               <TabsTrigger value="details">Détails pédagogiques</TabsTrigger>
               <TabsTrigger value="mentions">Mentions légales</TabsTrigger>
+              {formData.type === 'sur-mesure' && (
+                <TabsTrigger value="specifiques">Spécificités sur-mesure</TabsTrigger>
+              )}
             </TabsList>
             
             {/* Onglet Informations générales */}
@@ -147,24 +154,43 @@ export const ProgrammeFormationModal = ({
                   />
                 </div>
                 
-                <div className="space-y-2">
-                  <Label htmlFor="categorie">Catégorie *</Label>
-                  <Select
-                    value={formData.categorieId || ''}
-                    onValueChange={(value) => handleChange('categorieId', value)}
-                    required
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Sélectionner une catégorie" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {categories.map(cat => (
-                        <SelectItem key={cat.id} value={cat.id}>
-                          {cat.nom}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="categorie">Catégorie *</Label>
+                    <Select
+                      value={formData.categorieId || ''}
+                      onValueChange={(value) => handleChange('categorieId', value)}
+                      required
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Sélectionner une catégorie" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categories.map(cat => (
+                          <SelectItem key={cat.id} value={cat.id}>
+                            {cat.nom}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="type">Type de programme *</Label>
+                    <Select
+                      value={formData.type || 'catalogue'}
+                      onValueChange={(value) => handleChange('type', value)}
+                      required
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="catalogue">Catalogue</SelectItem>
+                        <SelectItem value="sur-mesure">Sur-mesure</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </div>
             </TabsContent>
@@ -285,6 +311,109 @@ export const ProgrammeFormationModal = ({
                 </div>
               </div>
             </TabsContent>
+
+            {/* Onglet Spécificités sur-mesure */}
+            {formData.type === 'sur-mesure' && (
+              <TabsContent value="specifiques" className="space-y-4">
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="positionnementRequestId" className="flex items-center gap-2">
+                      Entretien de positionnement
+                      <span className="text-xs text-muted-foreground">(sélectionnez un entretien pour lier automatiquement l'apprenant)</span>
+                    </Label>
+                    <Select
+                      value={formData.positionnementRequestId || ''}
+                      onValueChange={(value) => {
+                        handleChange('positionnementRequestId', value);
+                        // Auto-compléter l'ID du bénéficiaire et les objectifs spécifiques
+                        if (value) {
+                          const entretien = getEntretienById(value);
+                          if (entretien) {
+                            // Remplir l'ID du bénéficiaire automatiquement
+                            handleChange('beneficiaireId', entretien.beneficiaireId);
+                            
+                            // Proposer les objectifs identifiés lors de l'entretien comme objectifs spécifiques
+                            if (entretien.objectifsIdentifies?.length) {
+                              const objectifsFormattés = entretien.objectifsIdentifies.join('\n');
+                              if (!formData.objectifsSpecifiques) {
+                                handleChange('objectifsSpecifiques', objectifsFormattés);
+                              }
+                            }
+                          }
+                        } else {
+                          // Si aucun entretien n'est sélectionné, vider l'ID du bénéficiaire
+                          handleChange('beneficiaireId', '');
+                        }
+                      }}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Sélectionner un entretien de positionnement" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">Aucun</SelectItem>
+                        {loadingEntretiens ? (
+                          <div className="flex items-center justify-center p-2 text-sm text-gray-500">
+                            Chargement des entretiens...
+                          </div>
+                        ) : entretiens.length > 0 ? (
+                          entretiens.map((entretien) => (
+                            <SelectItem key={entretien.id} value={entretien.id}>
+                              Entretien #{entretien.code} - {entretien.beneficiaire.prenom} {entretien.beneficiaire.nom} ({new Date(entretien.dateEntretien).toLocaleDateString()})
+                            </SelectItem>
+                          ))
+                        ) : (
+                          <div className="flex items-center justify-center p-2 text-sm text-gray-500">
+                            Aucun entretien disponible
+                          </div>
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="beneficiaireId">ID du bénéficiaire</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id="beneficiaireId"
+                        value={formData.beneficiaireId || ''}
+                        onChange={(e) => handleChange('beneficiaireId', e.target.value)}
+                        placeholder="ID du bénéficiaire (rempli automatiquement si un entretien est sélectionné)"
+                        readOnly={!!formData.positionnementRequestId} // Lecture seule si un entretien est sélectionné
+                      />
+                      {formData.beneficiaireId && (
+                        <Button 
+                          type="button" 
+                          variant="outline"
+                          size="icon"
+                          onClick={() => handleChange('beneficiaireId', '')}
+                          disabled={!!formData.positionnementRequestId}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="objectifsSpecifiques">Objectifs spécifiques</Label>
+                    <Textarea
+                      id="objectifsSpecifiques"
+                      value={formData.objectifsSpecifiques || ''}
+                      onChange={(e) => handleChange('objectifsSpecifiques', e.target.value)}
+                      rows={4}
+                      placeholder="Objectifs spécifiques pour cet apprenant basés sur son entretien de positionnement"
+                    />
+                  </div>
+                </div>
+                
+                {!formData.positionnementRequestId && (
+                  <div className="bg-blue-50 p-4 rounded-md text-blue-800 text-sm mt-2">
+                    <div className="font-semibold">Conseil</div>
+                    <p>Pour une formation réellement personnalisée, liez ce programme à un entretien de positionnement.</p>
+                  </div>
+                )}
+              </TabsContent>
+            )}
           </Tabs>
           
           <DialogFooter className="mt-6">

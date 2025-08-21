@@ -1,13 +1,13 @@
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
-import { useAccessibilite } from "@/hooks/useAccessibilite";
-import { useToast } from "@/hooks/use-toast";
+import { Button } from "../ui/button";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Badge } from "../ui/badge";
+import { useAccessibilite } from "../../_lib/hooks/useAccessibilite";
+import { useToast } from "../../_lib/hooks/use-toast";
 
 interface DemandeAccessibiliteDetailProps {
   demandeId: string;

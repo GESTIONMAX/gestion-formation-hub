@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { FileIcon, DownloadIcon, LoaderCircle } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "../../_lib/hooks/use-toast";
 import api from "@/services/api";
 
 interface DocumentGeneratorProps {

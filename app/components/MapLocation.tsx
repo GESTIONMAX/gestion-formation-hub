@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
-import { Card } from '@/components/ui/card';
+import { Card } from './ui/card';
 
 // Nous utilisons une approche dynamique pour charger Leaflet côté client uniquement
 // afin d'éviter les problèmes de SSR et de typage TypeScript

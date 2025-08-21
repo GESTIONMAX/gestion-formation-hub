@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import ProgrammeListEnhanced from './ProgrammeListEnhanced';
-import ProgrammeFormEnhanced from './ProgrammeFormEnhanced';
-import { ProgrammeFormation } from '@/hooks/useProgrammesFormation';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import ProgrammeListEnhanced from '../../formations/components/ProgrammeListEnhanced';
+import ProgrammeFormEnhanced from '../../formations/components/ProgrammeFormEnhanced';
+import { ProgrammeFormation } from '../../_lib/types/programme';
+import { Button } from '../ui/button';
 import { ArrowLeft, BookOpen, FileSpreadsheet, FileUp } from 'lucide-react';
 import ImportProgrammesHtml from '../admin/ImportProgrammesHtml';
 

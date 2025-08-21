@@ -1,7 +1,7 @@
 
 import { UseFormReturn } from "react-hook-form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "../ui/form";
 import { CompetenceFormData } from "@/types/competence";
 
 interface EvaluationSectionProps {

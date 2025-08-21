@@ -1,23 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "../components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { Users, BookOpen, Calendar, FileCheck, Accessibility, Search, MessageSquareWarning, ClipboardCheck, Database } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
-import FormationsList from "@/components/formations/FormationsList";
-import ProgrammesManager from "@/components/formations/ProgrammesManager";
-import ApprenantsList from "@/components/apprenants/ApprenantsList";
-import RendezVousListUnified from "@/components/rendez-vous/RendezVousListUnified";
-import ConformiteQualiopi from "@/components/conformite/ConformiteQualiopi";
-import AccessibiliteManager from "@/components/accessibilite/AccessibiliteManager";
-import VeilleManager from "@/components/veille/VeilleManager";
-import CompetenceManager from "@/components/competences/CompetenceManager";
-import ReclamationsList from "@/components/reclamations/ReclamationsList";
-import ActionsCorrectivesList from "@/components/actions-correctives/ActionsCorrectivesList";
-import Header from "@/components/Header";
-import { Metadata } from "next";
+import { useAuth } from "../_lib/hooks/useAuth";
+import FormationsList from "../formations/components/FormationsList";
+import ProgrammesManager from "../components/formations/ProgrammesManager";
+import ApprenantsList from "../components/apprenants/ApprenantsList";
+import RendezVousListUnified from "../components/rendez-vous/unified-list/RendezVousListUnified";
+import ConformiteQualiopi from "../components/conformite/ConformiteQualiopi";
+import AccessibiliteManager from "../components/accessibilite/AccessibiliteManager";
+import VeilleManager from "../components/veille/VeilleManager";
+import CompetenceManager from "../components/competences/CompetenceManager";
+import ReclamationsList from "../components/reclamations/ReclamationsList";
+import ActionsCorrectivesList from "../components/actions-correctives/ActionsCorrectivesList";
+import Header from "../components/Header";
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState("formations");

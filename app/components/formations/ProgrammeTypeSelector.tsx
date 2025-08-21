@@ -1,20 +1,20 @@
 import React from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import { cn } from '../../_lib/lib/utils';
+import { Button } from '../ui/button';
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from '@/components/ui/command';
+} from '../ui/command';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { useProgrammesFormation } from '@/hooks/useProgrammesFormation';
+} from '../ui/popover';
+import { useProgrammesFormation } from '../../_lib/hooks/useProgrammesFormation';
 
 interface ProgrammeTypeSelectorProps {
   onChange: (value: string | null) => void;

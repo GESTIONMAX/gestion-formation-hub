@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import api from "@/services/api";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import DocumentGenerator from "@/components/documents/DocumentGenerator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import DocumentGenerator from "../components/documents/DocumentGenerator";
 import { Loader2 } from "lucide-react";
 
 interface DossierData {

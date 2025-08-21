@@ -87,47 +87,62 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Extraction du categorieId pour créer correctement la relation Prisma
+    const { categorieId, programmeSourId, ...cleanData } = data;
+    
     // Tentative d'utilisation de Prisma si disponible
     try {
+      console.log('Tentative de création avec données:', JSON.stringify(data, null, 2));
+      
+      // Création du programme avec la bonne structure pour Prisma
       const nouveauProgramme = await prisma.programmeFormation.create({
         data: {
-          ...data,
+          ...cleanData,
+          // S'assurer que le type est bien pris en compte (catalogue ou sur-mesure)
+          type: data.type || 'catalogue', // Valeur par défaut catalogue si non spécifié
           estActif: data.estActif ?? true,
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date(),
+          // Création de la relation avec categorie correctement
+          categorie: {
+            connect: { id: categorieId }
+          }
         },
         include: { categorie: true }
       });
-      return NextResponse.json(nouveauProgramme, { status: 201 });
+
+      return NextResponse.json(nouveauProgramme);
     } catch (dbError) {
       console.error('Erreur DB création, simulation avec mock:', dbError);
-      // Simulation de création avec un ID unique
-      const nouveauId = Date.now().toString();
-      const nouveauProgramme = { ...data, id: nouveauId, estActif: data.estActif ?? true };
-      mockProgrammes.push(nouveauProgramme as ProgrammeFormation);
-      return NextResponse.json(nouveauProgramme, { status: 201 });
+      // Simulation de création avec des données mock
+      const nouveauProgramme = { ...data, id: (mockProgrammes.length + 1).toString() };
+      mockProgrammes.push(nouveauProgramme);
+      return NextResponse.json(nouveauProgramme);
     }
   } catch (error) {
     console.error('Erreur POST programmes-formation:', error);
     return NextResponse.json(
-      { error: 'Erreur lors de la création du programme de formation' },
+      { error: 'Erreur lors de la création du programme' },
       { status: 500 }
     );
   }
 }
 
-// Handler PUT pour modifier un programme existant
 export async function PUT(request: NextRequest) {
   try {
     const data = await request.json();
     
-    if (!data.id) {
+    // Validation basique des champs requis
+    if (!data.titre || !data.code || !data.description || !data.categorieId) {
       return NextResponse.json(
-        { error: 'ID du programme requis' },
+        { error: 'Champs obligatoires manquants' },
         { status: 400 }
       );
     }
 
+    // Extraction du categorieId pour créer correctement la relation Prisma
+    const { categorieId, programmeSourId, ...restData } = data;
+    
     // Tentative d'utilisation de Prisma si disponible
     try {
       const programmeExistant = await prisma.programmeFormation.findUnique({
@@ -144,7 +159,7 @@ export async function PUT(request: NextRequest) {
       const programmeMisAJour = await prisma.programmeFormation.update({
         where: { id: data.id },
         data: {
-          ...data,
+          ...restData,
           updatedAt: new Date()
         },
         include: { categorie: true }
@@ -177,7 +192,17 @@ export async function PUT(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     const url = new URL(request.url);
-    const id = url.searchParams.get('id');
+    
+    // Extraction de l'ID soit depuis les paramètres de requête, soit depuis le chemin de l'URL
+    let id = url.searchParams.get('id');
+    
+    // Si l'ID n'est pas dans les paramètres, on essaie de l'extraire du chemin
+    if (!id) {
+      // Format attendu: /api/programmes-formation/[id]
+      const pathParts = url.pathname.split('/');
+      id = pathParts[pathParts.length - 1];
+      console.log('ID extrait du chemin URL:', id);
+    }
 
     if (!id) {
       return NextResponse.json(

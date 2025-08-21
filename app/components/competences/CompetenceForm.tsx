@@ -1,9 +1,9 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form } from "@/components/ui/form";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Form } from "../ui/form";
 import { ArrowLeft, Save } from "lucide-react";
 import { Competence, CompetenceFormData } from "@/types/competence";
 import GeneralInfoSection from "./GeneralInfoSection";

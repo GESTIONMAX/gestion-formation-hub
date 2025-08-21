@@ -1,7 +1,8 @@
 import { useState } from "react";
 import FormationCard from "./FormationCard";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Formation, CategorieFormation } from "./types";
+import EnglishDepartment from "./EnglishDepartment";
 
 interface FormationsListProps {
   categoriesFormations: CategorieFormation[];
@@ -32,20 +33,30 @@ const FormationsList = ({ categoriesFormations, onPositionnement }: FormationsLi
           
           {categoriesFormations.map((categorie) => (
             <TabsContent key={categorie.id} value={categorie.id} className="mt-6">
-              <div className="mb-8">
-                <h3 className="text-xl font-bold text-gray-800 mb-3">{categorie.titre}</h3>
-                <p className="text-lg text-gray-600">{categorie.description}</p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {categorie.formations.map((formation) => (
-                  <FormationCard
-                    key={formation.id}
-                    formation={formation}
-                    onPositionnement={onPositionnement}
-                  />
-                ))}
-              </div>
+              {/* Afficher le composant EnglishDepartment uniquement pour l'onglet Anglais */}
+              {categorie.titre === "Anglais" ? (
+                <div className="english-department-container">
+                  <EnglishDepartment />
+                  {/* La FAQ WordPress n'est pas affichée pour la section Anglais selon la demande de l'utilisateur */}
+                </div>
+              ) : (
+                <>
+                  <div className="mb-8">
+                    <h3 className="text-xl font-bold text-gray-800 mb-3">{categorie.titre}</h3>
+                    <p className="text-lg text-gray-600">{categorie.description}</p>
+                  </div>
+                
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {categorie.formations.map((formation) => (
+                      <FormationCard
+                        key={formation.id}
+                        formation={formation}
+                        onPositionnement={onPositionnement}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
             </TabsContent>
           ))}
         </Tabs>

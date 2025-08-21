@@ -1,11 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "../components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
 import { Award, CheckCircle, Users, BookOpen, Clock, Mail, Phone, FileDown, ExternalLink } from "lucide-react";
-import Header from "@/components/Header";
+import Header from "../components/Header";
 import Image from "next/image";
+import Footer from "../components/Footer";
 
 const AProposPage = () => {
   return (
@@ -219,7 +220,7 @@ const AProposPage = () => {
         </div>
       </section>
       
-      {/* Footer est maintenant inclus dans le layout global */}
+      <Footer />
     </div>
   );
 };

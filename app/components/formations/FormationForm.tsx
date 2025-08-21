@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
 import { ArrowLeft, Plus, Minus } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useProgrammesFormation, ProgrammeFormation } from "@/hooks/useProgrammesFormation";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { useProgrammesFormation, ProgrammeFormation } from "../../_lib/hooks/useProgrammesFormation";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "../ui/accordion";
 
 interface FormationFormProps {
   formation?: Partial<ProgrammeFormation>;
@@ -232,14 +232,14 @@ const FormationForm = ({ formation, onSubmit, onCancel }: FormationFormProps) =>
                 <div className="space-y-2">
                   <Label htmlFor="categorieId">Catégorie</Label>
                   <Select
-                    value={formData.categorieId || ""}
-                    onValueChange={(value) => handleChange("categorieId", value || null)}
+                    value={formData.categorieId || "none"}
+                    onValueChange={(value) => handleChange("categorieId", value === "none" ? null : value)}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Sélectionnez une catégorie" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Aucune catégorie</SelectItem>
+                      <SelectItem value="none">Aucune catégorie</SelectItem>
                       {categories?.map((categorie) => (
                         <SelectItem key={categorie?.id} value={categorie?.id}>
                           {categorie?.titre}
@@ -348,7 +348,7 @@ const FormationForm = ({ formation, onSubmit, onCancel }: FormationFormProps) =>
                   <Label htmlFor="programmeUrl">URL du programme HTML</Label>
                   <Input
                     id="programmeUrl"
-                    value={formData.programmeUrl || ""}
+                    value={formData.programmeUrl || "none"}
                     onChange={(e) => handleChange("programmeUrl", e.target.value || null)}
                     placeholder="Ex: /programmes/template-a001-wp-intro.html"
                   />
@@ -496,7 +496,7 @@ const FormationForm = ({ formation, onSubmit, onCancel }: FormationFormProps) =>
                     <Label htmlFor="beneficiaireId">ID du bénéficiaire</Label>
                     <Input
                       id="beneficiaireId"
-                      value={formData.beneficiaireId || ""}
+                      value={formData.beneficiaireId || "none"}
                       onChange={(e) => handleChange("beneficiaireId", e.target.value || null)}
                       placeholder="ID du bénéficiaire"
                     />
@@ -506,7 +506,7 @@ const FormationForm = ({ formation, onSubmit, onCancel }: FormationFormProps) =>
                     <Label htmlFor="objectifsSpecifiques">Objectifs spécifiques</Label>
                     <Textarea
                       id="objectifsSpecifiques"
-                      value={formData.objectifsSpecifiques || ""}
+                      value={formData.objectifsSpecifiques || "none"}
                       onChange={(e) => handleChange("objectifsSpecifiques", e.target.value || null)}
                       placeholder="Objectifs spécifiques pour cette formation sur-mesure"
                       rows={4}
@@ -517,7 +517,7 @@ const FormationForm = ({ formation, onSubmit, onCancel }: FormationFormProps) =>
                     <Label htmlFor="positionnementRequestId">ID de la demande de positionnement</Label>
                     <Input
                       id="positionnementRequestId"
-                      value={formData.positionnementRequestId || ""}
+                      value={formData.positionnementRequestId || "none"}
                       onChange={(e) => handleChange("positionnementRequestId", e.target.value || null)}
                       placeholder="ID de la demande de positionnement associée"
                     />

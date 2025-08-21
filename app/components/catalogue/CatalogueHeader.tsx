@@ -1,5 +1,5 @@
 
-import Header from "@/components/Header";
+import Header from "../Header";
 
 const CatalogueHeader = () => {
   return <Header />;

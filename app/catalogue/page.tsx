@@ -2,18 +2,18 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import ProcessusPedagogique from "@/components/ProcessusPedagogique";
-import PositionnementForm from "@/components/rendez-vous/PositionnementForm";
-import CatalogueHeader from "@/components/catalogue/CatalogueHeader";
-import CatalogueHero from "@/components/catalogue/CatalogueHero";
-import FormationsList from "@/components/catalogue/FormationsList";
-import FormationsAdaptabilite from "@/components/catalogue/FormationsAdaptabilite";
-import CustomFormationCTA from "@/components/catalogue/CustomFormationCTA";
-import WordPressFAQ from "@/components/wordpress/WordPressFAQ";
-import { Formation, CategorieFormation } from "@/components/catalogue/types";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
+import ProcessusPedagogique from "../components/ProcessusPedagogique";
+import PositionnementForm from "../components/rendez-vous/PositionnementForm";
+import CatalogueHeader from "../components/catalogue/CatalogueHeader";
+import CatalogueHero from "../components/catalogue/CatalogueHero";
+import FormationsList from "../components/catalogue/FormationsList";
+import FormationsAdaptabilite from "../components/catalogue/FormationsAdaptabilite";
+import CustomFormationCTA from "../components/catalogue/CustomFormationCTA";
+import WordPressFAQ from "../components/wordpress/WordPressFAQ";
+import { Formation, CategorieFormation } from "../components/catalogue/types";
 
-// Nous n'importons plus Footer car il sera automatiquement inclus dans le layout
+import Footer from "../components/Footer";
 
 export default function CataloguePage() {
   const [showPositionnementForm, setShowPositionnementForm] = useState(false);
@@ -125,7 +125,7 @@ export default function CataloguePage() {
         {/* FAQ WordPress intégrée juste après la liste des formations */}
         <WordPressFAQ />
         <CustomFormationCTA />
-        {/* Footer retiré car il sera inclus dans le layout global */}
+        <Footer />
       </div>
 
       <Dialog open={showPositionnementForm} onOpenChange={setShowPositionnementForm}>

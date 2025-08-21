@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,10 +7,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { useToast } from "@/components/ui/use-toast";
+} from "../ui/dialog";
+import { useToast } from "../ui/use-toast";
 import { FileText } from "lucide-react";
-import { Rendezvous } from "@/hooks/useRendezvous";
+import { Rendezvous } from "../../_lib/hooks/useRendezvous";
 import CompteRenduAvanceForm from "./CompteRenduAvanceForm";
 import api from "@/services/api";
 

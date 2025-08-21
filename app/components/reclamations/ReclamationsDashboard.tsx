@@ -1,11 +1,11 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { useReclamations, type Reclamation } from "@/hooks/useReclamations";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
+import { useReclamations, type Reclamation } from "../../_lib/hooks/useReclamations";
 import { AlertCircle, Clock, CheckCircle, XCircle, TrendingUp, Users, Calendar, Download } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
-import { exportReclamationsToCSV } from "@/utils/csvExport";
+import { exportReclamationsToCSV } from "../../_lib/utils/csvExport";
 
 const ReclamationsDashboard = () => {
   const { reclamations, loading } = useReclamations();

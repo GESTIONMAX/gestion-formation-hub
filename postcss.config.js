@@ -1,7 +1,9 @@
-// Configuration PostCSS en format ESM pour compatibilité avec "type": "module"
-export default {
+/**
+ * PostCSS configuration for Next.js
+ */
+module.exports = {
   plugins: {
     tailwindcss: {},
     autoprefixer: {},
-  },
-}
+  }
+};

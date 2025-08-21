@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Button } from '@/components/ui/button';
+import { Button } from '../ui/button';
 import { 
   Card, 
   CardContent, 
@@ -8,7 +8,7 @@ import {
   CardFooter, 
   CardHeader, 
   CardTitle 
-} from '@/components/ui/card';
+} from '../ui/card';
 import {
   Table,
   TableHeader,
@@ -16,12 +16,12 @@ import {
   TableRow,
   TableHead,
   TableCell
-} from '@/components/ui/table';
+} from '../ui/table';
 import {
   Alert,
   AlertDescription,
   AlertTitle
-} from '@/components/ui/alert';
+} from '../ui/alert';
 import { AlertCircle, AlertTriangle, CheckCircle, Loader2, RefreshCw } from 'lucide-react';
 
 interface ImportResult {

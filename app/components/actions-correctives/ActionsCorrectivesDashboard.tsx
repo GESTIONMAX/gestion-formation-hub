@@ -1,11 +1,11 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { useActionsCorrectives, type ActionCorrective } from "@/hooks/useActionsCorrectives";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
+import { useActionsCorrectives, type ActionCorrective } from "../../_lib/hooks/useActionsCorrectives";
 import { AlertTriangle, Clock, CheckCircle, XCircle, TrendingUp, Users, Calendar, Download } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
-import { exportActionsCorrectivesToCSV } from "@/utils/csvExport";
+import { exportActionsCorrectivesToCSV } from "../../_lib/utils/csvExport";
 
 const ActionsCorrectivesDashboard = () => {
   const { actionsCorrectives, loading } = useActionsCorrectives();

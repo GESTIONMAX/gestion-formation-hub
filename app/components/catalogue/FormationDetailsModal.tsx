@@ -2,7 +2,7 @@
 
 import { FileDown, X, ExternalLink } from "lucide-react";
 // html2pdf est importé dynamiquement dans le gestionnaire handleDownload
-import { Button } from "@/components/ui/button";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,9 +11,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose
-} from "@/components/ui/dialog";
+} from "../ui/dialog";
 import { Formation } from "../catalogue/types";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "../ui/badge";
 
 interface FormationDetailsModalProps {
   formation: Formation | null;

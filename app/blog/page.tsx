@@ -1,11 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "../components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
 import { Calendar, User, Clock } from "lucide-react";
-import Header from "@/components/Header";
+import Header from "../components/Header";
 import Image from "next/image";
+import Footer from "../components/Footer";
 
 const BlogPage = () => {
   const articles = [
@@ -69,7 +70,7 @@ const BlogPage = () => {
       titre: "Gutenberg vs Elementor : quel éditeur choisir ?",
       extrait: "Comparaison approfondie entre l'éditeur natif Gutenberg et le page builder Elementor pour créer vos pages WordPress.",
       contenu: "Le choix de l'éditeur de contenu impacte directement votre productivité...",
-      auteur: "Pierre Martin",
+      auteur: "Aurélien LAVAYSSIERE - GESTIONMAX",
       datePublication: "20 avril 2024",
       tempsLecture: "9 min",
       categorie: "Outils",
@@ -209,7 +210,7 @@ const BlogPage = () => {
         </div>
       </section>
       
-      {/* Footer est maintenant inclus dans le layout global */}
+      <Footer />
     </div>
   );
 };

@@ -1,10 +1,10 @@
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { useToast } from "../../_lib/hooks/use-toast";
 import { CheckCircle, FileText, Calendar, Download } from "lucide-react";
 import ProgrammePersonnaliseForm from "./ProgrammePersonnaliseForm";
 import { generateAllDocuments } from "@/utils/documentGenerator";

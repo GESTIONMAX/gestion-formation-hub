@@ -1,16 +1,16 @@
 
 import { useState } from "react";
-import { useConfetti } from "@/hooks/useConfetti";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
+import { useConfetti } from "../../_lib/hooks/useConfetti";
+import { Button } from "../ui/button";
+import { Card, CardContent } from "../ui/card";
+import { useToast } from "../../_lib/hooks/use-toast";
 import api from "@/services/api";
 import PositionnementFormHeader from "./PositionnementFormHeader";
 import BeneficiaireInfoSection from "./BeneficiaireInfoSection";
 import CoordonneesSection from "./CoordonneesSection";
 import ExperienceObjectifsSection from "./ExperienceObjectifsSection";
-import { Label } from "@/components/ui/label";
-import { DateTimePicker } from "@/components/ui/date-time-picker";
+import { Label } from "../ui/label";
+import { DateTimePicker } from "../ui/date-time-picker";
 
 interface PositionnementFormProps {
   onSubmit: (data: any) => void;

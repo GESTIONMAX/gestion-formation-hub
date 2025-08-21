@@ -1,15 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "./ui/card";
+import { Badge } from "./ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
 import { Clock, Users, Globe, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import ContactForm from "@/components/ContactForm";
-import EnglishFAQ from "@/components/english/EnglishFAQ";
+import ContactForm from ".//ContactForm";
+import EnglishFAQ from ".//english/EnglishFAQ";
 
 interface PartenaireFormation {
   id: string;

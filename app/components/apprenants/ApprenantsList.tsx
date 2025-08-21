@@ -1,12 +1,12 @@
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Plus, Edit, Eye, FileText } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "../../_lib/hooks/use-toast";
 import ApprenantForm from "./ApprenantForm";
 import ApprenantDetail from "./ApprenantDetail";
-import { useApprenants } from "@/hooks/useApprenants";
+import { useApprenants } from "../../_lib/hooks/useApprenants";
 
 const ApprenantsList = () => {
   const [showForm, setShowForm] = useState(false);

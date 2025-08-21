@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import CompteRenduForm from './CompteRenduForm';
-import { Rendezvous, useRendezvous } from '@/hooks/useRendezvous';
-import { useToast } from '@/components/ui/use-toast';
+import { Rendezvous, useRendezvous } from '../../_lib/hooks/useRendezvous';
+import { useToast } from '../ui/use-toast';
 
 interface CompteRenduModalProps {
   rendezvous: Rendezvous | null;

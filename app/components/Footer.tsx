@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { Facebook, Instagram, Linkedin, Mail, Phone, MapPin, Award, ExternalLink, Download } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "./ui/button";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();

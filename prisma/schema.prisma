@@ -25,10 +25,12 @@ model ProgrammeFormation {
   niveau                  String
   participants            String
   objectifs               String[]
+  competencesVisees       String[]               @default([]) @map("competences_visees")
   objectifsSpecifiques    String?                @map("objectifs_specifiques")
   prerequis               String
   publicConcerne          String                 @map("public_concerne")
   contenuDetailleJours    String                 @map("contenu_detaille_jours")
+  contenuDetailleHtml     String?                @map("contenu_detaille_html")
   evaluationSur           String?                @map("evaluation_sur")
   horaires                String                 @default("9h-12h30 et 14h-17h30")
   modalites               String
@@ -50,12 +52,24 @@ model ProgrammeFormation {
   programmeUrl            String?                @map("programme_url")
   tauxParticipation       String?                @map("taux_participation")
   tauxReussite            String?                @map("taux_reussite")
+  tarifIntraEntreprise    Float?                 @map("tarif_intra_entreprise")
+  tarifInterEntreprise    Float?                 @map("tarif_inter_entreprise")
   ressourcesAssociees     String[]               @map("ressources_associees")
   dateCreation            DateTime               @default(now()) @map("date_creation")
   dateModification        DateTime               @default(now()) @updatedAt @map("date_modification")
   beneficiaireId          String?                @map("beneficiaire_id")
   formateurId             String?                @map("formateur_id")
   positionnementRequestId String?                @unique @map("positionnement_request_id")
+  
+  // Champs pour la veille légale et réglementaire
+  verificationJuridique   Boolean                @default(false) @map("verification_juridique")
+  dateVerificationJuridique DateTime?            @map("date_verification_juridique")
+  actionNonRespect        String?                @map("action_non_respect")
+  referenceTexte          String?                @map("reference_texte")
+  organismeControle      String?                @map("organisme_controle")
+  dateControle           DateTime?              @map("date_controle")
+  resultatControle       String?                @map("resultat_controle")
+  commentaireControle    String?                @map("commentaire_controle")
   dossiers                DossierFormation[]
   categorie               CategorieProgramme?    @relation("ProgrammesCategorie", fields: [categorieId], references: [id])
   positionnementRequest   PositionnementRequest? @relation(fields: [positionnementRequestId], references: [id])

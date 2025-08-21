@@ -1,5 +1,5 @@
 
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "./ui/card";
 import { BookOpen, Users, CheckCircle } from "lucide-react";
 
 const AboutSection = () => {

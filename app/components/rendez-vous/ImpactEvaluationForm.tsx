@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Rendezvous, ImpactEvaluationData } from "@/hooks/useRendezvous";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "../ui/button";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
+import { Rendezvous, ImpactEvaluationData } from "../../_lib/hooks/useRendezvous";
+import { Card, CardContent } from "../ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { StarRating } from "@/components/ui/star-rating";
+} from "../ui/select";
+import { StarRating } from "../ui/star-rating";
 
 interface ImpactEvaluationFormProps {
   onSubmit: (data: ImpactEvaluationData) => void;

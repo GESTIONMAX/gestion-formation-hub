@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cva } from "class-variance-authority"
-import { cn } from "../../lib/utils"
+import { cn } from "../../_lib/lib/utils"
 
 // Ajout des types manquants requis par use-toast.ts
 export type ToastProps = React.HTMLAttributes<HTMLDivElement> & {

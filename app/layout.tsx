@@ -4,6 +4,7 @@ import { ClientProviders } from './components/providers/ClientProviders';
 import { ReactQueryProvider } from './components/providers/ReactQueryProvider';
 import { AuthClientProvider } from './components/providers/AuthClientProvider';
 import { BodyAttributes } from './components/providers/BodyAttributes';
+import { Toaster } from 'react-hot-toast';
 import './globals.css';
 
 // Précharge la police Inter avec le sous-ensemble latin
@@ -30,6 +31,27 @@ export default function RootLayout({
             <ClientProviders>
               <BodyAttributes>
                 {children}
+                <Toaster position="top-right" toastOptions={{
+                  duration: 3000,
+                  style: {
+                    background: '#363636',
+                    color: '#fff',
+                  },
+                  success: {
+                    duration: 3000,
+                    style: {
+                      background: '#16a34a',
+                      color: '#fff',
+                    },
+                  },
+                  error: {
+                    duration: 4000,
+                    style: {
+                      background: '#dc2626',
+                      color: '#fff',
+                    },
+                  }
+                }} />
               </BodyAttributes>
             </ClientProviders>
           </AuthClientProvider>

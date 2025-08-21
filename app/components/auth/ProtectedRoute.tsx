@@ -1,7 +1,7 @@
 "use client";
 
 // Utiliser un import relatif vers le dossier hooks
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "../../_lib/hooks/useAuth";
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
 

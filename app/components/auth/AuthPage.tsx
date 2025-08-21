@@ -1,14 +1,14 @@
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useToast } from "@/hooks/use-toast";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { useToast } from "../../_lib/hooks/use-toast";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
-import Header from "@/components/Header";
+import { useAuth } from "../../_lib/hooks/useAuth";
+import Header from "../Header";
 
 const AuthPage = () => {
   const [email, setEmail] = useState("");

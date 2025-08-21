@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "../ui/button";
+import { Card, CardContent } from "../ui/card";
 import { Clock, Users, CheckCircle, FileDown, Eye, Calendar, Computer, Globe, ShoppingBag, Search, BarChart, Code, Lightbulb, Sparkles, BookOpen } from "lucide-react";
 import { Formation } from "./types";
 import FormationDetailsModal from "./FormationDetailsModal";
@@ -120,14 +120,14 @@ const FormationCard = ({ formation, onPositionnement }: FormationCardProps) => {
               
               <button 
                 onClick={() => setModalOpen(true)}
-                className="flex items-center justify-center py-2 px-4 bg-orange-500 text-white rounded hover:bg-orange-600 transition-colors w-full"
+                className="flex items-center justify-center py-2 px-4 bg-[#1869ba] text-white rounded hover:bg-[#145a9e] transition-colors w-full"
               >
                 <FileDown className="h-4 w-4 mr-2" /> Consulter
               </button>
               
               <button 
                 onClick={() => onPositionnement(formation.titre)}
-                className="flex items-center justify-center py-2 px-4 bg-green-600 text-white rounded hover:bg-green-700 transition-colors w-full"
+                className="flex items-center justify-center py-2 px-4 bg-orange-500 text-white rounded hover:bg-orange-600 transition-colors w-full"
               >
                 <Calendar className="h-4 w-4 mr-2" /> Réserver un entretien de positionnement
               </button>

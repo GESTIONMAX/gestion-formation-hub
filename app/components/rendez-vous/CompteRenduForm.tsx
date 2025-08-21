@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { DialogFooter } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Rendezvous } from "@/hooks/useRendezvous";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "../ui/button";
+import { DialogFooter } from "../ui/dialog";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
+import { Rendezvous } from "../../_lib/hooks/useRendezvous";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Loader2, FileText, Check } from "lucide-react";
 
 interface CompteRenduFormProps {

@@ -1,13 +1,13 @@
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Progress } from "@/components/ui/progress";
-import { useActionsCorrectives } from "@/hooks/useActionsCorrectives";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Badge } from "../ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Progress } from "../ui/progress";
+import { useActionsCorrectives } from "../../_lib/hooks/useActionsCorrectives";
 import { Plus, Search, Eye, Edit, Trash2, AlertTriangle, Clock, CheckCircle, XCircle } from "lucide-react";
 import ActionsCorrectivesDashboard from "./ActionsCorrectivesDashboard";
 import ActionCorrectiveForm from "./ActionCorrectiveForm";

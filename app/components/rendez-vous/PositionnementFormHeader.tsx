@@ -1,5 +1,5 @@
 
-import { CardHeader, CardTitle } from "@/components/ui/card";
+import { CardHeader, CardTitle } from "../ui/card";
 
 interface PositionnementFormHeaderProps {
   formationTitre: string;

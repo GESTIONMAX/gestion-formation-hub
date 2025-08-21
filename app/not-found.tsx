@@ -1,6 +1,6 @@
 "use client";
 
-import Header from "@/components/Header";
+import Header from "./components/Header";
 import Link from "next/link";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";

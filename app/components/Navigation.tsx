@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "./ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -11,20 +11,12 @@ const Navigation = () => {
 
   return (
     <nav className="flex items-center gap-6" aria-label="Menu principal">
-      <Link href="/">
-        <Button 
-          variant={isActive("/") ? "default" : "ghost"}
-          className="text-base"
-        >
-          Accueil
-        </Button>
-      </Link>
       <Link href="/catalogue">
         <Button 
           variant={isActive("/catalogue") ? "default" : "ghost"}
           className="text-base"
         >
-          Catalogue
+          Accueil
         </Button>
       </Link>
       <Link href="/blog">

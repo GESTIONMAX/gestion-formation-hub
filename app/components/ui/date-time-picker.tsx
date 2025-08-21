@@ -5,22 +5,22 @@ import { format } from "date-fns"
 import { Calendar as CalendarIcon, Clock as ClockIcon } from "lucide-react"
 import { fr } from 'date-fns/locale'
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import { cn } from "../../_lib/lib/utils"
+import { Button } from ".//button"
+import { Calendar } from ".//calendar"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from ".//popover"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+} from ".//select"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from ".//tabs"
 
 interface DateTimePickerProps {
   date?: Date
