@@ -14,7 +14,7 @@ import { Button } from '../ui/button';
 import { Textarea } from '../ui/textarea';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { ProgrammeFormation } from '@/app/types/programme';
+import { ProgrammeFormation } from '@/lib/types/programme';
 import { useEntretiensPositionnement } from '../../_lib/hooks/useEntretiensPositionnement';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 

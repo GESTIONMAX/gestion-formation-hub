@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useProgrammesFormation } from "../../../../_lib/hooks/useProgrammesFormation";
 import { useToast } from "../../../../_lib/hooks/use-toast";
-import { ProgrammeFormation } from "@/types/ProgrammeFormation";
+import { ProgrammeFormation } from "@/lib/types/ProgrammeFormation";
 import { generateFormationPDF } from "@/utils/pdfGenerator";
 import { programmeFormationToPdfFormation } from "@/utils/typeAdapters";
 

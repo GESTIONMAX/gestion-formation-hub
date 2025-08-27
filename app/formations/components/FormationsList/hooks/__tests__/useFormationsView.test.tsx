@@ -2,7 +2,7 @@ import { renderHook, act } from '@testing-library/react';
 import useFormationsView from '../useFormationsView';
 import { useProgrammesFormation } from '../../../../../_lib/hooks/useProgrammesFormation';
 import { useToast } from '../../../../../_lib/hooks/use-toast';
-import { ProgrammeFormation } from '@/types/ProgrammeFormation';
+import { ProgrammeFormation } from '@/lib/types/ProgrammeFormation';
 
 // Mock des dépendances
 jest.mock('../../../../../_lib/hooks/useProgrammesFormation', () => ({

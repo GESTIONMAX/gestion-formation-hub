@@ -4,7 +4,7 @@ import { Progress } from "../ui/progress";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Download, TrendingUp, Target, CheckCircle, Clock } from "lucide-react";
-import { Competence, CategorieCompetence, StatutCompetence } from "@/types/competence";
+import { Competence, CategorieCompetence, StatutCompetence } from "@/lib/types/competence";
 
 interface CompetencesDashboardProps {
   competences: Competence[];

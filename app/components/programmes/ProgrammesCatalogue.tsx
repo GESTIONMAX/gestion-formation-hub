@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from '../ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { useProgrammesFormation } from '../../_lib/hooks/useProgrammesFormation';
-import { ProgrammeFormation } from '@/types/ProgrammeFormation';
+import { ProgrammeFormation } from '@/lib/types/ProgrammeFormation';
 import { Loader2, Plus, FileEdit, Copy, Check, X, User, Link2, Trash, FileText, BookOpen, Archive } from 'lucide-react';
 import { ProgrammeFormationModal } from '../programmes/ProgrammeFormationModal';
 import { cn } from '../../_lib/lib/utils';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import FormationCard from '../FormationCard';
-import { ProgrammeFormation } from '@/types/ProgrammeFormation';
+import { ProgrammeFormation } from '@/lib/types/ProgrammeFormation';
 
 // Mock des fonctions
 const mockViewDetail = jest.fn();

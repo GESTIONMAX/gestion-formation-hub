@@ -1,19 +1,19 @@
 import { useState } from "react";
-import { Button } from "../../ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Edit, Eye, CheckCircle, Calendar, FileText, BookOpen, X, Check, Video, Clock, AlertCircle, BarChart4, FileBarChart, Star, Award, LineChart, FileEdit } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "../../ui/dialog";
-import { useToast } from "../../../_lib/hooks/use-toast";
-import { Badge } from "../../ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
 import { useRendezvous, Rendezvous, RendezvousFormData, ImpactEvaluationData } from "../../../_lib/hooks/useRendezvous";
 import WorkflowPositionnement from "./WorkflowPositionnement";
 
 // Import des composants de formulaire
-import RendezvousFormUnified from "../../rendez-vous/RendezvousFormUnified";
-import ImpactEvaluationForm from "../../rendez-vous/ImpactEvaluationForm";
-import CompteRenduAvanceModal from "../../rendez-vous/CompteRenduAvanceModal";
+import RendezvousFormUnified from "@/app/_components/features/rendez-vous/RendezvousFormUnified";
+import ImpactEvaluationForm from "@/app/_components/features/rendez-vous/ImpactEvaluationForm";
+import CompteRenduAvanceModal from "@/app/_components/features/rendez-vous/CompteRenduAvanceModal";
 import { format, addMonths } from "date-fns";
 import { fr } from "date-fns/locale";
 

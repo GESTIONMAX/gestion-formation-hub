@@ -6,7 +6,7 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { ArrowLeft, Save } from "lucide-react";
-import { TypeVeille, StatutVeille, Veille } from "@/types/veille";
+import { TypeVeille, StatutVeille, Veille } from "@/lib/types/veille";
 
 interface VeilleFormProps {
   onSubmit: (veille: Omit<Veille, "id" | "dateCreation" | "commentaires" | "documents" | "historique">) => void;

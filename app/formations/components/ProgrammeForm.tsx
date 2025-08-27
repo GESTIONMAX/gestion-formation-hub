@@ -9,7 +9,7 @@ import { Textarea } from "../../components/ui/textarea";
 import { ArrowLeft, Plus, Minus } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
 import { useProgrammesFormation } from "../../_lib/hooks/useProgrammesFormation";
-import { ProgrammeFormation } from "@/types/ProgrammeFormation";
+import { ProgrammeFormation } from "@/lib/types/ProgrammeFormation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs";
 
 interface ProgrammeFormProps {

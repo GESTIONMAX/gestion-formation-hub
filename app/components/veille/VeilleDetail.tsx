@@ -8,7 +8,7 @@ import { Progress } from "../ui/progress";
 import { Textarea } from "../ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { ArrowLeft, Save, MessageCircle, FileText, History } from "lucide-react";
-import { Veille, StatutVeille } from "@/types/veille";
+import { Veille, StatutVeille } from "@/lib/types/veille";
 import { useToast } from "../../_lib/hooks/use-toast";
 
 interface VeilleDetailProps {

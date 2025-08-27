@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import FormationGrid from '../FormationGrid';
-import { ProgrammeFormation } from '@/types/ProgrammeFormation';
+import { ProgrammeFormation } from '@/lib/types/ProgrammeFormation';
 import '@testing-library/jest-dom'; // Pour accéder à toBeInTheDocument()
 
 // Mock du composant FormationCard pour simplifier les tests

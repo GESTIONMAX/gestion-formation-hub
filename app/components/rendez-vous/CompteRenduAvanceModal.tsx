@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "../ui/dialog";
-import { useToast } from "../ui/use-toast";
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast";
 import { FileText } from "lucide-react";
-import { Rendezvous } from "../../_lib/hooks/useRendezvous";
-import CompteRenduAvanceForm from "./CompteRenduAvanceForm";
+import { Rendezvous } from "@/lib/hooks/useRendezvous";
+import CompteRenduAvanceForm from "@/app/rendez-vous/components/CompteRenduAvanceForm";
 import api from "@/services/api";
 
 interface CompteRenduAvanceModalProps {

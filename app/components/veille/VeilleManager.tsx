@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Badge } from "../ui/badge";
 import { Progress } from "../ui/progress";
 import { Plus, Eye, FileText, Cog, Lightbulb } from "lucide-react";
-import { Veille, TypeVeille, StatutVeille } from "@/types/veille";
+import { Veille, TypeVeille, StatutVeille } from "@/lib/types/veille";
 import VeilleDetail from "./VeilleDetail";
 import VeilleForm from "./VeilleForm";
 

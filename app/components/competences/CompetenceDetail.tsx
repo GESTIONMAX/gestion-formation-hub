@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Progress } from "../ui/progress";
 import { ArrowLeft, Edit, Trash2, ExternalLink, FileText } from "lucide-react";
-import { Competence, CategorieCompetence, StatutCompetence } from "@/types/competence";
+import { Competence, CategorieCompetence, StatutCompetence } from "@/lib/types/competence";
 
 interface CompetenceDetailProps {
   competence: Competence;

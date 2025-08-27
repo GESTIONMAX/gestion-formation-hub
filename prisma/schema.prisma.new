@@ -1,0 +1,506 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ======= MODÈLES DE BASE =======
+
+model User {
+  id                  String        @id @default(cuid())
+  email               String?       @unique
+  password            String?
+  name                String?
+  nom                 String?
+  prenom              String?
+  image               String?
+  role                String        @default("user")
+  emailVerified       DateTime?     @map("email_verified")
+  createdAt           DateTime      @default(now()) @map("created_at")
+  updatedAt           DateTime      @default(now()) @updatedAt @map("updated_at")
+  
+  accounts            Account[]
+  sessions            Session[]
+  reclamationsAssignees Reclamation[] @relation("ReclamationsAssignees")
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ======= DOMAINE : FORMATIONS =======
+
+model Programme {
+  id                      String                 @id @default(uuid())
+  type                    String                 // "standard", "personnalise", "sur_mesure"
+  code                    String
+  version                 Int                    @default(1)
+  titre                   String
+  description             String
+  estActif                Boolean                @default(true) @map("est_actif")
+  estVisible              Boolean                @default(true) @map("est_visible")
+  categorieId             String?                @map("categorie_id")
+  programmeSourId         String?                @map("programme_source_id")
+  pictogramme             String?
+  duree                   String
+  prix                    String
+  niveau                  String
+  prerequis               String
+  publicConcerne          String                 @map("public_concerne")
+  dateCreation            DateTime               @default(now()) @map("date_creation")
+  dateModification        DateTime               @default(now()) @updatedAt @map("date_modification")
+  
+  // Relation avec programme source (versions)
+  programmeSource         Programme?             @relation("VersionsProgramme", fields: [programmeSourId], references: [id])
+  versionsDerivees        Programme[]            @relation("VersionsProgramme")
+  
+  // Autres relations
+  categorie               Categorie?             @relation(fields: [categorieId], references: [id])
+  
+  // Relations avec extensions
+  formationDetails        FormationDetails?
+  personnaliseDetails     ProgrammePersonnalise?
+  
+  // Relations avec autres entités
+  dossiers                DossierFormation[]
+  rendezvous              Rendezvous[]
+  positionnementRequest   PositionnementRequest?
+
+  @@map("programmes")
+}
+
+model FormationDetails {
+  id                      String    @id @default(uuid())
+  programmeId             String    @unique @map("programme_id")
+  participants            String
+  objectifs               String[]
+  competencesVisees       String[]  @default([]) @map("competences_visees")
+  objectifsSpecifiques    String?   @map("objectifs_specifiques")
+  contenuDetailleJours    String    @map("contenu_detaille_jours")
+  contenuDetailleHtml     String?   @map("contenu_detaille_html")
+  evaluationSur           String?   @map("evaluation_sur")
+  horaires                String    @default("9h-12h30 et 14h-17h30")
+  modalites               String
+  modalitesAcces          String    @map("modalites_acces")
+  modalitesTechniques     String    @map("modalites_techniques")
+  delaiAcces              String?   @map("delai_acces")
+  modalitesReglement      String    @map("modalites_reglement")
+  contactOrganisme        String    @default("GestionMax - aurelien@gestionmax.fr - 06.46.02.24.68") @map("contact_organisme")
+  referentPedagogique     String    @default("Aurélien Lien - aurelien@gestionmax.fr") @map("referent_pedagogique")
+  referentQualite         String    @default("Aurélien Lien - aurelien@gestionmax.fr") @map("referent_qualite")
+  formateur               String
+  ressourcesDisposition   String    @map("ressources_disposition")
+  modalitesEvaluation     String    @map("modalites_evaluation")
+  sanctionFormation       String    @map("sanction_formation")
+  niveauCertification     String    @map("niveau_certification")
+  delaiAcceptation        String    @map("delai_acceptation")
+  accessibiliteHandicap   String    @map("accessibilite_handicap")
+  cessationAbandon        String    @map("cessation_abandon")
+  programmeUrl            String?   @map("programme_url")
+  tauxParticipation       String?   @map("taux_participation")
+  tauxReussite            String?   @map("taux_reussite")
+  tarifIntraEntreprise    Float?    @map("tarif_intra_entreprise")
+  tarifInterEntreprise    Float?    @map("tarif_inter_entreprise")
+  ressourcesAssociees     String[]  @map("ressources_associees")
+  
+  // Champs pour la veille légale et réglementaire
+  verificationJuridique   Boolean   @default(false) @map("verification_juridique")
+  dateVerificationJuridique DateTime? @map("date_verification_juridique")
+  actionNonRespect        String?   @map("action_non_respect")
+  referenceTexte          String?   @map("reference_texte")
+  organismeControle       String?   @map("organisme_controle")
+  dateControle            DateTime? @map("date_controle")
+  resultatControle        String?   @map("resultat_controle")
+  commentaireControle     String?   @map("commentaire_controle")
+  
+  // Relations
+  programme               Programme @relation(fields: [programmeId], references: [id], onDelete: Cascade)
+
+  @@map("formation_details")
+}
+
+model ProgrammePersonnalise {
+  id                      String    @id @default(uuid())
+  programmeId             String    @unique @map("programme_id")
+  contenu                 String
+  objectifsSpecifiques    String    @map("objectifs_specifiques")
+  evaluationSur           String    @map("evaluation_sur")
+  
+  // Relations
+  programme               Programme @relation(fields: [programmeId], references: [id], onDelete: Cascade)
+
+  @@map("programme_personnalise_details")
+}
+
+model Categorie {
+  id          String      @id @default(uuid())
+  code        String      @unique
+  titre       String
+  description String
+  ordre       Int         @default(0)
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @default(now()) @updatedAt @map("updated_at")
+  
+  programmes  Programme[]
+
+  @@map("categories")
+}
+
+// ======= DOMAINE : APPRENANTS ET DOSSIERS =======
+
+model Apprenant {
+  id        String             @id @default(uuid())
+  nom       String
+  prenom    String?
+  email     String
+  telephone String?
+  createdAt DateTime           @default(now()) @map("created_at")
+  
+  dossiers  DossierFormation[]
+
+  @@map("apprenants")
+}
+
+model DossierFormation {
+  id                   String                 @id @default(uuid())
+  programmeId          String                 @map("programme_id")
+  apprenantId          String                 @map("apprenant_id")
+  positionnementId     String?                @unique @map("positionnement_id")
+  dateInscription      DateTime               @default(now()) @map("date_inscription")
+  dateDebut            DateTime?              @map("date_debut")
+  dateFin              DateTime?              @map("date_fin")
+  statut               String                 @default("inscrit")
+  createdAt            DateTime               @default(now()) @map("created_at")
+  updatedAt            DateTime               @default(now()) @updatedAt @map("updated_at")
+  
+  documents            DocumentFormation[]
+  apprenant            Apprenant              @relation(fields: [apprenantId], references: [id])
+  programme            Programme              @relation(fields: [programmeId], references: [id])
+  positionnement       PositionnementRequest? @relation(fields: [positionnementId], references: [id])
+  rendezvous           Rendezvous[]
+
+  @@map("dossiers_formation")
+}
+
+model DocumentFormation {
+  id                 String           @id @default(uuid())
+  dossierFormationId String           @map("dossier_formation_id")
+  nom                String
+  type               String
+  url                String
+  dateCreation       DateTime         @default(now()) @map("date_creation")
+  
+  dossierFormation   DossierFormation @relation(fields: [dossierFormationId], references: [id])
+
+  @@map("documents_formation")
+}
+
+// ======= DOMAINE : RENDEZ-VOUS ET POSITIONNEMENT =======
+
+model PositionnementRequest {
+  id                     String            @id @default(uuid())
+  programmeId            String?           @map("programme_id")
+  nomBeneficiaire        String            @map("nom_beneficiaire")
+  prenomBeneficiaire     String            @map("prenom_beneficiaire")
+  statut                 String            @default("nouveau")
+  emailBeneficiaire      String            @map("email_beneficiaire")
+  telephoneBeneficiaire  String?           @map("telephone_beneficiaire")
+  
+  // Informations d'entreprise
+  entreprise             String?
+  siret                  String?           @map("siret")
+  adresseEntreprise      String?           @map("adresse_entreprise")
+  interlocuteurEmail     String?           @map("interlocuteur_email")
+  interlocuteurFonction  String?           @map("interlocuteur_fonction")
+  interlocuteurNom       String?           @map("interlocuteur_nom")
+  interlocuteurTelephone String?           @map("interlocuteur_telephone")
+  
+  // Informations formation
+  attentes               String
+  besoinHandicap         String?           @map("besoin_handicap")
+  commentaires           String?
+  dateContact            DateTime?         @map("date_contact")
+  dateDebutSouhaitee     DateTime?         @map("date_debut_souhaitee")
+  dateDispo              String            @map("date_dispo")
+  dateFinSouhaitee       DateTime?         @map("date_fin_souhaitee")
+  dateRdv                DateTime?         @map("date_rdv")
+  detailsHandicap        String?           @map("details_handicap")
+  hasHandicap            Boolean           @default(false) @map("has_handicap")
+  isFinancement          Boolean           @default(false) @map("is_financement")
+  modaliteFormation      String?           @map("modalite_formation")
+  niveauBeneficiaire     String?           @map("niveau_beneficiaire")
+  objectifs              String[]
+  organismeFinanceur     String?           @map("organisme_financeur")
+  pratiqueActuelle       String            @map("pratique_actuelle")
+  situationActuelle      String            @map("situation_actuelle")
+  typeFinancement        String?           @map("type_financement")
+  
+  // Timestamps
+  createdAt              DateTime          @default(now()) @map("created_at")
+  updatedAt              DateTime          @default(now()) @updatedAt @map("updated_at")
+  
+  // Relations
+  dossierFormation       DossierFormation?
+  programme              Programme?        @relation(fields: [programmeId], references: [id])
+
+  @@map("positionnement_requests")
+}
+
+model Rendezvous {
+  id                      String            @id @default(uuid())
+  type                    String            // "decouverte", "positionnement", "impact"
+  status                  String            @default("planifie")
+  programmeId             String?           @map("programme_id")
+  dossierFormationId      String?           @map("dossier_formation_id")
+  
+  // Informations contact
+  prenom                  String
+  nom                     String
+  email                   String
+  telephone               String?
+  
+  // Informations RDV
+  objectifs               String?
+  competencesActuelles    String?           @map("competences_actuelles")
+  competencesRecherchees  String?           @map("competences_recherchees")
+  niveau                  String?
+  formatSouhaite          String?           @map("format_souhaite")
+  disponibilites          String?
+  commentaires            String?
+  dateRdv                 DateTime?         @map("date_rdv")
+  dureeRdv                Int?              @map("duree_rdv")
+  formatRdv               String?           @map("format_rdv")
+  lieuRdv                 String?           @map("lieu_rdv")
+  lienVisio               String?           @map("lien_visio")
+  notes                   String?
+  synthese                String?
+  
+  // Informations formation
+  situationActuelle       String?           @map("situation_actuelle")
+  attentes                String?
+  pratiqueActuelle        String?           @map("pratique_actuelle")
+  isFinancement           Boolean?          @default(false) @map("is_financement")
+  typeFinancement         String?           @map("type_financement")
+  organismeFinanceur      String?           @map("organisme_financeur")
+  
+  // Informations entreprise
+  entreprise              String?
+  siret                   String?
+  adresseEntreprise       String?           @map("adresse_entreprise")
+  interlocuteurNom        String?           @map("interlocuteur_nom")
+  interlocuteurFonction   String?           @map("interlocuteur_fonction")
+  interlocuteurEmail      String?           @map("interlocuteur_email")
+  interlocuteurTelephone  String?           @map("interlocuteur_telephone")
+  
+  // Dates importantes
+  dateContact             DateTime?         @map("date_contact")
+  dateDebutSouhaitee      DateTime?         @map("date_debut_souhaitee")
+  dateFinSouhaitee        DateTime?         @map("date_fin_souhaitee")
+  
+  // Champs spécifiques handicap
+  hasHandicap             Boolean?          @default(false) @map("has_handicap")
+  detailsHandicap         String?           @map("details_handicap")
+  besoinHandicap          String?           @map("besoin_handicap")
+  
+  // Champs spécifiques aux rendez-vous d'impact
+  dateImpact              DateTime?         @map("date_impact")
+  satisfactionImpact      Int?              @map("satisfaction_impact") // Note de 1-5
+  competencesAppliquees   String?           @map("competences_appliquees")
+  ameliorationsSuggeres   String?           @map("ameliorations_suggerees")
+  commentairesImpact      String?           @map("commentaires_impact")
+  
+  // Relation avec un RDV parent (pour impact)
+  rendezvousParentId      String?           @map("rendezvous_parent_id")
+  rendezvousParent        Rendezvous?       @relation("RendezvousImpact", fields: [rendezvousParentId], references: [id])
+  rendezvousImpacts       Rendezvous[]      @relation("RendezvousImpact")
+  
+  // Timestamps
+  createdAt               DateTime          @default(now()) @map("created_at")
+  updatedAt               DateTime          @default(now()) @updatedAt @map("updated_at")
+  
+  // Relations
+  programme               Programme?        @relation(fields: [programmeId], references: [id])
+  dossierFormation        DossierFormation? @relation(fields: [dossierFormationId], references: [id])
+
+  @@map("rendezvous")
+}
+
+// ======= DOMAINE : QUALITÉ ET CONFORMITÉ =======
+
+model Competence {
+  id                   String   @id @default(uuid())
+  nom                  String
+  description          String
+  categorie            String
+  domaineDeveloppement String   @map("domaine_developpement")
+  niveauActuel         Int      @map("niveau_actuel")
+  objectifNiveau       Int      @map("objectif_niveau")
+  statut               String
+  actionPrevue         String   @map("action_prevue")
+  plateformeFomation   String?  @map("plateforme_formation")
+  lienFormation        String?  @map("lien_formation")
+  typePreuve           String   @map("type_preuve")
+  contenuPreuve        String   @map("contenu_preuve")
+  dateCreation         DateTime @default(now()) @map("date_creation")
+  dateModification     DateTime @default(now()) @updatedAt @map("date_modification")
+  formateurId          String?  @map("formateur_id")
+
+  @@map("competences")
+}
+
+model Reclamation {
+  id                 String             @id @default(uuid())
+  nom                String
+  email              String
+  telephone          String?
+  sujet              String
+  message            String
+  statut             String             @default("nouvelle")
+  priorite           String             @default("normale")
+  assigneeId         String?            @map("assignee_id")
+  notesInternes      String?            @map("notes_internes")
+  dateResolution     DateTime?          @map("date_resolution")
+  createdAt          DateTime           @default(now()) @map("created_at")
+  updatedAt          DateTime           @default(now()) @updatedAt @map("updated_at")
+  
+  actionsCorrectives ActionCorrective[]
+  assignee           User?              @relation("ReclamationsAssignees", fields: [assigneeId], references: [id])
+
+  @@map("reclamations")
+}
+
+model ActionCorrective {
+  id                   String                       @id @default(uuid())
+  titre                String
+  description          String
+  statut               String                       @default("planifiee")
+  origineType          String                       @map("origine_type")
+  origineRef           String?                      @map("origine_ref")
+  origineDate          DateTime?                    @map("origine_date")
+  origineResume        String?                      @map("origine_resume")
+  priorite             String                       @default("moyenne")
+  avancement           Int                          @default(0)
+  responsableNom       String?                      @map("responsable_nom")
+  responsableEmail     String?                      @map("responsable_email")
+  dateEcheance         DateTime?                    @map("date_echeance")
+  indicateurEfficacite String?                      @map("indicateur_efficacite")
+  reclamationId        String?                      @map("reclamation_id")
+  createdAt            DateTime                     @default(now()) @map("created_at")
+  updatedAt            DateTime                     @default(now()) @updatedAt @map("updated_at")
+  
+  reclamation          Reclamation?                 @relation(fields: [reclamationId], references: [id])
+  historiqueActions    HistoriqueActionCorrective[]
+
+  @@map("actions_correctives")
+}
+
+model HistoriqueActionCorrective {
+  id                 String           @id @default(uuid())
+  actionCorrectiveId String           @map("action_corrective_id")
+  dateAction         DateTime         @default(now()) @map("date_action")
+  action             String
+  utilisateur        String
+  commentaire        String?
+  createdAt          DateTime         @default(now()) @map("created_at")
+  
+  actionCorrective   ActionCorrective @relation(fields: [actionCorrectiveId], references: [id])
+
+  @@map("historique_actions_correctives")
+}
+
+model ConformiteQualiopi {
+  id                String   @id @default(uuid())
+  indicateur        String
+  description       String
+  statutConformite  String   @map("statut_conformite")
+  dateVerification  DateTime @map("date_verification")
+  prochaineEcheance DateTime @map("prochaine_echeance")
+  elementPreuve     String?  @map("element_preuve")
+  commentaire       String?
+
+  @@map("conformite_qualiopi")
+}
+
+// ======= DOMAINE : ACCESSIBILITÉ =======
+
+model PlanAccessibilite {
+  id               String   @id @default(uuid())
+  titre            String
+  description      String
+  dateCreation     DateTime @default(now()) @map("date_creation")
+  dateModification DateTime @default(now()) @updatedAt @map("date_modification")
+  actionsRequises  String[] @map("actions_requises")
+  statut           String   @default("actif")
+
+  @@map("plans_accessibilite")
+}
+
+model DemandeAccessibilite {
+  id             String    @id @default(uuid())
+  nom            String
+  email          String
+  telephone      String?
+  description    String
+  dateCreation   DateTime  @default(now()) @map("date_creation")
+  statut         String    @default("nouvelle")
+  reponse        String?
+  dateResolution DateTime? @map("date_resolution")
+
+  @@map("demandes_accessibilite")
+}
+
+// ======= DOMAINE : VEILLE LÉGALE =======
+
+model Veille {
+  id           String    @id @default(uuid())
+  titre        String
+  description  String
+  type         String
+  statut       String    @default("nouvelle")
+  avancement   Int       @default(0)
+  dateCreation DateTime  @default(now()) @map("date_creation")
+  dateEcheance DateTime? @map("date_echeance")
+
+  @@map("veilles")
+}

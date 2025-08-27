@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Form } from "../ui/form";
 import { ArrowLeft, Save } from "lucide-react";
-import { Competence, CompetenceFormData } from "@/types/competence";
+import { Competence, CompetenceFormData } from "@/lib/types/competence";
 import GeneralInfoSection from "./GeneralInfoSection";
 import EvaluationSection from "./EvaluationSection";
 import ActionPlanSection from "./ActionPlanSection";

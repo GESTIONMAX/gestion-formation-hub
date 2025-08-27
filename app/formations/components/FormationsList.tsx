@@ -7,8 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/ta
 import { Plus, Edit, Trash2, Eye, Clock, Users, BookOpen, Info, GitBranch, Calendar, Download, Archive, FileText, Upload } from "lucide-react";
 // Imports du domaine formations
 import { useProgrammesFormation } from "../../hooks/useProgrammesFormation";
-import { ProgrammeFormation } from "../../types/ProgrammeFormation";
-import { CategorieFormation } from "../../types/categorie";
+import { ProgrammeFormation } from "@/lib/types/ProgrammeFormation";
+import { CategorieFormation } from "@/lib/types/categorie";
 // Hooks globaux
 import { useToast } from "../../_lib/hooks/use-toast";
 // Imports locaux (composants dans le même dossier)

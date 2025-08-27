@@ -1,15 +1,15 @@
 import React, { useState, useMemo } from 'react';
-import { Button } from '../../components/ui/button';
-import { DialogFooter } from "../../components/ui/dialog";
-import { Label } from "../../components/ui/label";
-import { Textarea } from "../../components/ui/textarea";
+import { Button } from '@/components/ui/button';
+import { DialogFooter } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useToast } from '../../_lib/hooks/use-toast';
+import { useToast } from '../../../../components/ui/use-toast';
 import { useRouter } from 'next/navigation';
-import { Rendezvous } from "../../_lib/hooks/useRendezvous";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import { Rendezvous } from "../../../../app/_lib/hooks/useRendezvous";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Loader2,
   FileText,
@@ -23,10 +23,10 @@ import {
   CreditCardIcon,
   CheckCircleIcon,
 } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs";
-import { Input } from "../../components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
-import { Checkbox } from "../../components/ui/checkbox";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -59,6 +59,14 @@ interface CompteRenduData {
   competencesRecherchees: string;
 }
 
+// Interface pour les modules
+interface Module {
+  id: string;
+  nom: string;
+  duree: number;
+  categorie?: string;
+}
+
 // Modèles de programmes disponibles
 const programmesModeles = [
   { id: "wp-debutant", nom: "WordPress - Débutant", duree: 21 },
@@ -84,16 +92,18 @@ const modulesDisponibles = [
   { id: "mod-graph-ux", nom: "UX Design", duree: 7, categorie: "graphisme" },
 ] as const;
 
-type ModuleId = typeof modulesDisponibles[number]["id"];
+// Type pour l'ID de module
+type ModuleId = typeof modulesDisponibles[number]['id'];
 
-type ProgrammePreview = {
+// Interface pour l'aperçu du programme
+interface ProgrammePreview {
   titre: string;
   description: string;
   duree: number;
   modules: { id: string; nom: string; duree: number }[];
   niveau: string;
   adaptationsSpecifiques?: string;
-};
+}
 
 export default function CompteRenduAvanceForm({
   onSubmit,
@@ -103,6 +113,9 @@ export default function CompteRenduAvanceForm({
   loading = false,
   generationLoading = false,
 }: CompteRenduAvanceFormProps) {
+  const { toast } = useToast();
+  const router = useRouter();
+
   // Tabs
   const [activeTab, setActiveTab] = useState<string>("compte-rendu");
 

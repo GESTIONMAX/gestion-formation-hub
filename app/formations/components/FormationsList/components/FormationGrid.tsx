@@ -1,4 +1,4 @@
-import { ProgrammeFormation } from "@/types/ProgrammeFormation";
+import { ProgrammeFormation } from "@/lib/types/ProgrammeFormation";
 import FormationCard from "./FormationCard";
 import EmptyState from "./EmptyState";
 

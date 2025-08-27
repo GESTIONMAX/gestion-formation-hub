@@ -9,7 +9,7 @@ import FormationDetail from "../FormationDetail";
 import ProgrammeForm from "../ProgrammeForm";
 import FormationImport from "../FormationImport";
 import MentionsLegales from "../MentionsLegales";
-import { CategorieFormation } from "@/types/categorie";
+import { CategorieFormation } from "@/lib/types/categorie";
 
 /**
  * Composant principal pour la gestion des programmes de formation

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { CategorieFormation } from '../../types/programme';
+import { CategorieFormation } from '@/lib/types/programme';
 
 // Utilisation de PrismaClient avec singleton pattern pour éviter trop de connexions
 let prisma: PrismaClient;

@@ -2,7 +2,7 @@ import { Badge } from "../../../../components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../../components/ui/card";
 import { Archive, BookOpen, Calendar, Clock, Download, Edit, Eye, FileText, GitBranch, Info, Trash2, Users } from "lucide-react";
 import { Button } from "../../../../components/ui/button";
-import { ProgrammeFormation } from "@/types/ProgrammeFormation";
+import { ProgrammeFormation } from "@/lib/types/ProgrammeFormation";
 
 interface FormationCardProps {
   programme: ProgrammeFormation;

@@ -3,9 +3,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./app/*"],
-      "@/lib/*": ["./app/lib/*"],
+      "@/lib/*": ["./app/_lib/lib/*"],
+      "@/_lib/*": ["./app/_lib/*"],
       "@/components/*": ["./app/components/*"],
-      "@/hooks/*": ["./app/hooks/*"]
+      "@/_components/*": ["./app/_components/*"],
+      "@/hooks/*": ["./app/_lib/hooks/*"]
     },
     "noImplicitAny": false,
     "noUnusedParameters": false,
